@@ -33,8 +33,8 @@
 | 14 | Integer-N 与 Fractional-N | [打开](chapters/PLL_第14章_Integer-N与Fractional-N.html) |
 | 15 | ΣΔ、MASH 与 Dither | [打开](chapters/PLL_第15章_Sigma-Delta_MASH与Dither.html) |
 | 16 | ADPLL 的结构与数字 PI | [打开](chapters/PLL_第16章_ADPLL结构与数字PI.html) |
-| 17 | TDC/DTC、DCO 校准 | 待制作 |
-| 18 | 完整系统与指标 | 待制作 |
+| 17 | TDC/DTC、DCO 校准 | [打开](chapters/PLL_第17章_TDC_DTC与DCO校准.html) |
+| 18 | 完整系统与指标 | [打开](chapters/PLL_第18章_完整系统设计与指标.html) |
 
 ## 页面规范
 
