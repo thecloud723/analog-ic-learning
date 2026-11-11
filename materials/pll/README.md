@@ -5,6 +5,7 @@
 - 原始图像：`materials/pll/originals/<source>/`
 - 原始 PDF：`materials/pll/source-pdfs/<source>/`
 - 资料索引：`materials/pll/SOURCES.md`
+- 插图清单：`materials/pll/FIGURE_MANIFEST.csv`
 - 页面实际引用的图片：`pll/assets/`
 - 教程 HTML：`pll/chapters/`
 
