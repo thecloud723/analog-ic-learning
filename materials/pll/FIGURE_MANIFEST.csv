@@ -1,0 +1,21 @@
+figure_id,title_or_topic,course_chapters,source,source_url,license_note,original_file,page_asset,status
+74,Basic PLL block diagram,01,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,materials/pll/originals/jku/jku-fig-pll-block-diagram.svg,pll/assets/jku-fig-pll-block-diagram.svg,tracked
+75,XOR phase detector waveform,02,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+76,PLL Laplace-domain model,10,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+77,PFD implementation,06,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+78,PFD timing case 1,06,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+79,PFD timing case 2,06,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+80,PFD timing case 3,06,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+81,PFD timing case 4,06,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+82,Charge Pump circuit,07,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+83,PFD/Charge Pump PLL,01;09,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,materials/pll/originals/jku/jku-fig-pll-pfd-cp.svg,pll/assets/jku-fig-pll-pfd-cp.svg,tracked
+84,PLL output phase-noise composition,12,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+85,ADPLL block diagram,04;16,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+86,Delay-line TDC,17,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+87,DAC-controlled oscillator,08,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+88,DCO switched varactor,08,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+89-94,DSM/NTF/MASH/Dither figures; verify each caption against the JKU PDF,15,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+95,Fractional-N PLL,04;14,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+96,Charge Pump with offset current,07,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+97,Reference clock doubler,05,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
+98,Fractional-N PLL with retiming flip-flops,14,JKU RFIC §7 PLL,https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html,Apache-2.0 declared upstream,,,not found in current main
