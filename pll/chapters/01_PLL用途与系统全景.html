@@ -190,7 +190,7 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <text fill="#5d6e7b" font-size="12" text-anchor="middle" x="260" y="69">+</text>
 <text fill="#687987" font-size="12" text-anchor="middle" x="520" y="358">负反馈：输出变化 → 分频反馈 → 相位比较 → 调整 VCO</text>
 </svg></div>
-<div class="source-switch" id="fig74Status">离线/原图加载失败时，显示本地拓扑重绘图。<a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-output-1.svg" rel="noopener" target="_blank">查看 JKU Figure 74 原图</a></div>
+<div class="source-switch" id="fig74Status"><span id="fig74State">正在加载 JKU Figure 74 原图…</span> <a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-output-1.svg" rel="noopener" target="_blank">在新窗口打开原图</a></div>
 </div>
 <div class="figcap">图 1-1. 基本 PLL 架构（基于 JKU RFIC Figure 74 拓扑重绘；离线矢量版）。实际相位检测器的极性、信号表示和模块实现随架构而异。</div>
 <div class="explain" id="partExplain"><b>信号路径</b><span>前向通路：参考相位 → 相位检测器 → 环路滤波器 → VCO；反馈通路：VCO 输出 → ÷N → 相位检测器。</span></div>
@@ -329,7 +329,7 @@ const partText={
  div:['÷N · Feedback Divider','把 VCO 输出按 N 分频后送回鉴相器。锁定时 fOUT/N = fREF，所以 fOUT = N·fREF（本章基础结构假设没有 R 分频和额外输出分频）。']
 };
 const jkuImages=[['jkuFig74','fig74Fallback','https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-output-1.svg'],['jkuFig83','fig83Fallback','https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-pfd-cp-output-1.svg']];
-jkuImages.forEach(([imgId,fallbackId,url])=>{const img=document.getElementById(imgId),fallback=document.getElementById(fallbackId);img.addEventListener('load',()=>{img.style.display='block';fallback.style.display='none';});img.addEventListener('error',()=>{img.style.display='none';fallback.style.display='block';});img.src=url;});
+jkuImages.forEach(([imgId,fallbackId,url])=>{const img=document.getElementById(imgId),fallback=document.getElementById(fallbackId),state=imgId==='jkuFig74'?document.getElementById('fig74State'):null;img.addEventListener('load',()=>{img.style.display='block';fallback.style.display='none';if(state)state.textContent='JKU 原图已成功加载。';});img.addEventListener('error',()=>{img.style.display='none';fallback.style.display='block';if(state)state.textContent='JKU 原图暂时无法加载，当前显示本地拓扑重绘图。';});img.src=url;});
 document.querySelectorAll('[data-part]').forEach(el=>{const show=()=>{document.querySelectorAll('[data-part]').forEach(x=>x.classList.toggle('active',x===el));const [h,t]=partText[el.dataset.part];document.getElementById('partExplain').innerHTML='<b>'+h+'</b><span>'+t+'</span>';};el.addEventListener('click',show);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show();}})});
 const quizAnswers={metric:['b','不能只比较数值。必须统一载波频率、积分频段、spur 计入方式、SSC 状态、测量节点和仪器设置。'],n:['b','锁定关系为 fOUT=N×fREF。100 MHz×20=2.00 GHz。滑块会显示输出目标和反馈频率。'],q1:['b','鉴相器比较参考时钟与反馈分频时钟，因此反馈频率是 fOUT/N。锁定时它等于 fREF。'],q2:['a','频率是相位对时间的导数。同频时相位差的导数为零，因此相位差可以保持为一个非零常数。'],q3:['b','dBc 表示离散谱线相对载波的功率比；dBc/Hz 表示单位带宽内的噪声功率谱密度，量纲和测量定义不同。']};
 const letter={a:'A',b:'B',c:'C'};
