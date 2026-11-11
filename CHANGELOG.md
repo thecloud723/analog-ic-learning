@@ -4,7 +4,7 @@
 - 新增 Integer-N/Fractional-N、ΣΔ/MASH/Dither、ADPLL/数字 PI 三章独立 HTML，共 24 个教学页签。
 - 加入 LMX2594、ADF4159 产品结构重绘、MASH 三级噪声抵消图、ADPLL 完整反馈图。
 - 新增 Fractional-N 分频序列实验、MASH 一阶/三级序列与 DFT 实验、ADPLL 逐拍闭环实验；三章均先答预测题，答对后解锁滑块。
-- 补充第 14–16 章参考资料与模型边界说明。
+- 补充第 14–16 章参考资料与模型边界说明；修正第 14 章 NUM/DEN 实际量化关系，重画 MASH 信号路由，并修复 ADPLL 实验滑块引用。
 - 章节文件使用原生 MathML、内嵌 SVG/CSS/JavaScript；无外部 JavaScript 依赖。
 - 待完成浏览器桌面/手机回归后，再将验收状态更新为通过。
 
