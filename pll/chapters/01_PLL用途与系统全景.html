@@ -222,7 +222,7 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <text fill="#5d6e7b" font-size="12" text-anchor="middle" x="230" y="195">FB</text><text fill="#5d6e7b" font-size="12" text-anchor="middle" x="230" y="69">REF</text>
 <text fill="#687987" font-size="12" text-anchor="middle" x="540" y="390">PFD 产生脉冲宽度 → CP 转换电荷 → LF 形成 <tspan font-style="italic">V</tspan><tspan baseline-shift="sub" font-size="70%">ctrl</tspan> → VCO 改变频率</text>
 </svg></div>
-<div class="source-switch" id="fig83Status">原始 SVG 已保存于本课程 pll/assets，网页直接读取本地文件。<a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-pfd-cp-output-1.svg" rel="noopener" target="_blank">查看 JKU Figure 83 原图</a></div>
+<div class="source-switch" id="fig83Status"><span id="fig83State">正在加载 JKU Figure 83 原图…</span> <a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-pfd-cp-output-1.svg" rel="noopener" target="_blank">查看上游原图</a></div>
 </div>
 <div class="figcap">图 1-2. PFD–CP–LF–VCO 闭环功能图（JKU RFIC Figure 83 原始 SVG，离线本地副本）。本章只讲系统功能，PFD 门级电路和 CP 电流源电路分别在第 6、7 章展开。</div>
 <div class="note"><b>两张图不是两种完全不同的控制原理：</b>PD/LPF/VCO 是功能抽象；PFD/CP/LF/VCO 是一种常见的具体实现。PFD 的 UP/DOWN 脉冲经 CP 转为正/负电流，再由 LF 形成控制电压。</div>
@@ -329,7 +329,7 @@ const partText={
  div:['÷N · Feedback Divider','把 VCO 输出按 N 分频后送回鉴相器。锁定时 fOUT/N = fREF，所以 fOUT = N·fREF（本章基础结构假设没有 R 分频和额外输出分频）。']
 };
 const jkuImages=[['jkuFig74','fig74Fallback','../assets/jku-fig-pll-block-diagram.svg'],['jkuFig83','fig83Fallback','../assets/jku-fig-pll-pfd-cp.svg']];
-jkuImages.forEach(([imgId,fallbackId,url])=>{const img=document.getElementById(imgId),fallback=document.getElementById(fallbackId),state=imgId==='jkuFig74'?document.getElementById('fig74State'):null;img.addEventListener('load',()=>{img.style.display='block';fallback.style.display='none';if(state)state.textContent='JKU 原图已成功加载。';});img.addEventListener('error',()=>{img.style.display='none';fallback.style.display='block';if(state)state.textContent='JKU 原图暂时无法加载，当前显示本地拓扑重绘图。';});img.src=url;});
+jkuImages.forEach(([imgId,fallbackId,url])=>{const img=document.getElementById(imgId),fallback=document.getElementById(fallbackId),state=document.getElementById(imgId==='jkuFig74'?'fig74State':'fig83State');img.addEventListener('load',()=>{img.style.display='block';fallback.style.display='none';if(state)state.textContent='JKU 原始 SVG 已从本地资源加载。';});img.addEventListener('error',()=>{img.style.display='none';fallback.style.display='block';if(state)state.textContent='本地 SVG 读取失败，临时显示页面内置示意图。';});img.src=url;});
 document.querySelectorAll('[data-part]').forEach(el=>{const show=()=>{document.querySelectorAll('[data-part]').forEach(x=>x.classList.toggle('active',x===el));const [h,t]=partText[el.dataset.part];document.getElementById('partExplain').innerHTML='<b>'+h+'</b><span>'+t+'</span>';};el.addEventListener('click',show);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show();}})});
 const quizAnswers={metric:['b','不能只比较数值。必须统一载波频率、积分频段、spur 计入方式、SSC 状态、测量节点和仪器设置。'],n:['b','锁定关系为 fOUT=N×fREF。100 MHz×20=2.00 GHz。滑块会显示输出目标和反馈频率。'],q1:['b','鉴相器比较参考时钟与反馈分频时钟，因此反馈频率是 fOUT/N。锁定时它等于 fREF。'],q2:['a','频率是相位对时间的导数。同频时相位差的导数为零，因此相位差可以保持为一个非零常数。'],q3:['b','dBc 表示离散谱线相对载波的功率比；dBc/Hz 表示单位带宽内的噪声功率谱密度，量纲和测量定义不同。']};
 const letter={a:'A',b:'B',c:'C'};
