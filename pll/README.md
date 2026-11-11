@@ -9,6 +9,7 @@
 - [章节进度与验收记录](PROGRESS.md)
 - [参考资料索引](REFERENCES.md)
 - [第 11–13 章资料与模型说明](REFERENCES_11_13.md)
+- [第 14–16 章资料与模型说明](REFERENCES_14_16.md)
 - [工程案例补充说明](ENGINEERING_CASES.md)
 - [行内数学符号修订记录](MATH_RENDERING_CHANGELOG.md)
 
@@ -29,13 +30,13 @@
 | 11 | 瞬态响应、稳定性与锁定时间 | [打开](chapters/PLL_第11章_瞬态响应稳定性与锁定时间.html) |
 | 12 | Phase Noise 与 Jitter | [打开](chapters/PLL_第12章_Phase_Noise与Jitter.html) |
 | 13 | Spur、非线性与 PVT | [打开](chapters/PLL_第13章_Spur非线性与PVT.html) |
-| 14 | Integer-N / Fractional-N PLL | 待制作 |
-| 15 | ΣΔ、MASH 与 Dither | 待制作 |
-| 16 | ADPLL 与数字 PI | 待制作 |
-| 17 | TDC/DTC、DCO 校准与系统实现 | 待制作 |
-| 18 | PLL 综合设计与测试 | 待制作 |
+| 14 | Integer-N 与 Fractional-N | [打开](chapters/PLL_第14章_Integer-N与Fractional-N.html) |
+| 15 | ΣΔ、MASH 与 Dither | [打开](chapters/PLL_第15章_Sigma-Delta_MASH与Dither.html) |
+| 16 | ADPLL 的结构与数字 PI | [打开](chapters/PLL_第16章_ADPLL结构与数字PI.html) |
+| 17 | TDC/DTC、DCO 校准 | 待制作 |
+| 18 | 完整系统与指标 | 待制作 |
 
-## 内容组织原则
+## 页面规范
 
 - 每章独立 HTML；左侧章节目录、顶部页签、底部跨章导航。
 - 公式采用标准数学排版；题目、解析、图注和动态结果中的上下标保持一致。

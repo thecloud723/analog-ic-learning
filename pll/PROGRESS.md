@@ -1,49 +1,50 @@
-# PLL 课程制作与技术验收记录（01～13 章）
+# PLL 课程制作与技术验收记录（01～16 章）
 
-## 本批范围（2026-11-11）
-- 新增第 11～13 章，每章 8 个页签，共 24 个教学页签。
-- 累计 13 章、104 个页签；第 14～18 章保留为待制作目录。
-- 第 11 章：二阶瞬态、阻尼/超调/调节时间、相位裕量、带宽、Lock Time 定义、Cycle Slip、TI 理论与实测锁定时间案例。
-- 第 12 章：相位噪声定义、SSB L(f)、Leeson 模型、PLL 噪声传递函数、积分相噪、Jitter 类型、测量仪器与条件；实验采用一阶互补低通/高通权重分别表示参考路径与 VCO 路径，叠加后积分。
-- 第 13 章：噪声与 Spur 区别、Reference Spur 机制、CP 失配/漏电/馈通、FM 边带估算、非线性、供电耦合、PVT 与校准。
+## 本批范围（2026-11-11，第 14～16 章）
+- 新增第 14～16 章，共 3 个独立 HTML、24 个教学页签。
+- 累计 16 章、128 个教学页签；第 17～18 章保留为待制作目录。
+- 三章均采用左侧 18 章目录、顶部 8 个页签、底部上一节/下一节及跨章导航。
+- 页面使用浏览器原生 MathML，分数、上下标和算子为结构化数学元素；CSS、SVG 图和交互脚本均内嵌，不依赖在线公式库或外部 JavaScript。
 
-## 本批关键公式与假设
-- 二阶欠阻尼阶跃响应采用标准二阶系统形式；2% 调节时间使用包络近似 `t_s ≈ 4/(ζω_n)`，仅用于主导二阶模型。
-- 相位裕量按增益交越处 `PM = 180° + ∠L(jω_c)`（负相位约定）。PM 与 ζ 的关系依赖具体环路结构，未写成普适换算。
-- Cycle Slip 作为非线性离散事件处理；连续线性模型不用于直接预测滑移次数。
-- SSB 相噪积分采用 `σφ² = 2∫10^(L(f)/10)df` 的单边带小相位噪声约定；必须给出积分上下限。
-- RMS 时间抖动由 `σ_t = σφ/(2πf_0)` 转换。
-- Spur 小调制指数近似采用 `β=Δf_pk/f_m`、`Pspur≈20log10(β/2)`；仅适用于单音小指数 FM。
-- CP 误差电荷模型用于展示因果链，不替代完整环路滤波器阻抗及周期脉冲谐波分析。
+## 第 14 章：Integer-N 与 Fractional-N
+- Integer-N 频率网格、PFD 频率与 R/N 关系。
+- Fractional-N 平均分频：逐拍整数分频命令形成 N+α 的长期平均值。
+- NUM/DEN、频率步进 fPFD/DEN、序列周期与 fractional spur 的关系。
+- 按 TI LMX2594、ADI ADF4159 数据手册重绘产品功能结构，区分集成 VCO、PFD/CP、N-divider、ΣΔ 与外部环路滤波器。
+- 交互实验：调整 N、α、fPFD、DEN，显示目标输出频率、理想频率步进和一阶分频序列。
+- 设计指标：频率步进、相噪、fractional spur、integer-boundary spur、lock time、fPFD/N-divider 限制及测试方法。
 
-## 真实工程资料
-- TI, *PLL Performance, Simulation, and Design*, 4th ed.：Transient Response、Cycle Slips、Lock Time measured-vs-theory、非理想因素。
-- ADI, AN-1067：相噪与 Jitter 的定义、频域/时域测量、仪器限制及实验数据。
-- ADI, AN143：Reference Spur、Anti-Backlash pulse、CP leakage、LTC6945 2.1 GHz 测试频谱。
-- TI SSZTB85：环路带宽对 Jitter、Phase Noise、Lock Time、Spurs 的取舍。
-- IIT Madras, Spur Reduction in Wideband PLLs：CP pulse 与参考杂散的工程机制。
-- Tsinghua A-SSCC 2019：数字 CP leakage calibration 的实际芯片案例（摘要报告约 25 dB Reference Spur 抑制）。
+## 第 15 章：ΣΔ、MASH 与 Dither
+- 从一阶累加器的进位序列解释平均分频比。
+- MASH 1-1-1 由三级一阶调制级、量化余量传递和数字误差抵消组成。
+- 在本文采用的误差符号约定下，输出关系为 Y=Y1+(1-z^-1)Y2+(1-z^-1)^2Y3；理想模型的残余量化噪声经三阶 NTF (1-z^-1)^3 整形。
+- 明确区分一阶进位序列与 MASH 多位有符号输出；后者不是单比特占空比序列。
+- 讨论 Dither 的作用是降低相关性/打散音调，代价可能是噪声底抬高；seed 与 dither 不混为一谈。
+- RTL 检查：累加器位宽、模回绕、输出位宽、延迟对齐、pipeline latency、复位和 seed。
+- 交互实验：比较一阶与 MASH 输出平均值、序列范围和有限长度 DFT；频谱幅度不是 dBc/Hz，也不是芯片实测相噪。
 
-## 交互模型边界
-- 第 11 章为标准二阶闭环教学模型，不包括真实 PFD 事件、CP rail saturation、VCO tuning range、附加极点及数字 LOCK qualification。
-- 第 12 章使用教学用分段相噪曲线进行数值积分；环路带宽交越是概念模型，不是完整 CP-PLL 噪声仿真。
-- 第 13 章将 CP mismatch/leakage 折算成等效周期电荷，再估算电压和频偏；未用完整 Z(s) 计算 Spur，因此明确标注为近似因果实验。
+## 第 16 章：ADPLL 的结构与数字 PI
+- 统一 FCW 目标相位轨迹、实际相位测量、误差计算、数字 PI、DCO 控制与反馈边沿。
+- 实际相位拆分为 DCO 整数边沿计数和 TDC 亚周期时间测量。
+- 数字 PI：I[n+1]=I[n]+Ki·e[n]，u[n]=Kp·e[n]+I[n]；解释积分状态保存长期频率修正，锁定后 I 不必为零。
+- DCO 局部模型 fDCO≈f0+KDCO·u；说明粗调/细调、增益随码字和 PVT 变化。
+- DTC 被标为架构可选模块，不写成所有 ADPLL 的必备路径。
+- 交互实验：逐拍模拟相位误差、TDC 量化、PI 状态和 DCO 频偏收敛。
+- 设计指标：TDC/DTC 分辨率与 DNL/INL、DCO tuning range/KDCO/PN、loop stability、lock time、jitter、spur 和 PVT。
+- 引用不同的公开 ADPLL 实现，说明相位数字化路径不只有 TDC 一种。
 
-## 浏览器验收
-- 每章 8 个页签，答案内置；实验滑块需先完成预测题才能启用。
-- 数学公式构建期渲染为内嵌 MathJax SVG，离线可用；正文变量使用语义化 HTML 下标。
-- 桌面/手机布局、页签切换、公式显示、曲线刷新、题目判题及文件链接需经 Playwright 验收后交付。
+## 本批关键公式与模型边界
+- Fractional-N：fOUT=(N+α)·fPFD，α=NUM/DEN，理想步进 Δf=fPFD/DEN；若芯片有输出分频，需按具体器件频率规划修正。
+- 一阶累加器：v[n]=a[n-1]+α，q[n]=1(v[n]≥1)，a[n]=v[n]-q[n]；长期平均 q[n] 趋近 α。
+- MASH 1-1-1 的数字抵消关系依赖误差符号和延迟定义；教材公式可能因误差定义不同而出现符号差异，但差分阶数一致。
+- MASH NTF 是理想线性化模型；有限字长、极限环、分频器非线性、CP mismatch 和 pipeline mismatch 会改变真实谱形。
+- ADPLL：Φref[n+1]=Φref[n]+FCW；Φfb≈C+Δt/TDCO；eφ=Φref-Φfb；PI 与 DCO 采用局部线性模型。
+- 第 16 章交互实验是归一化离散行为模型，不代替某一芯片的定点环路系数、稳定性分析或晶体管级仿真。
 
-
-## 本批浏览器交互检查补充
-- 第 11～13 章均为 8 个页签、8 个面板，MathJax 预渲染 SVG 已嵌入。
-- 使用 Chromium 对 1365 px、390 px、320 px 视口进行页面内容加载检查；无 JavaScript pageerror，页面整体无横向溢出。
-- 全部页签切换后仅显示一个面板；预测题能显示内置答案，提交后解锁对应滑块；三个实验均能刷新结果。
-- 边界参数专项检查：ζ=1 的临界阻尼响应无 NaN；积分区间扩大时相噪积分正常更新；大调制指数时停止使用小指数 Spur 近似并显示模型范围提示。
-- 第 10→11→12→13 章链接及 11/12/13 章侧栏链接已更新；第 13 章下一章按钮保持待制作状态。
-
-## GitHub 导入记录（2026-11-11）
-- 第 01–13 章 HTML 已正式导入 `thecloud723/analog-ic-learning` 的 `main` 分支。
-- 专题入口：`pll/index.html`；章节目录：`pll/chapters/`。
-- 每章保留独立 HTML，公式 SVG、样式和交互代码内嵌；外部链接仅用于参考资料。
-- 配套进度、工程案例、资料来源与数学符号修订记录已归档。
+## 验收状态
+- [x] 三章均有 8 个页签与 8 个内容面板。
+- [x] 侧栏包含 18 章课程结构，当前章节高亮。
+- [x] 公式、图形、样式和交互脚本内嵌；无外部 JavaScript 依赖。
+- [x] 每章均有基础结构图、工程实现/产品案例、设计指标和测试方法。
+- [x] 交互实验均有输入参数与动态结果。
+- [ ] 仍需在 Chromium/Edge 桌面与手机视口逐页进行实际浏览器回归；本次先完成源文件和链接级检查。
