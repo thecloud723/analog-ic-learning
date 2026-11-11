@@ -11,7 +11,7 @@
 - Fractional-N 平均分频：逐拍整数分频命令形成 N+α 的长期平均值。
 - NUM/DEN、频率步进 fPFD/DEN、序列周期与 fractional spur 的关系。
 - 按 TI LMX2594、ADI ADF4159 数据手册重绘产品功能结构，区分集成 VCO、PFD/CP、N-divider、ΣΔ 与外部环路滤波器。
-- 交互实验：调整 N、α、fPFD、DEN，显示目标输出频率、理想频率步进和一阶分频序列。
+- 交互实验：调整 N、α、fPFD、DEN，显示目标输出频率、理想频率步进和一阶分频序列；α 按 NUM=round(α×DEN) 转成实际寄存器分数，避免把连续滑块值误当成可直接写入的寄存器值。
 - 设计指标：频率步进、相噪、fractional spur、integer-boundary spur、lock time、fPFD/N-divider 限制及测试方法。
 
 ## 第 15 章：ΣΔ、MASH 与 Dither
