@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>PLL 第05章 · 参考源与时钟输出链</title><style>
+:root{--ink:#203040;--minor:#5b6d7e;--blue:#205c87;--surface:#fff;--line:#d9e1e7;--bg:#f3f5f7;--sidebar:282px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15.5px/1.74 system-ui,-apple-system,"Noto Sans SC","Microsoft YaHei",sans-serif;color:var(--ink)}
+a{color:#17638e;text-underline-offset:3px}.layout{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);min-height:100vh}.layout.fold{grid-template-columns:0 minmax(0,1fr)}
+aside.chapters{height:100vh;position:sticky;top:0;overflow-y:auto;background:#fff;border-right:1px solid var(--line)}.layout.fold aside.chapters{visibility:hidden}.side-head{padding:23px 20px 18px;border-bottom:1px solid var(--line);font-size:16px;font-weight:750}.side-sub{font-size:12px;color:var(--minor);margin-top:4px;font-weight:400}.group{padding:14px 11px 5px}.group-name{font-size:12px;color:var(--minor);font-weight:700;padding:4px 10px}.chapter{display:flex;gap:10px;text-decoration:none;font-size:13px;color:#405466;padding:9px 10px;border-radius:6px;line-height:1.45}.chapter strong{min-width:20px;color:#6c8497}.chapter.active{color:#164e76;background:#e8f1f8;font-weight:750}.chapter.future{color:#9aa6b0}.chapter.future strong{color:#a9b1b8}.main{min-width:0}.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.headline{display:flex;align-items:center;gap:13px;padding:10px clamp(13px,2.6vw,30px);min-height:68px}.fold-btn{border:1px solid #c7d3dd;background:#fff;color:#345e7c;font-size:13px;border-radius:6px;padding:7px 10px;cursor:pointer}.heading{flex:1;min-width:0}.chapter-count{font-size:12px;color:#708496;line-height:1.2}.heading h1{font-size:clamp(17px,2.2vw,23px);margin:3px 0 0;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tabs-wrap{overflow-x:auto;scrollbar-width:thin}.tabs{display:flex;min-width:max-content;padding:0 clamp(13px,2.6vw,30px)}.tab{border:0;background:transparent;padding:11px 13px;position:relative;white-space:nowrap;font-size:13px;color:#536a78;cursor:pointer;font-weight:600}.tab.on{color:#165d88}.tab.on:after{content:"";height:3px;left:8px;right:8px;position:absolute;bottom:0;background:#267db1}.tab span{font-size:11px;margin-right:7px;color:#8697a4}
+.content{max-width:1080px;margin:auto;padding:22px clamp(13px,2.6vw,30px) 45px}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:clamp(17px,3vw,32px);min-height:360px}.panel[hidden]{display:none}.panel h2{font-size:clamp(21px,3vw,27px);line-height:1.4;margin:0 0 16px}.panel h3{font-size:17px;line-height:1.45;margin:24px 0 9px}.panel p{margin:10px 0}.lead{font-size:16px;line-height:1.76}.technical-figure{border:1px solid #dce4e9;background:#fff;border-radius:6px;margin:16px 0;padding:11px}.technical-figure figcaption{font-size:12.5px;color:#60717f;line-height:1.65;margin-top:8px}.tech-svg{display:block;width:100%;height:auto;max-height:460px}.wire{fill:none;stroke:#304a60;stroke-width:2.3;stroke-linecap:square;stroke-linejoin:miter}.reset-wire{fill:none;stroke:#b36b2a;stroke-width:2.25;stroke-dasharray:6 3;stroke-linejoin:miter}.schem-block{fill:#fff;stroke:#304a60;stroke-width:2.2}.svg-blocktext{font:600 18px Arial,sans-serif;fill:#293e51}.svg-small{font:14px Arial,sans-serif;fill:#4e6474}.svg-caption{font:13px Arial,sans-serif;fill:#536b80}.sym{fill:white;stroke:#304a60;stroke-width:2}.switch{fill:none;stroke:#304a60;stroke-width:2.5}.eq{margin:18px 0 6px;overflow-x:auto;text-align:center;font-size:1.08em;white-space:nowrap;scrollbar-width:thin}.eq mjx-container{max-width:100%}.eqnote{font-size:13px;color:#627484;text-align:center;margin:3px auto 17px!important}.technical-note{margin:15px 0;border-left:3px solid #7e9eb8;background:#f2f6f9;padding:13px 16px}.technical-note>strong{display:block;margin-bottom:7px}.table-scroll{overflow-x:auto;margin:14px 0}table{border-collapse:collapse;min-width:570px;width:100%;font-size:14px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid #dfe6eb;padding:9px 11px}th{color:#4e6374;background:#f3f6f8}.worked{border:1px solid #dce4e9;background:#fafcfd;padding:15px 17px;margin:15px 0;border-radius:5px}.worked-title{font-weight:720;color:#284f6c;margin-bottom:8px}.worked p{margin:7px 0}.lab{border:1px solid #cddfe9;border-radius:6px;padding:16px;background:#fcfdfe;margin:16px 0}.lab h3{margin:3px 0 13px}.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.control{padding:11px;border:1px solid #dce5eb;border-radius:4px;background:white}.control label{display:flex;justify-content:space-between;font-size:13px;gap:8px;font-weight:600}.control input{width:100%;accent-color:#21678d;margin:11px 0 0}.control select{width:100%;padding:8px;margin-top:8px}.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:15px 0}.res{background:#eef4f8;padding:9px;border-radius:4px;border:1px solid #d8e4ec}.res .name{font-size:12px;color:#617685}.res .value{font-size:20px;color:#1d5d85;font-weight:750;font-variant-numeric:tabular-nums}.resultplot{width:100%;height:auto;border:1px solid #d8e1e7;border-radius:4px;background:white}.quiz{margin:14px 0;background:#f8fafb;padding:15px;border:1px solid #d9e2e8;border-radius:6px}.quiz-title{font-weight:700;margin-bottom:10px}.quiz-options{display:grid;gap:8px}.quiz-options label{border:1px solid #dae2e8;background:#fff;border-radius:4px;padding:9px;cursor:pointer}.quiz-options label:has(input:checked){border-color:#4b83a4;background:#edf5fa}.quiz-options input{accent-color:#286b92}.quiz-reveal{margin-top:10px;border-left:3px solid #5b88a3;background:#edf4f8;padding:11px 13px}.quiz-reveal p{margin:5px 0}.quiz-reveal.wrong{border-left-color:#ad7b38;background:#faf3e8}.nav-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px}.nav-footer button{border:1px solid #b5cbd9;border-radius:6px;background:#fff;padding:10px 15px;color:#245c82;font-size:13px;font-weight:750;cursor:pointer}.nav-footer button:last-child{background:#245c82;color:white}.nav-footer button:disabled{background:#eee;color:#9aa4aa;border-color:#e0e4e7;cursor:default}.nav-footer .pagenum{font-size:13px;color:#697c89}.sources{font-size:13px;color:#5e7482}.sources li{padding:4px 0}.testtag{font-size:11px;color:#52728d}.bg-g{stroke:#e6ecf0;stroke-width:1}.smallwarn{font-size:12px;color:#526f84}.mobile-shade{display:none}.side-close{display:none}
+@media(max-width:900px){.layout,.layout.fold{display:block}.chapters{position:fixed!important;left:0;top:0;bottom:0;z-index:31;width:min(300px,85vw);transform:translateX(-102%);transition:transform .2s;visibility:visible!important}.layout.nav-open .chapters{transform:translateX(0)}.mobile-shade{display:none;position:fixed;inset:0;background:#0b293e77;z-index:30}.layout.nav-open .mobile-shade{display:block}.side-close{display:block;float:right;border:0;background:transparent;font-size:21px;cursor:pointer}.content{padding:15px 12px 38px}.panel{padding:18px 14px}.controls{grid-template-columns:1fr}.result-grid{grid-template-columns:repeat(2,1fr)}.result-grid>div:last-child:nth-child(odd){grid-column:1/-1}.tech-svg{min-width:0}.eq{font-size:1em}.nav-footer button{padding:10px 8px;max-width:43%}.technical-figure{padding:5px}.headline{padding:10px 12px}.tabs{padding:0 12px}.tab{padding:10px 10px}.panel h3{margin-top:18px}}
+</style><style id="engineering-style">
+/* 工程案例的版式：正文优先，不加入装饰性标签 */
+.eng-case{margin:22px 0;padding:18px 18px 16px;border:1px solid #d2e0e9;border-radius:7px;background:#fbfdfe}
+.eng-case h3{margin:0 0 9px!important;font-size:18px!important;color:#244f6d}
+.eng-case h4{font-size:15px;margin:17px 0 6px}
+.eng-case p{line-height:1.76;margin:8px 0}
+.eng-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:15px 0}
+.eng-card{padding:12px 13px;border:1px solid #dce6ec;border-radius:5px;background:#fff}
+.eng-card strong{display:block;color:#254e6b;margin-bottom:5px}
+.eng-fig{margin:14px 0;border:1px solid #dae4eb;background:#fff;border-radius:6px;padding:9px;overflow-x:auto}
+.eng-fig svg{display:block;width:100%;height:auto;max-width:1120px;margin:auto}
+.eng-fig figcaption{font-size:12px;color:#5f7282;line-height:1.7;padding:6px 5px 2px}
+.eng-def{border-left:3px solid #5c8aa8;padding:9px 12px;background:#eff5f8;margin:11px 0;font-size:14px}
+.eng-ex{padding:12px 15px;background:#fff;border:1px solid #d8e4eb;border-radius:5px;margin:13px 0}
+.eng-ex strong{display:block;margin-bottom:5px}
+.eng-steps{counter-reset:step;list-style:none;margin:14px 0;padding:0;display:grid;gap:9px}
+.eng-steps li{counter-increment:step;padding:9px 10px 9px 45px;position:relative;background:#f6f9fb;border:1px solid #e1e9ee;border-radius:5px}
+.eng-steps li:before{content:counter(step);position:absolute;left:12px;top:10px;background:#dce9f2;color:#245a7d;font-weight:700;border-radius:50%;width:23px;height:23px;line-height:23px;text-align:center}
+.eng-tt{width:100%;min-width:520px;border-collapse:collapse}
+.eng-tt th,.eng-tt td{padding:8px 11px;border-bottom:1px solid #dbe4ea;font-size:13.4px;vertical-align:top}
+.eng-src{font-size:12px;color:#657b89;margin-top:10px}
+.eng-src a{overflow-wrap:anywhere}
+.eng-numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.eng-number{padding:9px;border:1px solid #d8e4eb;border-radius:4px;background:#fff}
+.eng-number em{font-size:12px;color:#60788b;font-style:normal;display:block}
+.eng-number b{font-size:19px;color:#17577e;font-variant-numeric:tabular-nums}
+.eng-range{width:100%;accent-color:#216e9c}
+.eng-math{display:flex;justify-content:center;overflow-x:auto;padding:11px 2px;margin:7px 0}
+.eng-math svg{height:auto;max-width:100%}
+.eng-quiz{padding:12px 14px;margin:12px 0;border:1px solid #dbe5ec;background:#f7fafc;border-radius:5px}
+.eng-quiz label{display:block;padding:5px 0;font-size:14px}
+.eng-result{margin-top:7px;font-size:13px;color:#2b5c7a}
+.eng-muted{font-size:12.5px;color:#5b7281}
+@media(max-width:750px){.eng-grid{grid-template-columns:1fr}.eng-case{padding:12px}.eng-numbers{grid-template-columns:1fr 1fr}.eng-fig svg{min-width:540px}.eng-fig{padding:5px}.eng-tt{min-width:570px}}
+</style><style id="inline-math-subscript-style">sub.inline-math-sub{font-size:.72em;vertical-align:sub;line-height:0;font-style:normal;} svg tspan[baseline-shift="sub"]{font-size:70%;}</style></head><body>
+<div class="layout" id="layout"><div class="mobile-shade" id="shade"></div><aside class="chapters"><div class="side-head"><button aria-label="关闭目录" class="side-close" id="closeSide">×</button>PLL 锁相环<div class="side-sub">18 章课程目录</div></div><div class="group"><div class="group-name">I · 系统总览</div><a class="chapter" href="PLL_第01章_用途与系统全景_v2.3_标准数学公式版.html"><strong>01</strong><span>PLL 的用途与全景</span></a><a class="chapter" href="PLL_第02章_频率相位时间差与锁定_标准数学公式版.html"><strong>02</strong><span>频率、相位、时间差与锁定</span></a><a class="chapter" href="PLL_第03章_从开环到闭环_标准数学公式版.html"><strong>03</strong><span>从开环到闭环：PLL 怎样锁定</span></a><a class="chapter" href="PLL_第04章_PLL架构地图_标准数学公式版.html"><strong>04</strong><span>PLL 架构地图：分类与比较</span></a></div><div class="group"><div class="group-name">II · 组成模块</div><a class="chapter active" href="PLL_第05章_参考源与时钟输出链.html"><strong>05</strong><span>参考源与时钟输出链</span></a><a class="chapter" href="PLL_第06章_PD_PFD_相位与频率比较.html"><strong>06</strong><span>PD/PFD：相位与频率比较</span></a><a class="chapter" href="PLL_第07章_Charge_Pump与Loop_Filter.html"><strong>07</strong><span>Charge Pump 与 Loop Filter</span></a><a class="chapter" href="PLL_第08章_VCO与DCO可控振荡器.html"><strong>08</strong><span>VCO、DCO：可控振荡器</span></a><a class="chapter" href="PLL_第09章_完整CP_PLL动态.html"><strong>09</strong><span>完整 CP-PLL 的动态</span></a></div><div class="group"><div class="group-name">III · 控制与性能</div><a class="chapter" href="PLL_第10章_相位域模型与Type_I_II.html"><strong>10</strong><span>相位域模型与 Type-I/II</span></a><a class="chapter future"><strong>11</strong><span>瞬态、稳定性与锁定时间</span></a><a class="chapter future"><strong>12</strong><span>Phase Noise 与 Jitter</span></a><a class="chapter future"><strong>13</strong><span>Spur、非线性与 PVT</span></a></div><div class="group"><div class="group-name">IV · 数字与分数合成</div><a class="chapter future"><strong>14</strong><span>Integer-N 与 Fractional-N</span></a><a class="chapter future"><strong>15</strong><span>ΣΔ、MASH 与 Dither</span></a><a class="chapter future"><strong>16</strong><span>ADPLL 的结构与数字 PI</span></a><a class="chapter future"><strong>17</strong><span>TDC/DTC、DCO 校准</span></a></div><div class="group"><div class="group-name">V · 综合</div><a class="chapter future"><strong>18</strong><span>完整系统与指标</span></a></div></aside>
+<div class="main"><header class="top"><div class="headline"><button class="fold-btn" id="foldButton">☰ 目录</button><div class="heading"><div class="chapter-count">PLL · 第 05 / 18 章</div><h1>参考源与时钟输出链</h1></div><div class="chapter-count">8 节</div></div><div class="tabs-wrap"><div class="tabs" role="tablist"><button aria-controls="p1" aria-selected="false" class="tab" data-i="1" id="tab1" role="tab"><span>01</span>完整的参考与输出链</button><button aria-controls="p2" aria-selected="false" class="tab" data-i="2" id="tab2" role="tab"><span>02</span>参考源及输入条件</button><button aria-controls="p3" aria-selected="false" class="tab" data-i="3" id="tab3" role="tab"><span>03</span>参考分频器 R</button><button aria-controls="p4" aria-selected="false" class="tab" data-i="4" id="tab4" role="tab"><span>04</span>反馈分频 N 与 Prescaler</button><button aria-controls="p5" aria-selected="false" class="tab" data-i="5" id="tab5" role="tab"><span>05</span>参考倍频与输出分频</button><button aria-controls="p6" aria-selected="false" class="tab" data-i="6" id="tab6" role="tab"><span>06</span>分频与频率的计算例题</button><button aria-controls="p7" aria-selected="false" class="tab" data-i="7" id="tab7" role="tab"><span>07</span>预测与验证：分频链实验</button><button aria-controls="p8" aria-selected="false" class="tab" data-i="8" id="tab8" role="tab"><span>08</span>测试指标、报告与核对</button></div></div></header>
+<main class="content"><section aria-labelledby="tab1" class="panel" hidden="" id="p1" role="tabpanel"><h2>完整的参考与输出链</h2><p>PLL 的锁定条件发生在鉴相器输入端。参考源、参考分频器、反馈分频器以及输出分频器处于不同位置，不能互相替代。</p><figure class="technical-figure"><svg class="tech-svg" role="img" viewbox="0 0 980 300" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr" markerheight="7" markerwidth="7" orient="auto" refx="6" refy="3.5"><path d="M0 0 L7 3.5 L0 7 z" fill="#304a60"></path></marker><marker id="arrgreen" markerheight="7" markerwidth="7" orient="auto" refx="6" refy="3.5"><path d="M0 0 L7 3.5 L0 7 z" fill="#28704a"></path></marker></defs><text class="svg-small" text-anchor="middle" x="55" y="107">XTAL / REF</text><path class="wire" d="M96 120 H168" marker-end="url(#arr)"></path><rect class="schem-block" height="64" rx="2" width="94" x="168" y="88"></rect><text class="svg-blocktext" text-anchor="middle" x="215.0" y="116.0">÷R</text><text class="svg-small" text-anchor="middle" x="215.0" y="137.0">参考分频</text><path class="wire" d="M262 120 H322" marker-end="url(#arr)"></path><rect class="schem-block" height="64" rx="2" width="105" x="322" y="88"></rect><text class="svg-blocktext" text-anchor="middle" x="374.5" y="116.0">PFD</text><text class="svg-small" text-anchor="middle" x="374.5" y="137.0">比较频率</text><path class="wire" d="M427 120 H468" marker-end="url(#arr)"></path><rect class="schem-block" height="64" rx="2" width="99" x="468" y="88"></rect><text class="svg-blocktext" text-anchor="middle" x="517.5" y="116.0">CP / LF</text><text class="svg-small" text-anchor="middle" x="517.5" y="137.0">控制电压</text><path class="wire" d="M567 120 H613" marker-end="url(#arr)"></path><rect class="schem-block" height="64" rx="2" width="102" x="613" y="88"></rect><text class="svg-blocktext" text-anchor="middle" x="664.0" y="116.0">VCO</text><text class="svg-small" text-anchor="middle" x="664.0" y="137.0"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">VCO</tspan></text><path class="wire" d="M715 120 H766" marker-end="url(#arr)"></path><rect class="schem-block" height="64" rx="2" width="108" x="766" y="88"></rect><text class="svg-blocktext" text-anchor="middle" x="820.0" y="116.0">÷D</text><text class="svg-small" text-anchor="middle" x="820.0" y="137.0">输出分频</text><path class="wire" d="M874 120 H944" marker-end="url(#arr)"></path><path class="wire" d="M735 120 V240 H622"></path><rect class="schem-block" height="57" rx="2" width="118" x="504" y="211"></rect><text class="svg-blocktext" text-anchor="middle" x="563.0" y="235.5">÷N</text><text class="svg-small" text-anchor="middle" x="563.0" y="256.5">反馈分频</text><path class="wire" d="M504 240 H375 V152" marker-end="url(#arr)"></path><circle cx="735" cy="120" fill="#2a4152" r="3.2"></circle><text class="svg-small" text-anchor="middle" x="216" y="82"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">PD</tspan> = <tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">REF</tspan>/R</text><text class="svg-small" text-anchor="middle" x="815" y="82"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">CLK</tspan> = <tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">VCO</tspan>/D</text><text class="svg-small" text-anchor="middle" x="675" y="82"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">VCO</tspan></text><text class="svg-small" text-anchor="middle" x="444" y="290">PFD 比较 <tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">PD</tspan> 与 <tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">VCO</tspan>/N（锁定时相等）</text></svg><figcaption>图 5-1：标准整数-N 合成器的参考、环路与输出链。依据 ADI MT-086 Figure 3A 的分频关系扩展输出 ÷D；为教学排版重绘。</figcaption></figure><div aria-label="f_{\mathrm{PD}}=\frac{f_{\mathrm{REF}}}{R},\quad f_{\mathrm{VCO}}=Nf_{\mathrm{PD}},\quad f_{\mathrm{CLK}}=\frac{f_{\mathrm{VCO}}}{D}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="4.724ex" role="img" style="vertical-align: -1.6ex;" viewbox="0 -1381 20287.8 2088" width="45.9ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" data-c="50"></path><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z" data-c="44" transform="translate(681,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(1872.5,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(2928.3,0)"><g data-mml-node="msub" transform="translate(220,676)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z" data-c="52"></path><path d="M128 619Q121 626 117 628T101 631T58 634H25V680H597V676Q599 670 611 560T625 444V440H585V444Q584 447 582 465Q578 500 570 526T553 571T528 601T498 619T457 629T411 633T353 634Q266 634 251 633T233 622Q233 622 233 621Q232 619 232 497V376H286Q359 378 377 385Q413 401 416 469Q416 471 416 473V493H456V213H416V233Q415 268 408 288T383 317T349 328T297 330Q290 330 286 330H232V196V114Q232 57 237 52Q243 47 289 47H340H391Q428 47 452 50T505 62T552 92T584 146Q594 172 599 200T607 247T612 270V273H652V270Q651 267 632 137T610 3V0H25V46H58Q100 47 109 49T128 61V619Z" data-c="45" transform="translate(736,0)"></path><path d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z" data-c="46" transform="translate(1417,0)"></path></g></g></g></g><g data-mml-node="mi" transform="translate(858.9,-686)"><path d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z" data-c="1D445"></path></g><rect height="60" width="2236.7" x="120" y="220"></rect></g><g data-mml-node="mo" transform="translate(5405,0)"><path d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z" data-c="2C"></path></g><g data-mml-node="mstyle" transform="translate(5683,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(6849.7,0)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56"></path><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43" transform="translate(750,0)"></path><path d="M56 340Q56 423 86 494T164 610T270 680T388 705Q521 705 621 601T722 341Q722 260 693 191T617 75T510 4T388 -22T267 3T160 74T85 189T56 340ZM467 647Q426 665 388 665Q360 665 331 654T269 620T213 549T179 439Q174 411 174 354Q174 144 277 61Q327 20 385 20H389H391Q474 20 537 99Q603 188 603 354Q603 411 598 439Q577 592 467 647Z" data-c="4F" transform="translate(1472,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(9291.5,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mi" transform="translate(10347.2,0)"><path d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z" data-c="1D441"></path></g><g data-mml-node="msub" transform="translate(11235.2,0)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" data-c="50"></path><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z" data-c="44" transform="translate(681,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(12830,0)"><path d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z" data-c="2C"></path></g><g data-mml-node="mstyle" transform="translate(13108,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(14274.7,0)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" data-c="4C" transform="translate(722,0)"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H313Q235 637 233 620Q232 618 232 462L233 307L379 449Q425 494 479 546Q518 584 524 591T531 607V608Q531 630 503 636Q501 636 498 636T493 637H489V683H499Q517 680 630 680Q704 680 716 683H722V637H708Q633 633 589 597Q584 592 495 506T406 419T515 254T631 80Q644 60 662 54T715 46H736V0H728Q719 3 615 3Q493 3 472 0H461V46H469Q515 46 515 72Q515 78 512 84L336 351Q332 348 278 296L232 251V156Q232 62 235 58Q243 47 302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="4B" transform="translate(1347,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(16628.1,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(17683.8,0)"><g data-mml-node="msub" transform="translate(220,676)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56"></path><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43" transform="translate(750,0)"></path><path d="M56 340Q56 423 86 494T164 610T270 680T388 705Q521 705 621 601T722 341Q722 260 693 191T617 75T510 4T388 -22T267 3T160 74T85 189T56 340ZM467 647Q426 665 388 665Q360 665 331 654T269 620T213 549T179 439Q174 411 174 354Q174 144 277 61Q327 20 385 20H389H391Q474 20 537 99Q603 188 603 354Q603 411 598 439Q577 592 467 647Z" data-c="4F" transform="translate(1472,0)"></path></g></g></g></g><g data-mml-node="mi" transform="translate(888,-686)"><path d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z" data-c="1D437"></path></g><rect height="60" width="2364" x="120" y="220"></rect></g></g></g></svg></mjx-container></div><p>锁定时，PFD 比较 <b><i>f</i><sub class="inline-math-sub">PD</sub></b> 与 <b><i>f</i><sub class="inline-math-sub">VCO</sub>/N</b>。输出分频 ÷D 位于反馈环路之外时，改变 D 不改变 VCO 的锁定频率；若反馈点位于输出分频之后，结论必须重新推导。</p><div class="table-scroll"><table><thead><tr><th>位置</th><th>信号</th><th>作用</th></tr></thead><tbody><tr><td>输入源</td><td><i>f</i><sub class="inline-math-sub">REF</sub></td><td>提供稳定的时基，性能由参考源与供电等条件决定</td></tr><tr><td>参考分频后</td><td><i>f</i><sub class="inline-math-sub">PD</sub></td><td>PFD 比较更新速率</td></tr><tr><td>振荡器输出</td><td><i>f</i><sub class="inline-math-sub">VCO</sub></td><td>受环路调节的高频时钟</td></tr><tr><td>输出分频后</td><td><i>f</i><sub class="inline-math-sub">CLK</sub></td><td>送往负载的时钟；另需考虑 Buffer 与分配网络</td></tr></tbody></table></div><div class="eng-case"><h3>真实参考与输出链：ADF4351</h3><p>真实产品同时存在参考分频、反馈分频和输出分频三个不同位置。REF<sub class="inline-math-sub">IN</sub> 的 Doubler 与 ÷2 作用于 PFD 参考输入；N Counter 位于反馈回路；输出 ÷<i>D</i><sub class="inline-math-sub">OUT</sub> 则把本振频率转换成需要的端口频率。</p><figure class="eng-fig"><svg role="img" viewbox="0 0 1080 425" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arr" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="3"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#486e89" stroke-width="1.5"></path></marker></defs><style>.lbl{font:13px Arial,sans-serif;fill:#38566c}.blk{font:bold 15px Arial,sans-serif;fill:#25455c}.note{font:12px Arial,sans-serif;fill:#516879}.small{font:12px Arial,sans-serif;fill:#34536a}</style><rect fill="#eef5fa" height="54" rx="5" stroke="#35647e" stroke-width="1.7" width="95" x="20" y="82"></rect><text class="blk" text-anchor="middle" x="67.5" y="103.0"><tspan font-style="normal">REF</tspan><tspan baseline-shift="sub" font-size="70%">IN</tspan></text><text class="note" text-anchor="middle" x="67.5" y="123.0">25 MHz</text><rect fill="#eef5fa" height="54" rx="5" stroke="#35647e" stroke-width="1.7" width="125" x="153" y="82"></rect><text class="blk" text-anchor="middle" x="215.5" y="109.0">Doubler / ÷2</text><rect fill="#eef5fa" height="54" rx="5" stroke="#35647e" stroke-width="1.7" width="116" x="319" y="82"></rect><text class="blk" text-anchor="middle" x="377.0" y="103.0">R Counter</text><text class="note" text-anchor="middle" x="377.0" y="123.0">÷R</text><rect fill="#eef5fa" height="73" rx="5" stroke="#35647e" stroke-width="1.7" width="99" x="480" y="102"></rect><text class="blk" text-anchor="middle" x="529.5" y="132.5">PFD</text><text class="note" text-anchor="middle" x="529.5" y="152.5">REF / FB</text><rect fill="#eef5fa" height="55" rx="5" stroke="#35647e" stroke-width="1.7" width="95" x="616" y="111"></rect><text class="blk" text-anchor="middle" x="663.5" y="132.5">CP</text><text class="note" text-anchor="middle" x="663.5" y="152.5"><tspan font-style="italic">I</tspan><tspan baseline-shift="sub" font-size="70%">CP</tspan></text><rect fill="#eef5fa" height="55" rx="5" stroke="#35647e" stroke-width="1.7" width="116" x="748" y="111"></rect><text class="blk" text-anchor="middle" x="806.0" y="132.5">Loop Filter</text><text class="note" text-anchor="middle" x="806.0" y="152.5">外部 R/C</text><rect fill="#eef5fa" height="55" rx="5" stroke="#35647e" stroke-width="1.7" width="116" x="895" y="111"></rect><text class="blk" text-anchor="middle" x="953.0" y="132.5">VCO</text><text class="note" text-anchor="middle" x="953.0" y="152.5"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">VCO</tspan></text><rect fill="#eef5fa" height="52" rx="5" stroke="#35647e" stroke-width="1.7" width="118" x="892" y="255"></rect><text class="blk" text-anchor="middle" x="951.0" y="275.0">÷ <tspan font-style="italic">D</tspan><tspan baseline-shift="sub" font-size="70%">OUT</tspan></text><text class="note" text-anchor="middle" x="951.0" y="295.0">输出分频</text><rect fill="#eef5fa" height="51" rx="5" stroke="#35647e" stroke-width="1.7" width="147" x="690" y="292"></rect><text class="blk" text-anchor="middle" x="763.5" y="311.5">N Divider</text><text class="note" text-anchor="middle" x="763.5" y="331.5">INT + FRAC/MOD</text><rect fill="#edf8f4" height="58" rx="5" stroke="#367d64" stroke-width="1.7" width="151" x="260" y="287"></rect><text class="blk" text-anchor="middle" x="335.5" y="310.0">SPI / Register</text><text class="note" text-anchor="middle" x="335.5" y="330.0">R,N,FRAC,MOD,CP</text><rect fill="#fff6eb" height="48" rx="5" stroke="#b67a31" stroke-width="1.7" width="158" x="478" y="16"></rect><text class="blk" text-anchor="middle" x="557.0" y="34.0">Lock Detect</text><text class="note" text-anchor="middle" x="557.0" y="54.0">LD / MUXOUT</text><rect fill="#fff6eb" height="37" rx="5" stroke="#b67a31" stroke-width="1.7" width="149" x="615" y="375"></rect><text class="blk" text-anchor="middle" x="689.5" y="387.5">Fast Lock</text><text class="note" text-anchor="middle" x="689.5" y="407.5">开关 / 电流</text><polyline fill="none" marker-end="url(#arr)" points="115,109 153,109" stroke="#486e89" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><polyline fill="none" marker-end="url(#arr)" points="278,109 319,109" stroke="#486e89" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><polyline fill="none" marker-end="url(#arr)" points="435,109 480,109" stroke="#486e89" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><polyline fill="none" marker-end="url(#arr)" points="579,139 616,139" stroke="#486e89" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><polyline fill="none" marker-end="url(#arr)" points="711,139 748,139" stroke="#486e89" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><polyline fill="none" marker-end="url(#arr)" points="864,139 895,139" stroke="#486e89" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><polyline fill="none" marker-end="url(#arr)" points="962,166 962,255" stroke="#486e89" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><polyline fill="none" marker-end="url(#arr)" points="1010,281 1055,281" stroke="#486e89" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><text class="lbl" font-size="14" text-anchor="end" x="1055" y="300">RFOUTA/B</text><polyline fill="none" marker-end="url(#arr)" points="913,166 913,214 767,214 767,292" stroke="#b67a31" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><text class="lbl" font-size="12" text-anchor="middle" x="810" y="208">VCO feedback (before output divider)</text><polyline fill="none" marker-end="url(#arr)" points="690,319 545,319 545,175" stroke="#b67a31" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><text class="lbl" text-anchor="end" x="541" y="270">FB</text><polyline fill="none" points="410,314 459,314" stroke="#367d64" stroke-dasharray="6 5" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><text class="note" text-anchor="start" x="460" y="348">configuration bus</text><polyline fill="none" marker-end="url(#arr)" points="520,102 520,64" stroke="#b67a31" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2.3"></polyline><text class="note" text-anchor="middle" x="830" y="394">辅助控制不属于主反馈信号路径</text></svg><figcaption>从 REF<sub class="inline-math-sub">IN</sub> 追踪到 PFD，再经 CP/LF/VCO 和输出分频到 RF<sub class="inline-math-sub">OUT</sub>；反馈 N 从 VCO 侧返回 PFD。基于 ADF4351 Figure 1，非原图。</figcaption></figure><p class="eng-src">资料来源：<a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf" rel="noopener" target="_blank">ADF4351 Datasheet</a>，Figure 1。相关电路图经简化复绘；如需核对器件级连接与产品参数，请查看来源中的原图。</p><p class="eng-src">产品资料原图：<a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf#page=1" rel="noopener" target="_blank">PDF 第 1 页：完整功能框图</a></p></div></section><section aria-labelledby="tab2" class="panel" hidden="" id="p2" role="tabpanel"><h2>参考源及输入条件</h2><p>参考时钟可以由晶体振荡器、外部时钟源或片上受控时钟链提供。PLL 通过反馈跟踪参考，但不会把参考源中的所有噪声自动消除。</p><h3>参考端的基本规格</h3><div class="table-scroll"><table><thead><tr><th>设计/测试字段</th><th>定义与测量</th></tr></thead><tbody><tr><td>输入频率范围</td><td>可保证参考时钟路径正常工作的频率区间</td></tr><tr><td>单端/差分幅度</td><td>在指定共模、终端和测量负载下定义</td></tr><tr><td>输入 Slew Rate</td><td>阈值交越附近的电压变化率 dV/dt，决定电压噪声到时间扰动的敏感度</td></tr><tr><td>参考相噪/Jitter</td><td>必须连同 offset 范围、时钟频率和测量配置给出</td></tr><tr><td>输入 Duty Cycle</td><td>可能影响倍频器、沿检测与分频实现；不是所有 PFD 都要求 50% 占空比</td></tr></tbody></table></div><div aria-label="\sigma_t\approx\frac{\sigma_v}{\left|\mathrm dV/\mathrm dt\right|_{V_\mathrm{th}}}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="5.008ex" role="img" style="vertical-align: -2.503ex;" viewbox="0 -1107 7007.3 2213.4" width="15.854ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z" data-c="1D70E"></path></g><g data-mml-node="mi" transform="translate(604,-150) scale(0.707)"><path d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z" data-c="1D461"></path></g></g><g data-mml-node="mo" transform="translate(1187,0)"><path d="M55 319Q55 360 72 393T114 444T163 472T205 482Q207 482 213 482T223 483Q262 483 296 468T393 413L443 381Q502 346 553 346Q609 346 649 375T694 454Q694 465 698 474T708 483Q722 483 722 452Q722 386 675 338T555 289Q514 289 468 310T388 357T308 404T224 426Q164 426 125 393T83 318Q81 289 69 289Q55 289 55 319ZM55 85Q55 126 72 159T114 210T163 238T205 248Q207 248 213 248T223 249Q262 249 296 234T393 179L443 147Q502 112 553 112Q609 112 649 141T694 220Q694 249 708 249T722 217Q722 153 675 104T555 55Q514 55 468 76T388 123T308 170T224 192Q164 192 125 159T83 84Q80 55 69 55Q55 55 55 85Z" data-c="2248"></path></g><g data-mml-node="mfrac" transform="translate(2242.8,0)"><g data-mml-node="msub" transform="translate(1883.7,676)"><g data-mml-node="mi"><path d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z" data-c="1D70E"></path></g><g data-mml-node="mi" transform="translate(604,-150) scale(0.707)"><path d="M173 380Q173 405 154 405Q130 405 104 376T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Q21 294 29 316T53 368T97 419T160 441Q202 441 225 417T249 361Q249 344 246 335Q246 329 231 291T200 202T182 113Q182 86 187 69Q200 26 250 26Q287 26 319 60T369 139T398 222T409 277Q409 300 401 317T383 343T365 361T357 383Q357 405 376 424T417 443Q436 443 451 425T467 367Q467 340 455 284T418 159T347 40T241 -11Q177 -11 139 22Q102 54 102 117Q102 148 110 181T151 298Q173 362 173 380Z" data-c="1D463"></path></g></g><g data-mml-node="msub" transform="translate(220,-710)"><g data-mml-node="mrow"><g data-mml-node="mo" transform="translate(0 -0.5)"><path d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z" data-c="7C"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(278,0)"><g data-mml-node="mi"><path d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" data-c="64"></path></g></g><g data-mml-node="mi" transform="translate(834,0)"><path d="M52 648Q52 670 65 683H76Q118 680 181 680Q299 680 320 683H330Q336 677 336 674T334 656Q329 641 325 637H304Q282 635 274 635Q245 630 242 620Q242 618 271 369T301 118L374 235Q447 352 520 471T595 594Q599 601 599 609Q599 633 555 637Q537 637 537 648Q537 649 539 661Q542 675 545 679T558 683Q560 683 570 683T604 682T668 681Q737 681 755 683H762Q769 676 769 672Q769 655 760 640Q757 637 743 637Q730 636 719 635T698 630T682 623T670 615T660 608T652 599T645 592L452 282Q272 -9 266 -16Q263 -18 259 -21L241 -22H234Q216 -22 216 -15Q213 -9 177 305Q139 623 138 626Q133 637 76 637H59Q52 642 52 648Z" data-c="1D449"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(1603,0)"><g data-mml-node="mo"><path d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z" data-c="2F"></path></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(2103,0)"><g data-mml-node="mi"><path d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" data-c="64"></path></g></g><g data-mml-node="mi" transform="translate(2659,0)"><path d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z" data-c="1D461"></path></g><g data-mml-node="mo" transform="translate(3020,0) translate(0 -0.5)"><path d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z" data-c="7C"></path></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(3331,-285.4) scale(0.707)"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M52 648Q52 670 65 683H76Q118 680 181 680Q299 680 320 683H330Q336 677 336 674T334 656Q329 641 325 637H304Q282 635 274 635Q245 630 242 620Q242 618 271 369T301 118L374 235Q447 352 520 471T595 594Q599 601 599 609Q599 633 555 637Q537 637 537 648Q537 649 539 661Q542 675 545 679T558 683Q560 683 570 683T604 682T668 681Q737 681 755 683H762Q769 676 769 672Q769 655 760 640Q757 637 743 637Q730 636 719 635T698 630T682 623T670 615T660 608T652 599T645 592L452 282Q272 -9 266 -16Q263 -18 259 -21L241 -22H234Q216 -22 216 -15Q213 -9 177 305Q139 623 138 626Q133 637 76 637H59Q52 642 52 648Z" data-c="1D449"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(616,-150) scale(0.707)"><g data-mml-node="mi"><path d="M27 422Q80 426 109 478T141 600V615H181V431H316V385H181V241Q182 116 182 100T189 68Q203 29 238 29Q282 29 292 100Q293 108 293 146V181H333V146V134Q333 57 291 17Q264 -10 221 -10Q187 -10 162 2T124 33T105 68T98 100Q97 107 97 248V385H18V422H27Z" data-c="74"></path><path d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 124T102 167T103 217T103 272T103 329Q103 366 103 407T103 482T102 542T102 586T102 603Q99 622 88 628T43 637H25V660Q25 683 27 683L37 684Q47 685 66 686T103 688Q120 689 140 690T170 693T181 694H184V367Q244 442 328 442Q451 442 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" data-c="68" transform="translate(389,0)"></path></g></g></g></g></g><rect height="60" width="4524.4" x="120" y="220"></rect></g></g></g></svg></mjx-container></div><p class="eqnote">阈值附近的小噪声近似：σv 为 RMS 电压噪声，σt 为等效 RMS 时间扰动。</p><div class="worked"><div class="worked-title">例题｜参考边沿噪声换算</div><p>阈值交越 Slew = 0.20 V/ns，等效输入噪声 2 mV RMS，则边沿时间不确定度约为 10 ps RMS。</p><div aria-label="\sigma_t\approx\frac{2\,\mathrm{mV}}{0.20\,\mathrm{V/ns}}=10\,\mathrm{ps}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="5.247ex" role="img" style="vertical-align: -2.172ex;" viewbox="0 -1359 10278.4 2319" width="23.254ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M184 -11Q116 -11 74 34T31 147Q31 247 104 333T274 430Q275 431 414 431H552Q553 430 555 429T559 427T562 425T565 422T567 420T569 416T570 412T571 407T572 401Q572 357 507 357Q500 357 490 357T476 358H416L421 348Q439 310 439 263Q439 153 359 71T184 -11ZM361 278Q361 358 276 358Q152 358 115 184Q114 180 114 178Q106 141 106 117Q106 67 131 47T188 26Q242 26 287 73Q316 103 334 153T356 233T361 278Z" data-c="1D70E"></path></g><g data-mml-node="mi" transform="translate(604,-150) scale(0.707)"><path d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z" data-c="1D461"></path></g></g><g data-mml-node="mo" transform="translate(1187,0)"><path d="M55 319Q55 360 72 393T114 444T163 472T205 482Q207 482 213 482T223 483Q262 483 296 468T393 413L443 381Q502 346 553 346Q609 346 649 375T694 454Q694 465 698 474T708 483Q722 483 722 452Q722 386 675 338T555 289Q514 289 468 310T388 357T308 404T224 426Q164 426 125 393T83 318Q81 289 69 289Q55 289 55 319ZM55 85Q55 126 72 159T114 210T163 238T205 248Q207 248 213 248T223 249Q262 249 296 234T393 179L443 147Q502 112 553 112Q609 112 649 141T694 220Q694 249 708 249T722 217Q722 153 675 104T555 55Q514 55 468 76T388 123T308 170T224 192Q164 192 125 159T83 84Q80 55 69 55Q55 55 55 85Z" data-c="2248"></path></g><g data-mml-node="mfrac" transform="translate(2242.8,0)"><g data-mml-node="mrow" transform="translate(1167.5,676)"><g data-mml-node="mn"><path d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" data-c="32"></path></g><g data-mml-node="mstyle" transform="translate(500,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(667,0)"><g data-mml-node="mi"><path d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q351 442 364 440T387 434T406 426T421 417T432 406T441 395T448 384T452 374T455 366L457 361L460 365Q463 369 466 373T475 384T488 397T503 410T523 422T546 432T572 439T603 442Q729 442 740 329Q741 322 741 190V104Q741 66 743 59T754 49Q775 46 803 46H819V0H811L788 1Q764 2 737 2T699 3Q596 3 587 0H579V46H595Q656 46 656 62Q657 64 657 200Q656 335 655 343Q649 371 635 385T611 402T585 404Q540 404 506 370Q479 343 472 315T464 232V168V108Q464 78 465 68T468 55T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" data-c="6D"></path><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56" transform="translate(833,0)"></path></g></g></g><g data-mml-node="mrow" transform="translate(220,-710)"><g data-mml-node="mn"><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30"></path><path d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z" data-c="2E" transform="translate(500,0)"></path><path d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" data-c="32" transform="translate(778,0)"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(1278,0)"></path></g><g data-mml-node="mstyle" transform="translate(1778,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(1945,0)"><g data-mml-node="mi"><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(750,0)"><g data-mml-node="mo"><path d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z" data-c="2F"></path></g></g><g data-mml-node="mi" transform="translate(1250,0)"><path d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" data-c="6E"></path><path d="M295 316Q295 356 268 385T190 414Q154 414 128 401Q98 382 98 349Q97 344 98 336T114 312T157 287Q175 282 201 278T245 269T277 256Q294 248 310 236T342 195T359 133Q359 71 321 31T198 -10H190Q138 -10 94 26L86 19L77 10Q71 4 65 -1L54 -11H46H42Q39 -11 33 -5V74V132Q33 153 35 157T45 162H54Q66 162 70 158T75 146T82 119T101 77Q136 26 198 26Q295 26 295 104Q295 133 277 151Q257 175 194 187T111 210Q75 227 54 256T33 318Q33 357 50 384T93 424T143 442T187 447H198Q238 447 268 432L283 424L292 431Q302 440 314 448H322H326Q329 448 335 442V310L329 304H301Q295 310 295 316Z" data-c="73" transform="translate(556,0)"></path></g></g></g><rect height="60" width="4345" x="120" y="220"></rect></g><g data-mml-node="mo" transform="translate(7105.6,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mn" transform="translate(8161.4,0)"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(500,0)"></path></g><g data-mml-node="mstyle" transform="translate(9161.4,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(9328.4,0)"><g data-mml-node="mi"><path d="M36 -148H50Q89 -148 97 -134V-126Q97 -119 97 -107T97 -77T98 -38T98 6T98 55T98 106Q98 140 98 177T98 243T98 296T97 335T97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 61 434T98 436Q115 437 135 438T165 441T176 442H179V416L180 390L188 397Q247 441 326 441Q407 441 464 377T522 216Q522 115 457 52T310 -11Q242 -11 190 33L182 40V-45V-101Q182 -128 184 -134T195 -145Q216 -148 244 -148H260V-194H252L228 -193Q205 -192 178 -192T140 -191Q37 -191 28 -194H20V-148H36ZM424 218Q424 292 390 347T305 402Q234 402 182 337V98Q222 26 294 26Q345 26 384 80T424 218Z" data-c="70"></path><path d="M295 316Q295 356 268 385T190 414Q154 414 128 401Q98 382 98 349Q97 344 98 336T114 312T157 287Q175 282 201 278T245 269T277 256Q294 248 310 236T342 195T359 133Q359 71 321 31T198 -10H190Q138 -10 94 26L86 19L77 10Q71 4 65 -1L54 -11H46H42Q39 -11 33 -5V74V132Q33 153 35 157T45 162H54Q66 162 70 158T75 146T82 119T101 77Q136 26 198 26Q295 26 295 104Q295 133 277 151Q257 175 194 187T111 210Q75 227 54 256T33 318Q33 357 50 384T93 424T143 442T187 447H198Q238 447 268 432L283 424L292 431Q302 440 314 448H322H326Q329 448 335 442V310L329 304H301Q295 310 295 316Z" data-c="73" transform="translate(556,0)"></path></g></g></g></g></svg></mjx-container></div></div><aside class="technical-note"><strong>适用条件</strong><p>上述换算用于局部线性边沿与小扰动估计，不能直接等同于完整 PLL 的输出抖动。输出抖动还取决于环路噪声传递、VCO 本底噪声和时钟输出链。</p></aside></section><section aria-labelledby="tab3" class="panel" hidden="" id="p3" role="tabpanel"><h2>参考分频器 R</h2><p>参考分频器每收到 R 个输入周期，产生一个比较周期。因此 R 改变的是 <b>PFD 的比较频率</b>，不是最终的输出分频比。</p><div aria-label="f_{\mathrm{PD}}=\frac{f_{\mathrm{REF}}}{R},\qquad T_{\mathrm{PD}}=\frac{R}{f_{\mathrm{REF}}}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="5.14ex" role="img" style="vertical-align: -2.016ex;" viewbox="0 -1381 13348.7 2272" width="30.201ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" data-c="50"></path><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z" data-c="44" transform="translate(681,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(1872.5,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(2928.3,0)"><g data-mml-node="msub" transform="translate(220,676)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z" data-c="52"></path><path d="M128 619Q121 626 117 628T101 631T58 634H25V680H597V676Q599 670 611 560T625 444V440H585V444Q584 447 582 465Q578 500 570 526T553 571T528 601T498 619T457 629T411 633T353 634Q266 634 251 633T233 622Q233 622 233 621Q232 619 232 497V376H286Q359 378 377 385Q413 401 416 469Q416 471 416 473V493H456V213H416V233Q415 268 408 288T383 317T349 328T297 330Q290 330 286 330H232V196V114Q232 57 237 52Q243 47 289 47H340H391Q428 47 452 50T505 62T552 92T584 146Q594 172 599 200T607 247T612 270V273H652V270Q651 267 632 137T610 3V0H25V46H58Q100 47 109 49T128 61V619Z" data-c="45" transform="translate(736,0)"></path><path d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z" data-c="46" transform="translate(1417,0)"></path></g></g></g></g><g data-mml-node="mi" transform="translate(858.9,-686)"><path d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z" data-c="1D445"></path></g><rect height="60" width="2236.7" x="120" y="220"></rect></g><g data-mml-node="mo" transform="translate(5405,0)"><path d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z" data-c="2C"></path></g><g data-mml-node="mstyle" transform="translate(5683,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(7849.7,0)"><g data-mml-node="mi"><path d="M40 437Q21 437 21 445Q21 450 37 501T71 602L88 651Q93 669 101 677H569H659Q691 677 697 676T704 667Q704 661 687 553T668 444Q668 437 649 437Q640 437 637 437T631 442L629 445Q629 451 635 490T641 551Q641 586 628 604T573 629Q568 630 515 631Q469 631 457 630T439 622Q438 621 368 343T298 60Q298 48 386 46Q418 46 427 45T436 36Q436 31 433 22Q429 4 424 1L422 0Q419 0 415 0Q410 0 363 1T228 2Q99 2 64 0H49Q43 6 43 9T45 27Q49 40 55 46H83H94Q174 46 189 55Q190 56 191 56Q196 59 201 76T241 233Q258 301 269 344Q339 619 339 625Q339 630 310 630H279Q212 630 191 624Q146 614 121 583T67 467Q60 445 57 441T43 437H40Z" data-c="1D447"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(617,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" data-c="50"></path><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z" data-c="44" transform="translate(681,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(9816.2,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(10872,0)"><g data-mml-node="mi" transform="translate(858.9,676)"><path d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z" data-c="1D445"></path></g><g data-mml-node="msub" transform="translate(220,-686)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z" data-c="52"></path><path d="M128 619Q121 626 117 628T101 631T58 634H25V680H597V676Q599 670 611 560T625 444V440H585V444Q584 447 582 465Q578 500 570 526T553 571T528 601T498 619T457 629T411 633T353 634Q266 634 251 633T233 622Q233 622 233 621Q232 619 232 497V376H286Q359 378 377 385Q413 401 416 469Q416 471 416 473V493H456V213H416V233Q415 268 408 288T383 317T349 328T297 330Q290 330 286 330H232V196V114Q232 57 237 52Q243 47 289 47H340H391Q428 47 452 50T505 62T552 92T584 146Q594 172 599 200T607 247T612 270V273H652V270Q651 267 632 137T610 3V0H25V46H58Q100 47 109 49T128 61V619Z" data-c="45" transform="translate(736,0)"></path><path d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z" data-c="46" transform="translate(1417,0)"></path></g></g></g></g><rect height="60" width="2236.7" x="120" y="220"></rect></g></g></g></svg></mjx-container></div><div class="worked"><div class="worked-title">例题｜ADI MT-086 的参考分频例子</div><p>10 MHz 晶体参考时钟经过 R = 50，得到 200 kHz 的 PFD 比较频率：</p><div aria-label="f_{\mathrm{PD}}=\frac{10\,\mathrm{MHz}}{50}=200\,\mathrm{kHz}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="4.676ex" role="img" style="vertical-align: -1.602ex;" viewbox="0 -1359 11368.9 2067" width="25.721ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" data-c="50"></path><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z" data-c="44" transform="translate(681,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(1872.5,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(2928.3,0)"><g data-mml-node="mrow" transform="translate(220,676)"><g data-mml-node="mn"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(500,0)"></path></g><g data-mml-node="mstyle" transform="translate(1000,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(1167,0)"><g data-mml-node="mi"><path d="M132 622Q125 629 121 631T105 634T62 637H29V683H135Q221 683 232 682T249 675Q250 674 354 398L458 124L562 398Q666 674 668 675Q671 681 683 682T781 683H887V637H854Q814 636 803 634T785 622V61Q791 51 802 49T854 46H887V0H876Q855 3 736 3Q605 3 596 0H585V46H618Q660 47 669 49T688 61V347Q688 424 688 461T688 546T688 613L687 632Q454 14 450 7Q446 1 430 1T410 7Q409 9 292 316L176 624V606Q175 588 175 543T175 463T175 356L176 86Q187 50 261 46H278V0H269Q254 3 154 3Q52 3 37 0H29V46H46Q78 48 98 56T122 69T132 86V622Z" data-c="4D"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 500V378H517V622Q510 629 506 631T490 634T447 637H414V683H425Q446 680 569 680Q704 680 713 683H724V637H691Q651 636 640 634T622 622V61Q628 51 639 49T691 46H724V0H713Q692 3 569 3Q434 3 425 0H414V46H447Q489 47 498 49T517 61V332H232V197L233 61Q239 51 250 49T302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="48" transform="translate(917,0)"></path><path d="M42 263Q44 270 48 345T53 423V431H393Q399 425 399 415Q399 403 398 402L381 378Q364 355 331 309T265 220L134 41L182 40H206Q254 40 283 46T331 77Q352 105 359 185L361 201Q361 202 381 202H401V196Q401 195 393 103T384 6V0H209L34 1L31 3Q28 8 28 17Q28 30 29 31T160 210T294 394H236Q169 393 152 388Q127 382 113 367Q89 344 82 264V255H42V263Z" data-c="7A" transform="translate(1667,0)"></path></g></g></g><g data-mml-node="mn" transform="translate(1359,-686)"><path d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z" data-c="35"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(500,0)"></path></g><rect height="60" width="3478" x="120" y="220"></rect></g><g data-mml-node="mo" transform="translate(6924.1,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mn" transform="translate(7979.9,0)"><path d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" data-c="32"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(500,0)"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(1000,0)"></path></g><g data-mml-node="mstyle" transform="translate(9479.9,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(9646.9,0)"><g data-mml-node="mi"><path d="M36 46H50Q89 46 97 60V68Q97 77 97 91T97 124T98 167T98 217T98 272T98 329Q98 366 98 407T98 482T98 542T97 586T97 603Q94 622 83 628T38 637H20V660Q20 683 22 683L32 684Q42 685 61 686T98 688Q115 689 135 690T165 693T176 694H179V463L180 233L240 287Q300 341 304 347Q310 356 310 364Q310 383 289 385H284V431H293Q308 428 412 428Q475 428 484 431H489V385H476Q407 380 360 341Q286 278 286 274Q286 273 349 181T420 79Q434 60 451 53T500 46H511V0H505Q496 3 418 3Q322 3 307 0H299V46H306Q330 48 330 65Q330 72 326 79Q323 84 276 153T228 222L176 176V120V84Q176 65 178 59T189 49Q210 46 238 46H254V0H246Q231 3 137 3T28 0H20V46H36Z" data-c="6B"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 500V378H517V622Q510 629 506 631T490 634T447 637H414V683H425Q446 680 569 680Q704 680 713 683H724V637H691Q651 636 640 634T622 622V61Q628 51 639 49T691 46H724V0H713Q692 3 569 3Q434 3 425 0H414V46H447Q489 47 498 49T517 61V332H232V197L233 61Q239 51 250 49T302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="48" transform="translate(528,0)"></path><path d="M42 263Q44 270 48 345T53 423V431H393Q399 425 399 415Q399 403 398 402L381 378Q364 355 331 309T265 220L134 41L182 40H206Q254 40 283 46T331 77Q352 105 359 185L361 201Q361 202 381 202H401V196Q401 195 393 103T384 6V0H209L34 1L31 3Q28 8 28 17Q28 30 29 31T160 210T294 394H236Q169 393 152 388Q127 382 113 367Q89 344 82 264V255H42V263Z" data-c="7A" transform="translate(1278,0)"></path></g></g></g></g></svg></mjx-container></div></div><p>在普通整数-N 合成器中，若需要 200 kHz 的频率调节步进，可用该 <i>f</i><sub class="inline-math-sub">PD</sub> 配合整数 N 实现。更复杂的分数合成不受这个整数步进限制。</p><div class="quiz" data-ans="C" id="c5q1"><div class="quiz-title">判断：参考分频 R 从 1 增大到 2，并保持 N 不变，VCO 锁定频率如何变化？</div><div class="quiz-options"><label><input name="c5q1" type="radio" value="A"/> A. 不变</label><label><input name="c5q1" type="radio" value="B"/> B. 变成 2 倍</label><label><input name="c5q1" type="radio" value="C"/> C. 变成 1/2</label><label><input name="c5q1" type="radio" value="D"/> D. 只改变输出占空比</label></div><div aria-live="polite" class="quiz-reveal" hidden=""><strong></strong><p>由 <i>f</i><sub class="inline-math-sub">VCO</sub>=N·<i>f</i><sub class="inline-math-sub">REF</sub>/R，R 翻倍使 <i>f</i><sub class="inline-math-sub">PD</sub> 和 <i>f</i><sub class="inline-math-sub">VCO</sub> 均减半。</p></div></div></section><section aria-labelledby="tab4" class="panel" hidden="" id="p4" role="tabpanel"><h2>反馈分频 N 与 Prescaler</h2><p>PFD 无法直接对两个频率相差很大的时钟做相位比较。反馈链把 VCO 输出分频到与参考比较频率相同，并提供频率合成比。</p><div aria-label="f_{\mathrm{VCO}}=N\,f_{\mathrm{PD}}=\frac{N}{R}f_{\mathrm{REF}}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="4.674ex" role="img" style="vertical-align: -1.6ex;" viewbox="0 -1359 10845.6 2066" width="24.538ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56"></path><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43" transform="translate(750,0)"></path><path d="M56 340Q56 423 86 494T164 610T270 680T388 705Q521 705 621 601T722 341Q722 260 693 191T617 75T510 4T388 -22T267 3T160 74T85 189T56 340ZM467 647Q426 665 388 665Q360 665 331 654T269 620T213 549T179 439Q174 411 174 354Q174 144 277 61Q327 20 385 20H389H391Q474 20 537 99Q603 188 603 354Q603 411 598 439Q577 592 467 647Z" data-c="4F" transform="translate(1472,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(2441.8,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mi" transform="translate(3497.5,0)"><path d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z" data-c="1D441"></path></g><g data-mml-node="mstyle" transform="translate(4385.5,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(4552.5,0)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" data-c="50"></path><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z" data-c="44" transform="translate(681,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(6425.1,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(7480.9,0)"><g data-mml-node="mi" transform="translate(220,676)"><path d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z" data-c="1D441"></path></g><g data-mml-node="mi" transform="translate(284.5,-686)"><path d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z" data-c="1D445"></path></g><rect height="60" width="1088" x="120" y="220"></rect></g><g data-mml-node="msub" transform="translate(8808.9,0)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z" data-c="52"></path><path d="M128 619Q121 626 117 628T101 631T58 634H25V680H597V676Q599 670 611 560T625 444V440H585V444Q584 447 582 465Q578 500 570 526T553 571T528 601T498 619T457 629T411 633T353 634Q266 634 251 633T233 622Q233 622 233 621Q232 619 232 497V376H286Q359 378 377 385Q413 401 416 469Q416 471 416 473V493H456V213H416V233Q415 268 408 288T383 317T349 328T297 330Q290 330 286 330H232V196V114Q232 57 237 52Q243 47 289 47H340H391Q428 47 452 50T505 62T552 92T584 146Q594 172 599 200T607 247T612 270V273H652V270Q651 267 632 137T610 3V0H25V46H58Q100 47 109 49T128 61V619Z" data-c="45" transform="translate(736,0)"></path><path d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z" data-c="46" transform="translate(1417,0)"></path></g></g></g></g></g></g></svg></mjx-container></div><p>当 VCO 频率超出后级可编程计数器能力时，常在可编程分频器前加入固定或双模 Prescaler。固定 P 与后级整数计数 N 的简单串联结构满足：</p><div aria-label="f_{\mathrm{VCO}}=P\,N\,f_{\mathrm{PD}}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="2.059ex" role="img" style="vertical-align: -0.464ex;" viewbox="0 -705 7065.3 910" width="15.985ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56"></path><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43" transform="translate(750,0)"></path><path d="M56 340Q56 423 86 494T164 610T270 680T388 705Q521 705 621 601T722 341Q722 260 693 191T617 75T510 4T388 -22T267 3T160 74T85 189T56 340ZM467 647Q426 665 388 665Q360 665 331 654T269 620T213 549T179 439Q174 411 174 354Q174 144 277 61Q327 20 385 20H389H391Q474 20 537 99Q603 188 603 354Q603 411 598 439Q577 592 467 647Z" data-c="4F" transform="translate(1472,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(2441.8,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mi" transform="translate(3497.5,0)"><path d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z" data-c="1D443"></path></g><g data-mml-node="mstyle" transform="translate(4248.5,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mi" transform="translate(4415.5,0)"><path d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z" data-c="1D441"></path></g><g data-mml-node="mstyle" transform="translate(5303.5,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(5470.5,0)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" data-c="50"></path><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z" data-c="44" transform="translate(681,0)"></path></g></g></g></g></g></g></svg></mjx-container></div><p>但简单固定预分频会使频率分辨率变为 P·<i>f</i><sub class="inline-math-sub">PD</sub>。采用 P/(P+1) 双模预分频和 A/B 计数可以恢复更细的整数步进；其计数约束和实际实现另行讲解。</p><div class="worked"><div class="worked-title">例题｜预分频的比较</div><p><i>f</i><sub class="inline-math-sub">PD</sub> = 1 MHz，P = 4，后级 N = 400，则简单固定 Prescaler 合成频率为 1.6 GHz。将 N 增加 1 时，输出步进是 4 MHz，而非 1 MHz。</p><div aria-label="f_{\mathrm{VCO}}=4\times400\times1\,\mathrm{MHz}=1.6\,\mathrm{GHz}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="2.059ex" role="img" style="vertical-align: -0.464ex;" viewbox="0 -705 15478 910" width="35.018ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56"></path><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43" transform="translate(750,0)"></path><path d="M56 340Q56 423 86 494T164 610T270 680T388 705Q521 705 621 601T722 341Q722 260 693 191T617 75T510 4T388 -22T267 3T160 74T85 189T56 340ZM467 647Q426 665 388 665Q360 665 331 654T269 620T213 549T179 439Q174 411 174 354Q174 144 277 61Q327 20 385 20H389H391Q474 20 537 99Q603 188 603 354Q603 411 598 439Q577 592 467 647Z" data-c="4F" transform="translate(1472,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(2441.8,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mn" transform="translate(3497.5,0)"><path d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z" data-c="34"></path></g><g data-mml-node="mo" transform="translate(4219.8,0)"><path d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z" data-c="D7"></path></g><g data-mml-node="mn" transform="translate(5220,0)"><path d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z" data-c="34"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(500,0)"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(1000,0)"></path></g><g data-mml-node="mo" transform="translate(6942.2,0)"><path d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z" data-c="D7"></path></g><g data-mml-node="mn" transform="translate(7942.4,0)"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path></g><g data-mml-node="mstyle" transform="translate(8442.4,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(8609.4,0)"><g data-mml-node="mi"><path d="M132 622Q125 629 121 631T105 634T62 637H29V683H135Q221 683 232 682T249 675Q250 674 354 398L458 124L562 398Q666 674 668 675Q671 681 683 682T781 683H887V637H854Q814 636 803 634T785 622V61Q791 51 802 49T854 46H887V0H876Q855 3 736 3Q605 3 596 0H585V46H618Q660 47 669 49T688 61V347Q688 424 688 461T688 546T688 613L687 632Q454 14 450 7Q446 1 430 1T410 7Q409 9 292 316L176 624V606Q175 588 175 543T175 463T175 356L176 86Q187 50 261 46H278V0H269Q254 3 154 3Q52 3 37 0H29V46H46Q78 48 98 56T122 69T132 86V622Z" data-c="4D"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 500V378H517V622Q510 629 506 631T490 634T447 637H414V683H425Q446 680 569 680Q704 680 713 683H724V637H691Q651 636 640 634T622 622V61Q628 51 639 49T691 46H724V0H713Q692 3 569 3Q434 3 425 0H414V46H447Q489 47 498 49T517 61V332H232V197L233 61Q239 51 250 49T302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="48" transform="translate(917,0)"></path><path d="M42 263Q44 270 48 345T53 423V431H393Q399 425 399 415Q399 403 398 402L381 378Q364 355 331 309T265 220L134 41L182 40H206Q254 40 283 46T331 77Q352 105 359 185L361 201Q361 202 381 202H401V196Q401 195 393 103T384 6V0H209L34 1L31 3Q28 8 28 17Q28 30 29 31T160 210T294 394H236Q169 393 152 388Q127 382 113 367Q89 344 82 264V255H42V263Z" data-c="7A" transform="translate(1667,0)"></path></g></g><g data-mml-node="mo" transform="translate(10998.2,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mn" transform="translate(12054,0)"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path><path d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z" data-c="2E" transform="translate(500,0)"></path><path d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z" data-c="36" transform="translate(778,0)"></path></g><g data-mml-node="mstyle" transform="translate(13332,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(13499,0)"><g data-mml-node="mi"><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q401 658 376 654T316 633T254 592T205 519T177 411Q173 369 173 335Q173 259 192 201T238 111T302 58T370 31T431 24Q478 24 513 45T559 100Q562 110 562 160V212Q561 213 557 216T551 220T542 223T526 225T502 226T463 227H437V273H449L609 270Q715 270 727 273H735V227H721Q674 227 668 215Q666 211 666 108V6Q660 0 657 0Q653 0 639 10Q617 25 600 42L587 54Q571 27 524 3T406 -22Q317 -22 238 22T108 151T56 342Z" data-c="47"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 500V378H517V622Q510 629 506 631T490 634T447 637H414V683H425Q446 680 569 680Q704 680 713 683H724V637H691Q651 636 640 634T622 622V61Q628 51 639 49T691 46H724V0H713Q692 3 569 3Q434 3 425 0H414V46H447Q489 47 498 49T517 61V332H232V197L233 61Q239 51 250 49T302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="48" transform="translate(785,0)"></path><path d="M42 263Q44 270 48 345T53 423V431H393Q399 425 399 415Q399 403 398 402L381 378Q364 355 331 309T265 220L134 41L182 40H206Q254 40 283 46T331 77Q352 105 359 185L361 201Q361 202 381 202H401V196Q401 195 393 103T384 6V0H209L34 1L31 3Q28 8 28 17Q28 30 29 31T160 210T294 394H236Q169 393 152 388Q127 382 113 367Q89 344 82 264V255H42V263Z" data-c="7A" transform="translate(1535,0)"></path></g></g></g></g></svg></mjx-container></div></div></section><section aria-labelledby="tab5" class="panel" hidden="" id="p5" role="tabpanel"><h2>参考倍频与输出分频</h2><p>部分时钟链在参考路径使用倍频，提高 PFD 比较速率。一个经典办法是利用 XOR 与延迟生成两个半周期内的切换事件。</p><figure class="technical-figure"><svg class="tech-svg" role="img" viewbox="0 0 880 305" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr" markerheight="7" markerwidth="7" orient="auto" refx="6" refy="3.5"><path d="M0 0 L7 3.5 L0 7 z" fill="#304a60"></path></marker><marker id="arrgreen" markerheight="7" markerwidth="7" orient="auto" refx="6" refy="3.5"><path d="M0 0 L7 3.5 L0 7 z" fill="#28704a"></path></marker></defs><text class="svg-small" text-anchor="middle" x="90" y="85">REF</text><path class="wire" d="M106 96 H210"></path><circle cx="210" cy="96" fill="#2a4152" r="3.2"></circle><path class="wire" d="M210 96 H504" marker-end="url(#arr)"></path><rect class="schem-block" height="68" rx="2" width="105" x="504" y="66"></rect><text class="svg-blocktext" text-anchor="middle" x="556.5" y="96.0">XOR</text><text class="svg-small" text-anchor="middle" x="556.5" y="117.0">异或输出</text><path class="wire" d="M609 100 H740" marker-end="url(#arr)"></path><text class="svg-blocktext" text-anchor="start" x="744" y="87">2 <tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">REF</tspan></text><path class="wire" d="M210 96 V214 H310" marker-end="url(#arr)"></path><rect class="schem-block" height="58" rx="2" width="125" x="310" y="185"></rect><text class="svg-blocktext" text-anchor="middle" x="372.5" y="210.0">Delay</text><text class="svg-small" text-anchor="middle" x="372.5" y="231.0"><tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="70%">d</tspan> ≈ <tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="70%">REF</tspan>/4</text><path class="wire" d="M435 214 H476 V120 H504" marker-end="url(#arr)"></path><text class="svg-small" text-anchor="middle" x="380" y="283">理想 50% 占空比；延时取四分之一周期时获得 2 倍边沿率</text></svg><figcaption>图 5-2：XOR 与延时单元构成的参考倍频器。参考 JKU RFIC Figure 97；延迟约 <i>T</i><sub class="inline-math-sub">REF</sub>/4 且输入占空比理想时，输出重复频率为 2fREF。</figcaption></figure><p>输出分频器通常位于 VCO 后。多个分频输出能提供不同频率或相位关系，但频率正确不保证输出端与参考输入端零延迟对齐。</p><div aria-label="f_{\mathrm{CLK},i}=\frac{f_{\mathrm{VCO}}}{D_i}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="5.033ex" role="img" style="vertical-align: -1.909ex;" viewbox="0 -1381 6453.7 2224.8" width="14.601ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q48 680 182 680Q324 680 348 683H360V637H333Q273 637 258 635T233 622L232 342V129Q232 57 237 52Q243 47 313 47Q384 47 410 53Q470 70 498 110T536 221Q536 226 537 238T540 261T542 272T562 273H582V268Q580 265 568 137T554 5V0H25V46H58Q100 47 109 49T128 61V622Z" data-c="4C" transform="translate(722,0)"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H313Q235 637 233 620Q232 618 232 462L233 307L379 449Q425 494 479 546Q518 584 524 591T531 607V608Q531 630 503 636Q501 636 498 636T493 637H489V683H499Q517 680 630 680Q704 680 716 683H722V637H708Q633 633 589 597Q584 592 495 506T406 419T515 254T631 80Q644 60 662 54T715 46H736V0H728Q719 3 615 3Q493 3 472 0H461V46H469Q515 46 515 72Q515 78 512 84L336 351Q332 348 278 296L232 251V156Q232 62 235 58Q243 47 302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="4B" transform="translate(1347,0)"></path></g></g><g data-mml-node="mo" transform="translate(2125,0)"><path d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z" data-c="2C"></path></g><g data-mml-node="mi" transform="translate(2403,0)"><path d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z" data-c="1D456"></path></g></g></g><g data-mml-node="mo" transform="translate(2793.9,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(3849.7,0)"><g data-mml-node="msub" transform="translate(220,676)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56"></path><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43" transform="translate(750,0)"></path><path d="M56 340Q56 423 86 494T164 610T270 680T388 705Q521 705 621 601T722 341Q722 260 693 191T617 75T510 4T388 -22T267 3T160 74T85 189T56 340ZM467 647Q426 665 388 665Q360 665 331 654T269 620T213 549T179 439Q174 411 174 354Q174 144 277 61Q327 20 385 20H389H391Q474 20 537 99Q603 188 603 354Q603 411 598 439Q577 592 467 647Z" data-c="4F" transform="translate(1472,0)"></path></g></g></g></g><g data-mml-node="msub" transform="translate(724.5,-686)"><g data-mml-node="mi"><path d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z" data-c="1D437"></path></g><g data-mml-node="mi" transform="translate(861,-150) scale(0.707)"><path d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z" data-c="1D456"></path></g></g><rect height="60" width="2364" x="120" y="220"></rect></g></g></g></svg></mjx-container></div><p>输出 skew 还受分频器复位/相位同步方式、时钟 Buffer、布线及负载影响。<b>PLL 在 PFD 输入处的相位锁定，不等价于芯片输出端的零相位差。</b></p><div class="quiz" data-ans="B" id="c5q2"><div class="quiz-title">两路输出分别由 ÷2 和 ÷4 产生，是否一定保持确定的相位关系？</div><div class="quiz-options"><label><input name="c5q2" type="radio" value="A"/> A. 频率固定，因此上电相位必然确定</label><label><input name="c5q2" type="radio" value="B"/> B. 需要考虑分频器复位/同步与分配路径</label><label><input name="c5q2" type="radio" value="C"/> C. 仅由参考幅度决定</label></div><div aria-live="polite" class="quiz-reveal" hidden=""><strong></strong><p>分频器可能有不同的初态和复位行为；输出负载、Buffer 和路由也会引入差异。</p></div></div></section><section aria-labelledby="tab6" class="panel" hidden="" id="p6" role="tabpanel"><h2>分频与频率的计算例题</h2><div class="worked"><div class="worked-title">例题｜一套 PLL 产生两路时钟</div><p>REF = 100 MHz，R=1，希望 VCO=1.6 GHz，同时输出 800 MHz 和 400 MHz。应使用 N=16，并在 VCO 后分别选 <i>D</i><sub class="inline-math-sub">1</sub>=2、<i>D</i><sub class="inline-math-sub">2</sub>=4。</p><div aria-label="N=\frac{1.6\,\mathrm{GHz}}{100\,\mathrm{MHz}}=16,\quad D_1=2,\quad D_2=4" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="4.726ex" role="img" style="vertical-align: -1.602ex;" viewbox="0 -1381 17858.7 2089" width="40.404ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z" data-c="1D441"></path></g><g data-mml-node="mo" transform="translate(1165.8,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(2221.6,0)"><g data-mml-node="mrow" transform="translate(397,676)"><g data-mml-node="mn"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path><path d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z" data-c="2E" transform="translate(500,0)"></path><path d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z" data-c="36" transform="translate(778,0)"></path></g><g data-mml-node="mstyle" transform="translate(1278,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(1445,0)"><g data-mml-node="mi"><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q401 658 376 654T316 633T254 592T205 519T177 411Q173 369 173 335Q173 259 192 201T238 111T302 58T370 31T431 24Q478 24 513 45T559 100Q562 110 562 160V212Q561 213 557 216T551 220T542 223T526 225T502 226T463 227H437V273H449L609 270Q715 270 727 273H735V227H721Q674 227 668 215Q666 211 666 108V6Q660 0 657 0Q653 0 639 10Q617 25 600 42L587 54Q571 27 524 3T406 -22Q317 -22 238 22T108 151T56 342Z" data-c="47"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 500V378H517V622Q510 629 506 631T490 634T447 637H414V683H425Q446 680 569 680Q704 680 713 683H724V637H691Q651 636 640 634T622 622V61Q628 51 639 49T691 46H724V0H713Q692 3 569 3Q434 3 425 0H414V46H447Q489 47 498 49T517 61V332H232V197L233 61Q239 51 250 49T302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="48" transform="translate(785,0)"></path><path d="M42 263Q44 270 48 345T53 423V431H393Q399 425 399 415Q399 403 398 402L381 378Q364 355 331 309T265 220L134 41L182 40H206Q254 40 283 46T331 77Q352 105 359 185L361 201Q361 202 381 202H401V196Q401 195 393 103T384 6V0H209L34 1L31 3Q28 8 28 17Q28 30 29 31T160 210T294 394H236Q169 393 152 388Q127 382 113 367Q89 344 82 264V255H42V263Z" data-c="7A" transform="translate(1535,0)"></path></g></g></g><g data-mml-node="mrow" transform="translate(220,-686)"><g data-mml-node="mn"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(500,0)"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(1000,0)"></path></g><g data-mml-node="mstyle" transform="translate(1500,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(1667,0)"><g data-mml-node="mi"><path d="M132 622Q125 629 121 631T105 634T62 637H29V683H135Q221 683 232 682T249 675Q250 674 354 398L458 124L562 398Q666 674 668 675Q671 681 683 682T781 683H887V637H854Q814 636 803 634T785 622V61Q791 51 802 49T854 46H887V0H876Q855 3 736 3Q605 3 596 0H585V46H618Q660 47 669 49T688 61V347Q688 424 688 461T688 546T688 613L687 632Q454 14 450 7Q446 1 430 1T410 7Q409 9 292 316L176 624V606Q175 588 175 543T175 463T175 356L176 86Q187 50 261 46H278V0H269Q254 3 154 3Q52 3 37 0H29V46H46Q78 48 98 56T122 69T132 86V622Z" data-c="4D"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 500V378H517V622Q510 629 506 631T490 634T447 637H414V683H425Q446 680 569 680Q704 680 713 683H724V637H691Q651 636 640 634T622 622V61Q628 51 639 49T691 46H724V0H713Q692 3 569 3Q434 3 425 0H414V46H447Q489 47 498 49T517 61V332H232V197L233 61Q239 51 250 49T302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="48" transform="translate(917,0)"></path><path d="M42 263Q44 270 48 345T53 423V431H393Q399 425 399 415Q399 403 398 402L381 378Q364 355 331 309T265 220L134 41L182 40H206Q254 40 283 46T331 77Q352 105 359 185L361 201Q361 202 381 202H401V196Q401 195 393 103T384 6V0H209L34 1L31 3Q28 8 28 17Q28 30 29 31T160 210T294 394H236Q169 393 152 388Q127 382 113 367Q89 344 82 264V255H42V263Z" data-c="7A" transform="translate(1667,0)"></path></g></g></g><rect height="60" width="3978" x="120" y="220"></rect></g><g data-mml-node="mo" transform="translate(6717.3,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mn" transform="translate(7773.1,0)"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path><path d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z" data-c="36" transform="translate(500,0)"></path></g><g data-mml-node="mo" transform="translate(8773.1,0)"><path d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z" data-c="2C"></path></g><g data-mml-node="mstyle" transform="translate(9051.1,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(10217.8,0)"><g data-mml-node="mi"><path d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z" data-c="1D437"></path></g><g data-mml-node="mn" transform="translate(861,-150) scale(0.707)"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path></g></g><g data-mml-node="mo" transform="translate(11760.1,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mn" transform="translate(12815.9,0)"><path d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" data-c="32"></path></g><g data-mml-node="mo" transform="translate(13315.9,0)"><path d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z" data-c="2C"></path></g><g data-mml-node="mstyle" transform="translate(13593.9,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="msub" transform="translate(14760.6,0)"><g data-mml-node="mi"><path d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z" data-c="1D437"></path></g><g data-mml-node="mn" transform="translate(861,-150) scale(0.707)"><path d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" data-c="32"></path></g></g><g data-mml-node="mo" transform="translate(16302.9,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mn" transform="translate(17358.7,0)"><path d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z" data-c="34"></path></g></g></g></svg></mjx-container></div></div><div class="worked"><div class="worked-title">例题｜参考变化但目标 VCO 不变</div><p>REF=100 MHz，R=2 得到 PFD 频率 50 MHz。若仍要求 <i>f</i><sub class="inline-math-sub">VCO</sub>=1.6 GHz，N 应变成 32。</p><div aria-label="N=\frac{1.6\,\mathrm{GHz}}{100\,\mathrm{MHz}/2}=32" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="5.296ex" role="img" style="vertical-align: -2.172ex;" viewbox="0 -1381 9773.1 2341" width="22.111ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z" data-c="1D441"></path></g><g data-mml-node="mo" transform="translate(1165.8,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mfrac" transform="translate(2221.6,0)"><g data-mml-node="mrow" transform="translate(897,676)"><g data-mml-node="mn"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path><path d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z" data-c="2E" transform="translate(500,0)"></path><path d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z" data-c="36" transform="translate(778,0)"></path></g><g data-mml-node="mstyle" transform="translate(1278,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(1445,0)"><g data-mml-node="mi"><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q401 658 376 654T316 633T254 592T205 519T177 411Q173 369 173 335Q173 259 192 201T238 111T302 58T370 31T431 24Q478 24 513 45T559 100Q562 110 562 160V212Q561 213 557 216T551 220T542 223T526 225T502 226T463 227H437V273H449L609 270Q715 270 727 273H735V227H721Q674 227 668 215Q666 211 666 108V6Q660 0 657 0Q653 0 639 10Q617 25 600 42L587 54Q571 27 524 3T406 -22Q317 -22 238 22T108 151T56 342Z" data-c="47"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 500V378H517V622Q510 629 506 631T490 634T447 637H414V683H425Q446 680 569 680Q704 680 713 683H724V637H691Q651 636 640 634T622 622V61Q628 51 639 49T691 46H724V0H713Q692 3 569 3Q434 3 425 0H414V46H447Q489 47 498 49T517 61V332H232V197L233 61Q239 51 250 49T302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="48" transform="translate(785,0)"></path><path d="M42 263Q44 270 48 345T53 423V431H393Q399 425 399 415Q399 403 398 402L381 378Q364 355 331 309T265 220L134 41L182 40H206Q254 40 283 46T331 77Q352 105 359 185L361 201Q361 202 381 202H401V196Q401 195 393 103T384 6V0H209L34 1L31 3Q28 8 28 17Q28 30 29 31T160 210T294 394H236Q169 393 152 388Q127 382 113 367Q89 344 82 264V255H42V263Z" data-c="7A" transform="translate(1535,0)"></path></g></g></g><g data-mml-node="mrow" transform="translate(220,-710)"><g data-mml-node="mn"><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(500,0)"></path><path d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" data-c="30" transform="translate(1000,0)"></path></g><g data-mml-node="mstyle" transform="translate(1500,0)"><g data-mml-node="mspace"></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(1667,0)"><g data-mml-node="mi"><path d="M132 622Q125 629 121 631T105 634T62 637H29V683H135Q221 683 232 682T249 675Q250 674 354 398L458 124L562 398Q666 674 668 675Q671 681 683 682T781 683H887V637H854Q814 636 803 634T785 622V61Q791 51 802 49T854 46H887V0H876Q855 3 736 3Q605 3 596 0H585V46H618Q660 47 669 49T688 61V347Q688 424 688 461T688 546T688 613L687 632Q454 14 450 7Q446 1 430 1T410 7Q409 9 292 316L176 624V606Q175 588 175 543T175 463T175 356L176 86Q187 50 261 46H278V0H269Q254 3 154 3Q52 3 37 0H29V46H46Q78 48 98 56T122 69T132 86V622Z" data-c="4D"></path><path d="M128 622Q121 629 117 631T101 634T58 637H25V683H36Q57 680 180 680Q315 680 324 683H335V637H302Q262 636 251 634T233 622L232 500V378H517V622Q510 629 506 631T490 634T447 637H414V683H425Q446 680 569 680Q704 680 713 683H724V637H691Q651 636 640 634T622 622V61Q628 51 639 49T691 46H724V0H713Q692 3 569 3Q434 3 425 0H414V46H447Q489 47 498 49T517 61V332H232V197L233 61Q239 51 250 49T302 46H335V0H324Q303 3 180 3Q45 3 36 0H25V46H58Q100 47 109 49T128 61V622Z" data-c="48" transform="translate(917,0)"></path><path d="M42 263Q44 270 48 345T53 423V431H393Q399 425 399 415Q399 403 398 402L381 378Q364 355 331 309T265 220L134 41L182 40H206Q254 40 283 46T331 77Q352 105 359 185L361 201Q361 202 381 202H401V196Q401 195 393 103T384 6V0H209L34 1L31 3Q28 8 28 17Q28 30 29 31T160 210T294 394H236Q169 393 152 388Q127 382 113 367Q89 344 82 264V255H42V263Z" data-c="7A" transform="translate(1667,0)"></path></g></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(3778,0)"><g data-mml-node="mo"><path d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z" data-c="2F"></path></g></g><g data-mml-node="mn" transform="translate(4278,0)"><path d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" data-c="32"></path></g></g><rect height="60" width="4978" x="120" y="220"></rect></g><g data-mml-node="mo" transform="translate(7717.3,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="mn" transform="translate(8773.1,0)"><path d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z" data-c="33"></path><path d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" data-c="32" transform="translate(500,0)"></path></g></g></g></svg></mjx-container></div></div><h3>整数-N 的可合成性</h3><p>若 R、N 都必须为整数，目标频率不一定能够精确达到。对不能整除的目标频率，需调整参考频率规划或使用 Fractional-N 等方案。</p><div aria-label="\Delta f_{\mathrm{VCO}}=f_{\mathrm{PD}}\quad\text{(整数 N 增加 1、其余不变)}" class="eq" role="math"><mjx-container class="MathJax" display="true" jax="SVG"><svg focusable="false" height="2.262ex" role="img" style="vertical-align: -0.566ex;" viewbox="0 -750 18703.3 1000" width="42.315ex" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" stroke="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path d="M51 0Q46 4 46 7Q46 9 215 357T388 709Q391 716 416 716Q439 716 444 709Q447 705 616 357T786 7Q786 4 781 0H51ZM507 344L384 596L137 92L383 91H630Q630 93 507 344Z" data-c="394"></path></g><g data-mml-node="msub" transform="translate(833,0)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M114 620Q113 621 110 624T107 627T103 630T98 632T91 634T80 635T67 636T48 637H19V683H28Q46 680 152 680Q273 680 294 683H305V637H284Q223 634 223 620Q223 618 313 372T404 126L490 358Q575 588 575 597Q575 616 554 626T508 637H503V683H512Q527 680 627 680Q718 680 724 683H730V637H723Q648 637 627 596Q627 595 515 291T401 -14Q396 -22 382 -22H374H367Q353 -22 348 -14Q346 -12 231 303Q114 617 114 620Z" data-c="56"></path><path d="M56 342Q56 428 89 500T174 615T283 681T391 705Q394 705 400 705T408 704Q499 704 569 636L582 624L612 663Q639 700 643 704Q644 704 647 704T653 705H657Q660 705 666 699V419L660 413H626Q620 419 619 430Q610 512 571 572T476 651Q457 658 426 658Q322 658 252 588Q173 509 173 342Q173 221 211 151Q232 111 263 84T328 45T384 29T428 24Q517 24 571 93T626 244Q626 251 632 257H660L666 251V236Q661 133 590 56T403 -21Q262 -21 159 83T56 342Z" data-c="43" transform="translate(750,0)"></path><path d="M56 340Q56 423 86 494T164 610T270 680T388 705Q521 705 621 601T722 341Q722 260 693 191T617 75T510 4T388 -22T267 3T160 74T85 189T56 340ZM467 647Q426 665 388 665Q360 665 331 654T269 620T213 549T179 439Q174 411 174 354Q174 144 277 61Q327 20 385 20H389H391Q474 20 537 99Q603 188 603 354Q603 411 598 439Q577 592 467 647Z" data-c="4F" transform="translate(1472,0)"></path></g></g></g></g><g data-mml-node="mo" transform="translate(3274.8,0)"><path d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" data-c="3D"></path></g><g data-mml-node="msub" transform="translate(4330.5,0)"><g data-mml-node="mi"><path d="M118 -162Q120 -162 124 -164T135 -167T147 -168Q160 -168 171 -155T187 -126Q197 -99 221 27T267 267T289 382V385H242Q195 385 192 387Q188 390 188 397L195 425Q197 430 203 430T250 431Q298 431 298 432Q298 434 307 482T319 540Q356 705 465 705Q502 703 526 683T550 630Q550 594 529 578T487 561Q443 561 443 603Q443 622 454 636T478 657L487 662Q471 668 457 668Q445 668 434 658T419 630Q412 601 403 552T387 469T380 433Q380 431 435 431Q480 431 487 430T498 424Q499 420 496 407T491 391Q489 386 482 386T428 385H372L349 263Q301 15 282 -47Q255 -132 212 -173Q175 -205 139 -205Q107 -205 81 -186T55 -132Q55 -95 76 -78T118 -61Q162 -61 162 -103Q162 -122 151 -136T127 -157L118 -162Z" data-c="1D453"></path></g><g data-mjx-texclass="ORD" data-mml-node="TeXAtom" transform="translate(523,-150) scale(0.707)"><g data-mjx-texclass="ORD" data-mml-node="TeXAtom"><g data-mml-node="mi"><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H214Q237 683 276 683T331 684Q419 684 471 671T567 616Q624 563 624 489Q624 421 573 372T451 307Q429 302 328 301H234V181Q234 62 237 58Q245 47 304 46H337V0H326Q305 3 182 3Q47 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM507 488Q507 514 506 528T500 564T483 597T450 620T397 635Q385 637 307 637H286Q237 637 234 628Q231 624 231 483V342H302H339Q390 342 423 349T481 382Q507 411 507 488Z" data-c="50"></path><path d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z" data-c="44" transform="translate(681,0)"></path></g></g></g></g><g data-mml-node="mstyle" transform="translate(5925.3,0)"><g data-mml-node="mspace"></g></g><g data-mml-node="mtext" transform="translate(6925.3,0)"><path d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z" data-c="28"></path><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(389,0) scale(1,-1)">整</text><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(1389,0) scale(1,-1)">数</text><path d="" data-c="20" transform="translate(2389,0)"></path><path d="M42 46Q74 48 94 56T118 69T128 86V634H124Q114 637 52 637H25V683H232L235 680Q237 679 322 554T493 303L578 178V598Q572 608 568 613T544 627T492 637H475V683H483Q498 680 600 680Q706 680 715 683H724V637H707Q634 633 622 598L621 302V6L614 0H600Q585 0 582 3T481 150T282 443T171 605V345L172 86Q183 50 257 46H274V0H265Q250 3 150 3Q48 3 33 0H25V46H42Z" data-c="4E" transform="translate(2639,0)"></path><path d="" data-c="20" transform="translate(3389,0)"></path><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(3639,0) scale(1,-1)">增</text><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(4639,0) scale(1,-1)">加</text><path d="" data-c="20" transform="translate(5639,0)"></path><path d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" data-c="31" transform="translate(5889,0)"></path><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(6389,0) scale(1,-1)">、</text><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(7389,0) scale(1,-1)">其</text><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(8389,0) scale(1,-1)">余</text><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(9389,0) scale(1,-1)">不</text><text data-variant="normal" font-family="serif" font-size="884px" transform="translate(10389,0) scale(1,-1)">变</text><path d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z" data-c="29" transform="translate(11389,0)"></path></g></g></g></svg></mjx-container></div><div class="eng-case"><h3>商业芯片频率规划算例</h3><p>采用 ADF4351 的可编程分频定义：D 为参考倍频使能，T 为参考 ÷2 使能，R 为参考分频比；INT/FRAC/MOD 定义反馈有效分频比。需要额外注意：数据手册里的 RF<sub class="inline-math-sub">OUT</sub> 公式在相应段落首先表示 VCO 输出，端口经过输出分频之后还需再除以 <i>D</i><sub class="inline-math-sub">OUT</sub>。</p><div class="eng-math"><svg version="1.1" viewbox="0 0 163.98 37.62" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+</defs>
+<g id="figure_1">
+<g id="patch_1">
+<path d="M 0 37.62 
+L 163.98 37.62 
+L 163.98 0 
+L 0 0 
+L 0 37.62 
+z
+" style="fill: none"></path>
+</g>
+<g id="text_1">
+ $f_{\mathrm{PFD}}=f_{\mathrm{<tspan font-style="normal">REF</tspan><tspan baseline-shift="sub" font-size="70%">IN</tspan>}}\,\frac{1+D}{R(1+T)}$ 
+<g transform="translate(5.76 22.86) scale(0.18 -0.18)">
+<defs>
+<path d="M 3059 4863 
+L 2969 4384 
+L 2419 4384 
+Q 2106 4384 1964 4261 
+Q 1822 4138 1753 3809 
+L 1691 3500 
+L 2638 3500 
+L 2553 3053 
+L 1606 3053 
+L 1013 0 
+L 434 0 
+L 1031 3053 
+L 481 3053 
+L 563 3500 
+L 1113 3500 
+L 1159 3744 
+Q 1278 4363 1576 4613 
+Q 1875 4863 2516 4863 
+L 3059 4863 
+z
+" id="DejaVuSans-Oblique-66" transform="scale(0.015625)"></path>
+<path d="M 1259 4147 
+L 1259 2394 
+L 2053 2394 
+Q 2494 2394 2734 2622 
+Q 2975 2850 2975 3272 
+Q 2975 3691 2734 3919 
+Q 2494 4147 2053 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 2053 4666 
+Q 2838 4666 3239 4311 
+Q 3641 3956 3641 3272 
+Q 3641 2581 3239 2228 
+Q 2838 1875 2053 1875 
+L 1259 1875 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-50" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 3309 4666 
+L 3309 4134 
+L 1259 4134 
+L 1259 2759 
+L 3109 2759 
+L 3109 2228 
+L 1259 2228 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-46" transform="scale(0.015625)"></path>
+<path d="M 1259 4147 
+L 1259 519 
+L 2022 519 
+Q 2988 519 3436 956 
+Q 3884 1394 3884 2338 
+Q 3884 3275 3436 3711 
+Q 2988 4147 2022 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 1925 4666 
+Q 3281 4666 3915 4102 
+Q 4550 3538 4550 2338 
+Q 4550 1131 3912 565 
+Q 3275 0 1925 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-44" transform="scale(0.015625)"></path>
+<path d="M 678 2906 
+L 4684 2906 
+L 4684 2381 
+L 678 2381 
+L 678 2906 
+z
+M 678 1631 
+L 4684 1631 
+L 4684 1100 
+L 678 1100 
+L 678 1631 
+z
+" id="DejaVuSans-3d" transform="scale(0.015625)"></path>
+<path d="M 2841 2188 
+Q 3044 2119 3236 1894 
+Q 3428 1669 3622 1275 
+L 4263 0 
+L 3584 0 
+L 2988 1197 
+Q 2756 1666 2539 1819 
+Q 2322 1972 1947 1972 
+L 1259 1972 
+L 1259 0 
+L 628 0 
+L 628 4666 
+L 2053 4666 
+Q 2853 4666 3247 4331 
+Q 3641 3997 3641 3322 
+Q 3641 2881 3436 2590 
+Q 3231 2300 2841 2188 
+z
+M 1259 4147 
+L 1259 2491 
+L 2053 2491 
+Q 2509 2491 2742 2702 
+Q 2975 2913 2975 3322 
+Q 2975 3731 2742 3939 
+Q 2509 4147 2053 4147 
+L 1259 4147 
+z
+" id="DejaVuSans-52" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 3578 4666 
+L 3578 4134 
+L 1259 4134 
+L 1259 2753 
+L 3481 2753 
+L 3481 2222 
+L 1259 2222 
+L 1259 531 
+L 3634 531 
+L 3634 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-45" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 1259 4666 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-49" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 1478 4666 
+L 3547 763 
+L 3547 4666 
+L 4159 4666 
+L 4159 0 
+L 3309 0 
+L 1241 3903 
+L 1241 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-4e" transform="scale(0.015625)"></path>
+<path d="M 794 531 
+L 1825 531 
+L 1825 4091 
+L 703 3866 
+L 703 4441 
+L 1819 4666 
+L 2450 4666 
+L 2450 531 
+L 3481 531 
+L 3481 0 
+L 794 0 
+L 794 531 
+z
+" id="DejaVuSans-31" transform="scale(0.015625)"></path>
+<path d="M 2944 4013 
+L 2944 2272 
+L 4684 2272 
+L 4684 1741 
+L 2944 1741 
+L 2944 0 
+L 2419 0 
+L 2419 1741 
+L 678 1741 
+L 678 2272 
+L 2419 2272 
+L 2419 4013 
+L 2944 4013 
+z
+" id="DejaVuSans-2b" transform="scale(0.015625)"></path>
+<path d="M 1081 4666 
+L 2438 4666 
+Q 3519 4666 4070 4208 
+Q 4622 3750 4622 2847 
+Q 4622 2250 4412 1698 
+Q 4203 1147 3834 769 
+Q 3463 381 2891 190 
+Q 2319 0 1538 0 
+L 172 0 
+L 1081 4666 
+z
+M 1613 4147 
+L 909 519 
+L 1734 519 
+Q 2794 519 3375 1128 
+Q 3956 1738 3956 2847 
+Q 3956 3519 3581 3833 
+Q 3206 4147 2406 4147 
+L 1613 4147 
+z
+" id="DejaVuSans-Oblique-44" transform="scale(0.015625)"></path>
+<path d="M 1613 4147 
+L 1294 2491 
+L 2106 2491 
+Q 2584 2491 2879 2755 
+Q 3175 3019 3175 3444 
+Q 3175 3784 2976 3965 
+Q 2778 4147 2406 4147 
+L 1613 4147 
+z
+M 2772 2241 
+Q 2972 2194 3105 2009 
+Q 3238 1825 3413 1275 
+L 3809 0 
+L 3144 0 
+L 2778 1197 
+Q 2638 1659 2453 1815 
+Q 2269 1972 1888 1972 
+L 1191 1972 
+L 806 0 
+L 172 0 
+L 1081 4666 
+L 2503 4666 
+Q 3150 4666 3495 4373 
+Q 3841 4081 3841 3531 
+Q 3841 3044 3547 2687 
+Q 3253 2331 2772 2241 
+z
+" id="DejaVuSans-Oblique-52" transform="scale(0.015625)"></path>
+<path d="M 1984 4856 
+Q 1566 4138 1362 3434 
+Q 1159 2731 1159 2009 
+Q 1159 1288 1364 580 
+Q 1569 -128 1984 -844 
+L 1484 -844 
+Q 1016 -109 783 600 
+Q 550 1309 550 2009 
+Q 550 2706 781 3412 
+Q 1013 4119 1484 4856 
+L 1984 4856 
+z
+" id="DejaVuSans-28" transform="scale(0.015625)"></path>
+<path d="M 378 4666 
+L 4325 4666 
+L 4225 4134 
+L 2559 4134 
+L 1759 0 
+L 1125 0 
+L 1925 4134 
+L 275 4134 
+L 378 4666 
+z
+" id="DejaVuSans-Oblique-54" transform="scale(0.015625)"></path>
+<path d="M 513 4856 
+L 1013 4856 
+Q 1481 4119 1714 3412 
+Q 1947 2706 1947 2009 
+Q 1947 1309 1714 600 
+Q 1481 -109 1013 -844 
+L 513 -844 
+Q 928 -128 1133 580 
+Q 1338 1288 1338 2009 
+Q 1338 2731 1133 3434 
+Q 928 4138 513 4856 
+z
+" id="DejaVuSans-29" transform="scale(0.015625)"></path>
+</defs>
+<use transform="translate(0 0.16875)" xlink:href="#DejaVuSans-Oblique-66"></use>
+<use transform="translate(35.205078 -16.2375) scale(0.7)" xlink:href="#DejaVuSans-50"></use>
+<use transform="translate(77.416992 -16.2375) scale(0.7)" xlink:href="#DejaVuSans-46"></use>
+<use transform="translate(117.680664 -16.2375) scale(0.7)" xlink:href="#DejaVuSans-44"></use>
+<use transform="translate(193.798828 0.16875)" xlink:href="#DejaVuSans-3d"></use>
+<use transform="translate(297.070312 0.16875)" xlink:href="#DejaVuSans-Oblique-66"></use>
+<use transform="translate(332.275391 -16.2375) scale(0.7)" xlink:href="#DejaVuSans-52"></use>
+<use transform="translate(380.913086 -16.2375) scale(0.7)" xlink:href="#DejaVuSans-45"></use>
+<use transform="translate(425.141602 -16.2375) scale(0.7)" xlink:href="#DejaVuSans-46"></use>
+<use transform="translate(465.405273 -16.2375) scale(0.7)" xlink:href="#DejaVuSans-49"></use>
+<use transform="translate(486.049805 -16.2375) scale(0.7)" xlink:href="#DejaVuSans-4e"></use>
+<use transform="translate(603.383137 43.965625) scale(0.7)" xlink:href="#DejaVuSans-31"></use>
+<use transform="translate(661.556965 43.965625) scale(0.7)" xlink:href="#DejaVuSans-2b"></use>
+<use transform="translate(733.847004 43.965625) scale(0.7)" xlink:href="#DejaVuSans-Oblique-44"></use>
+<use transform="translate(557.383137 -40.396875) scale(0.7)" xlink:href="#DejaVuSans-Oblique-52"></use>
+<use transform="translate(606.020833 -40.396875) scale(0.7)" xlink:href="#DejaVuSans-28"></use>
+<use transform="translate(633.330403 -40.396875) scale(0.7)" xlink:href="#DejaVuSans-31"></use>
+<use transform="translate(691.504231 -40.396875) scale(0.7)" xlink:href="#DejaVuSans-2b"></use>
+<use transform="translate(763.79427 -40.396875) scale(0.7)" xlink:href="#DejaVuSans-Oblique-54"></use>
+<use transform="translate(806.553059 -40.396875) scale(0.7)" xlink:href="#DejaVuSans-29"></use>
+<path d="M 557.383137 18.965625 
+L 557.383137 25.215625 
+L 833.862629 25.215625 
+L 833.862629 18.965625 
+L 557.383137 18.965625 
+z
+"></path>
+</g>
+</g>
+</g>
+</svg>
+</div><div class="eng-math"><svg version="1.1" viewbox="0 0 202.86 36.36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+</defs>
+<g id="figure_1">
+<g id="patch_1">
+<path d="M 0 36.36 
+L 202.86 36.36 
+L 202.86 -0 
+L 0 -0 
+L 0 36.36 
+z
+" style="fill: none"></path>
+</g>
+<g id="text_1">
+<!-- $f_{\mathrm{VCO}}=f_{\mathrm{PFD}}\left(\mathrm{INT}+\frac{\mathrm{FRAC}}{\mathrm{MOD}}\right)$ -->
+<g transform="translate(5.76 23.22) scale(0.18 -0.18)">
+<defs>
+<path d="M 3059 4863 
+L 2969 4384 
+L 2419 4384 
+Q 2106 4384 1964 4261 
+Q 1822 4138 1753 3809 
+L 1691 3500 
+L 2638 3500 
+L 2553 3053 
+L 1606 3053 
+L 1013 0 
+L 434 0 
+L 1031 3053 
+L 481 3053 
+L 563 3500 
+L 1113 3500 
+L 1159 3744 
+Q 1278 4363 1576 4613 
+Q 1875 4863 2516 4863 
+L 3059 4863 
+z
+" id="DejaVuSans-Oblique-66" transform="scale(0.015625)"></path>
+<path d="M 1831 0 
+L 50 4666 
+L 709 4666 
+L 2188 738 
+L 3669 4666 
+L 4325 4666 
+L 2547 0 
+L 1831 0 
+z
+" id="DejaVuSans-56" transform="scale(0.015625)"></path>
+<path d="M 4122 4306 
+L 4122 3641 
+Q 3803 3938 3442 4084 
+Q 3081 4231 2675 4231 
+Q 1875 4231 1450 3742 
+Q 1025 3253 1025 2328 
+Q 1025 1406 1450 917 
+Q 1875 428 2675 428 
+Q 3081 428 3442 575 
+Q 3803 722 4122 1019 
+L 4122 359 
+Q 3791 134 3420 21 
+Q 3050 -91 2638 -91 
+Q 1578 -91 968 557 
+Q 359 1206 359 2328 
+Q 359 3453 968 4101 
+Q 1578 4750 2638 4750 
+Q 3056 4750 3426 4639 
+Q 3797 4528 4122 4306 
+z
+" id="DejaVuSans-43" transform="scale(0.015625)"></path>
+<path d="M 2522 4238 
+Q 1834 4238 1429 3725 
+Q 1025 3213 1025 2328 
+Q 1025 1447 1429 934 
+Q 1834 422 2522 422 
+Q 3209 422 3611 934 
+Q 4013 1447 4013 2328 
+Q 4013 3213 3611 3725 
+Q 3209 4238 2522 4238 
+z
+M 2522 4750 
+Q 3503 4750 4090 4092 
+Q 4678 3434 4678 2328 
+Q 4678 1225 4090 567 
+Q 3503 -91 2522 -91 
+Q 1538 -91 948 565 
+Q 359 1222 359 2328 
+Q 359 3434 948 4092 
+Q 1538 4750 2522 4750 
+z
+" id="DejaVuSans-4f" transform="scale(0.015625)"></path>
+<path d="M 678 2906 
+L 4684 2906 
+L 4684 2381 
+L 678 2381 
+L 678 2906 
+z
+M 678 1631 
+L 4684 1631 
+L 4684 1100 
+L 678 1100 
+L 678 1631 
+z
+" id="DejaVuSans-3d" transform="scale(0.015625)"></path>
+<path d="M 1259 4147 
+L 1259 2394 
+L 2053 2394 
+Q 2494 2394 2734 2622 
+Q 2975 2850 2975 3272 
+Q 2975 3691 2734 3919 
+Q 2494 4147 2053 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 2053 4666 
+Q 2838 4666 3239 4311 
+Q 3641 3956 3641 3272 
+Q 3641 2581 3239 2228 
+Q 2838 1875 2053 1875 
+L 1259 1875 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-50" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 3309 4666 
+L 3309 4134 
+L 1259 4134 
+L 1259 2759 
+L 3109 2759 
+L 3109 2228 
+L 1259 2228 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-46" transform="scale(0.015625)"></path>
+<path d="M 1259 4147 
+L 1259 519 
+L 2022 519 
+Q 2988 519 3436 956 
+Q 3884 1394 3884 2338 
+Q 3884 3275 3436 3711 
+Q 2988 4147 2022 4147 
+L 1259 4147 
+z
+M 628 4666 
+L 1925 4666 
+Q 3281 4666 3915 4102 
+Q 4550 3538 4550 2338 
+Q 4550 1131 3912 565 
+Q 3275 0 1925 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-44" transform="scale(0.015625)"></path>
+<path d="M 3219 -1555 
+L 3219 -1786 
+Q 2144 -774 1517 730 
+Q 890 2234 890 4115 
+Q 890 6003 1533 7593 
+Q 2176 9184 3219 10022 
+L 3219 9811 
+Q 2490 9062 1994 7606 
+Q 1498 6150 1498 4115 
+Q 1498 563 3219 -1555 
+z
+" id="STIXSizeTwoSym-Regular-28" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 1259 4666 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-49" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 1478 4666 
+L 3547 763 
+L 3547 4666 
+L 4159 4666 
+L 4159 0 
+L 3309 0 
+L 1241 3903 
+L 1241 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-4e" transform="scale(0.015625)"></path>
+<path d="M -19 4666 
+L 3928 4666 
+L 3928 4134 
+L 2272 4134 
+L 2272 0 
+L 1638 0 
+L 1638 4134 
+L -19 4134 
+L -19 4666 
+z
+" id="DejaVuSans-54" transform="scale(0.015625)"></path>
+<path d="M 2944 4013 
+L 2944 2272 
+L 4684 2272 
+L 4684 1741 
+L 2944 1741 
+L 2944 0 
+L 2419 0 
+L 2419 1741 
+L 678 1741 
+L 678 2272 
+L 2419 2272 
+L 2419 4013 
+L 2944 4013 
+z
+" id="DejaVuSans-2b" transform="scale(0.015625)"></path>
+<path d="M 2841 2188 
+Q 3044 2119 3236 1894 
+Q 3428 1669 3622 1275 
+L 4263 0 
+L 3584 0 
+L 2988 1197 
+Q 2756 1666 2539 1819 
+Q 2322 1972 1947 1972 
+L 1259 1972 
+L 1259 0 
+L 628 0 
+L 628 4666 
+L 2053 4666 
+Q 2853 4666 3247 4331 
+Q 3641 3997 3641 3322 
+Q 3641 2881 3436 2590 
+Q 3231 2300 2841 2188 
+z
+M 1259 4147 
+L 1259 2491 
+L 2053 2491 
+Q 2509 2491 2742 2702 
+Q 2975 2913 2975 3322 
+Q 2975 3731 2742 3939 
+Q 2509 4147 2053 4147 
+L 1259 4147 
+z
+" id="DejaVuSans-52" transform="scale(0.015625)"></path>
+<path d="M 2188 4044 
+L 1331 1722 
+L 3047 1722 
+L 2188 4044 
+z
+M 1831 4666 
+L 2547 4666 
+L 4325 0 
+L 3669 0 
+L 3244 1197 
+L 1141 1197 
+L 716 0 
+L 50 0 
+L 1831 4666 
+z
+" id="DejaVuSans-41" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 1569 4666 
+L 2759 1491 
+L 3956 4666 
+L 4897 4666 
+L 4897 0 
+L 4281 0 
+L 4281 4097 
+L 3078 897 
+L 2444 897 
+L 1241 4097 
+L 1241 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-4d" transform="scale(0.015625)"></path>
+<path d="M 730 9792 
+L 730 10022 
+Q 1805 9011 2432 7507 
+Q 3059 6003 3059 4115 
+Q 3059 2234 2416 643 
+Q 1773 -947 730 -1786 
+L 730 -1574 
+Q 1459 -826 1955 633 
+Q 2451 2093 2451 4115 
+Q 2451 7674 730 9792 
+z
+" id="STIXSizeTwoSym-Regular-29" transform="scale(0.015625)"></path>
+</defs>
+<use transform="translate(0 0.254687)" xlink:href="#DejaVuSans-Oblique-66"></use>
+<use transform="translate(35.205078 -16.151563) scale(0.7)" xlink:href="#DejaVuSans-56"></use>
+<use transform="translate(83.09082 -16.151563) scale(0.7)" xlink:href="#DejaVuSans-43"></use>
+<use transform="translate(131.967773 -16.151563) scale(0.7)" xlink:href="#DejaVuSans-4f"></use>
+<use transform="translate(209.282227 0.254687)" xlink:href="#DejaVuSans-3d"></use>
+<use transform="translate(312.553711 0.254687)" xlink:href="#DejaVuSans-Oblique-66"></use>
+<use transform="translate(347.758789 -16.151563) scale(0.7)" xlink:href="#DejaVuSans-50"></use>
+<use transform="translate(389.970703 -16.151563) scale(0.7)" xlink:href="#DejaVuSans-46"></use>
+<use transform="translate(430.234375 -16.151563) scale(0.7)" xlink:href="#DejaVuSans-44"></use>
+<use transform="translate(486.870117 -19.50625) scale(0.743343)" xlink:href="#STIXSizeTwoSym-Regular-28"></use>
+<use transform="translate(530.676987 0.254687)" xlink:href="#DejaVuSans-49"></use>
+<use transform="translate(560.169174 0.254687)" xlink:href="#DejaVuSans-4e"></use>
+<use transform="translate(634.973862 0.254687)" xlink:href="#DejaVuSans-54"></use>
+<use transform="translate(715.540268 0.254687)" xlink:href="#DejaVuSans-2b"></use>
+<use transform="translate(818.811752 45.046875) scale(0.7)" xlink:href="#DejaVuSans-46"></use>
+<use transform="translate(859.075424 45.046875) scale(0.7)" xlink:href="#DejaVuSans-52"></use>
+<use transform="translate(907.71312 45.046875) scale(0.7)" xlink:href="#DejaVuSans-41"></use>
+<use transform="translate(955.598862 45.046875) scale(0.7)" xlink:href="#DejaVuSans-43"></use>
+<use transform="translate(826.811752 -39.151563) scale(0.7)" xlink:href="#DejaVuSans-4d"></use>
+<use transform="translate(887.20726 -39.151563) scale(0.7)" xlink:href="#DejaVuSans-4f"></use>
+<use transform="translate(942.304916 -39.151563) scale(0.7)" xlink:href="#DejaVuSans-44"></use>
+<use transform="translate(1016.975815 -19.50625) scale(0.743343)" xlink:href="#STIXSizeTwoSym-Regular-29"></use>
+<path d="M 818.811752 19.051563 
+L 818.811752 25.301563 
+L 1004.475815 25.301563 
+L 1004.475815 19.051563 
+L 818.811752 19.051563 
+z
+"></path>
+</g>
+</g>
+</g>
+</svg>
+</div><div class="eng-math"><svg version="1.1" viewbox="0 0 114.12 40.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+</defs>
+<g id="figure_1">
+<g id="patch_1">
+<path d="M 0 40.5 
+L 114.12 40.5 
+L 114.12 0 
+L 0 0 
+L 0 40.5 
+z
+" style="fill: none"></path>
+</g>
+<g id="text_1">
+ $f_{\mathrm{<tspan font-style="normal">RF</tspan><tspan baseline-shift="sub" font-size="70%">OUT</tspan>}}=\frac{f_{\mathrm{VCO}}}{D_{\mathrm{OUT}}}$ 
+<g transform="translate(5.76 25.56) scale(0.18 -0.18)">
+<defs>
+<path d="M 3059 4863 
+L 2969 4384 
+L 2419 4384 
+Q 2106 4384 1964 4261 
+Q 1822 4138 1753 3809 
+L 1691 3500 
+L 2638 3500 
+L 2553 3053 
+L 1606 3053 
+L 1013 0 
+L 434 0 
+L 1031 3053 
+L 481 3053 
+L 563 3500 
+L 1113 3500 
+L 1159 3744 
+Q 1278 4363 1576 4613 
+Q 1875 4863 2516 4863 
+L 3059 4863 
+z
+" id="DejaVuSans-Oblique-66" transform="scale(0.015625)"></path>
+<path d="M 2841 2188 
+Q 3044 2119 3236 1894 
+Q 3428 1669 3622 1275 
+L 4263 0 
+L 3584 0 
+L 2988 1197 
+Q 2756 1666 2539 1819 
+Q 2322 1972 1947 1972 
+L 1259 1972 
+L 1259 0 
+L 628 0 
+L 628 4666 
+L 2053 4666 
+Q 2853 4666 3247 4331 
+Q 3641 3997 3641 3322 
+Q 3641 2881 3436 2590 
+Q 3231 2300 2841 2188 
+z
+M 1259 4147 
+L 1259 2491 
+L 2053 2491 
+Q 2509 2491 2742 2702 
+Q 2975 2913 2975 3322 
+Q 2975 3731 2742 3939 
+Q 2509 4147 2053 4147 
+L 1259 4147 
+z
+" id="DejaVuSans-52" transform="scale(0.015625)"></path>
+<path d="M 628 4666 
+L 3309 4666 
+L 3309 4134 
+L 1259 4134 
+L 1259 2759 
+L 3109 2759 
+L 3109 2228 
+L 1259 2228 
+L 1259 0 
+L 628 0 
+L 628 4666 
+z
+" id="DejaVuSans-46" transform="scale(0.015625)"></path>
+<path d="M 2522 4238 
+Q 1834 4238 1429 3725 
+Q 1025 3213 1025 2328 
+Q 1025 1447 1429 934 
+Q 1834 422 2522 422 
+Q 3209 422 3611 934 
+Q 4013 1447 4013 2328 
+Q 4013 3213 3611 3725 
+Q 3209 4238 2522 4238 
+z
+M 2522 4750 
+Q 3503 4750 4090 4092 
+Q 4678 3434 4678 2328 
+Q 4678 1225 4090 567 
+Q 3503 -91 2522 -91 
+Q 1538 -91 948 565 
+Q 359 1222 359 2328 
+Q 359 3434 948 4092 
+Q 1538 4750 2522 4750 
+z
+" id="DejaVuSans-4f" transform="scale(0.015625)"></path>
+<path d="M 556 4666 
+L 1191 4666 
+L 1191 1831 
+Q 1191 1081 1462 751 
+Q 1734 422 2344 422 
+Q 2950 422 3222 751 
+Q 3494 1081 3494 1831 
+L 3494 4666 
+L 4128 4666 
+L 4128 1753 
+Q 4128 841 3676 375 
+Q 3225 -91 2344 -91 
+Q 1459 -91 1007 375 
+Q 556 841 556 1753 
+L 556 4666 
+z
+" id="DejaVuSans-55" transform="scale(0.015625)"></path>
+<path d="M -19 4666 
+L 3928 4666 
+L 3928 4134 
+L 2272 4134 
+L 2272 0 
+L 1638 0 
+L 1638 4134 
+L -19 4134 
+L -19 4666 
+z
+" id="DejaVuSans-54" transform="scale(0.015625)"></path>
+<path d="M 678 2906 
+L 4684 2906 
+L 4684 2381 
+L 678 2381 
+L 678 2906 
+z
+M 678 1631 
+L 4684 1631 
+L 4684 1100 
+L 678 1100 
+L 678 1631 
+z
+" id="DejaVuSans-3d" transform="scale(0.015625)"></path>
+<path d="M 1831 0 
+L 50 4666 
+L 709 4666 
+L 2188 738 
+L 3669 4666 
+L 4325 4666 
+L 2547 0 
+L 1831 0 
+z
+" id="DejaVuSans-56" transform="scale(0.015625)"></path>
+<path d="M 4122 4306 
+L 4122 3641 
+Q 3803 3938 3442 4084 
+Q 3081 4231 2675 4231 
+Q 1875 4231 1450 3742 
+Q 1025 3253 1025 2328 
+Q 1025 1406 1450 917 
+Q 1875 428 2675 428 
+Q 3081 428 3442 575 
+Q 3803 722 4122 1019 
+L 4122 359 
+Q 3791 134 3420 21 
+Q 3050 -91 2638 -91 
+Q 1578 -91 968 557 
+Q 359 1206 359 2328 
+Q 359 3453 968 4101 
+Q 1578 4750 2638 4750 
+Q 3056 4750 3426 4639 
+Q 3797 4528 4122 4306 
+z
+" id="DejaVuSans-43" transform="scale(0.015625)"></path>
+<path d="M 1081 4666 
+L 2438 4666 
+Q 3519 4666 4070 4208 
+Q 4622 3750 4622 2847 
+Q 4622 2250 4412 1698 
+Q 4203 1147 3834 769 
+Q 3463 381 2891 190 
+Q 2319 0 1538 0 
+L 172 0 
+L 1081 4666 
+z
+M 1613 4147 
+L 909 519 
+L 1734 519 
+Q 2794 519 3375 1128 
+Q 3956 1738 3956 2847 
+Q 3956 3519 3581 3833 
+Q 3206 4147 2406 4147 
+L 1613 4147 
+z
+" id="DejaVuSans-Oblique-44" transform="scale(0.015625)"></path>
+</defs>
+<use transform="translate(0 0.832969)" xlink:href="#DejaVuSans-Oblique-66"></use>
+<use transform="translate(35.205078 -15.573281) scale(0.7)" xlink:href="#DejaVuSans-52"></use>
+<use transform="translate(83.842773 -15.573281) scale(0.7)" xlink:href="#DejaVuSans-46"></use>
+<use transform="translate(124.106445 -15.573281) scale(0.7)" xlink:href="#DejaVuSans-4f"></use>
+<use transform="translate(179.204102 -15.573281) scale(0.7)" xlink:href="#DejaVuSans-55"></use>
+<use transform="translate(229.214453 -15.573281) scale(0.7)" xlink:href="#DejaVuSans-54"></use>
+<use transform="translate(294.190039 0.832969)" xlink:href="#DejaVuSans-3d"></use>
+<use transform="translate(410.461523 56.810938) scale(0.7)" xlink:href="#DejaVuSans-Oblique-66"></use>
+<use transform="translate(435.105078 45.326562) scale(0.49)" xlink:href="#DejaVuSans-56"></use>
+<use transform="translate(468.625098 45.326562) scale(0.49)" xlink:href="#DejaVuSans-43"></use>
+<use transform="translate(502.838965 45.326562) scale(0.49)" xlink:href="#DejaVuSans-4f"></use>
+<use transform="translate(397.461523 -37.654531) scale(0.7)" xlink:href="#DejaVuSans-Oblique-44"></use>
+<use transform="translate(451.362891 -49.138906) scale(0.49)" xlink:href="#DejaVuSans-4f"></use>
+<use transform="translate(489.93125 -49.138906) scale(0.49)" xlink:href="#DejaVuSans-55"></use>
+<use transform="translate(524.938496 -49.138906) scale(0.49)" xlink:href="#DejaVuSans-54"></use>
+<path d="M 397.461523 19.629844 
+L 397.461523 25.879844 
+L 556.783711 25.879844 
+L 556.783711 19.629844 
+L 397.461523 19.629844 
+z
+"></path>
+</g>
+</g>
+</g>
+</svg>
+</div><div class="eng-ex"><strong>例题 5-E：25 MHz 参考 → 625 MHz 输出</strong><p>REF<sub class="inline-math-sub">IN</sub> = 25 MHz，D = 1（倍频），T = 0，R = 5，INT = 250，FRAC = 0，<i>D</i><sub class="inline-math-sub">OUT</sub> = 4。</p><p><i>f</i><sub class="inline-math-sub">PFD</sub> = 25 × 2 / 5 = 10 MHz；<i>f</i><sub class="inline-math-sub">VCO</sub> = 10 × 250 = 2500 MHz；<i>f</i><sub class="inline-math-sub">RFOUT</sub> = 2500 / 4 = <strong>625 MHz</strong>。本振处于 ADF4351 的 2200–4400 MHz 范围内。</p></div><p class="eng-src">资料来源：<a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf" rel="noopener" target="_blank">ADF4351 Datasheet</a>，Frequency Equations 与 Worked Example。相关电路图经简化复绘；如需核对器件级连接与产品参数，请查看来源中的原图。</p></div></section><section aria-labelledby="tab7" class="panel" hidden="" id="p7" role="tabpanel"><h2>预测与验证：分频链实验</h2><p>先预测 R 改变后的频率变化，再调整三个分频参数。各级频率会在下方分别显示，避免混淆参考分频、反馈分频与输出分频。</p><div class="lab" id="c5lab"><div class="quiz" data-ans="B" id="c5predict"><div class="quiz-title">REF = 100 MHz，N = 16、D = 2。把 R 从 1 改成 2，输出频率会怎样？</div><div class="quiz-options"><label><input name="c5predict" type="radio" value="A"/> A. 变成两倍</label><label><input name="c5predict" type="radio" value="B"/> B. 变成一半</label><label><input name="c5predict" type="radio" value="C"/> C. 不变</label></div><div aria-live="polite" class="quiz-reveal" hidden=""><strong></strong><p><i>f</i><sub class="inline-math-sub">CLK</sub>=N·<i>f</i><sub class="inline-math-sub">REF</sub>/(R·D)，R 从 1 到 2，输出频率由 800 MHz 变为 400 MHz。请在下方验证。</p></div></div><div class="controls"><div class="control"><label>参考分频 R <output id="r5v">1</output></label><input id="r5" max="8" min="1" step="1" type="range" value="1"/></div><div class="control"><label>反馈分频 N <output id="n5v">16</output></label><input id="n5" max="64" min="4" step="1" type="range" value="16"/></div><div class="control"><label>输出分频 D <output id="d5v">2</output></label><input id="d5" max="8" min="1" step="1" type="range" value="2"/></div></div><div class="result-grid"><div class="res"><div class="name"><i>f</i><sub class="inline-math-sub">PD</sub></div><div class="value" id="f5pd">100.0 MHz</div></div><div class="res"><div class="name"><i>f</i><sub class="inline-math-sub">VCO</sub></div><div class="value" id="f5vco">1.600 GHz</div></div><div class="res"><div class="name"><i>f</i><sub class="inline-math-sub">CLK</sub></div><div class="value" id="f5clk">800.0 MHz</div></div></div><svg aria-label="三级时钟频率可视化" class="resultplot" id="f5plot" viewbox="0 0 840 160"></svg><p class="smallwarn">理想整数分频计算。未包含 VCO 调谐范围、环路锁定能力与输出 Buffer 限制。</p></div></section><section aria-labelledby="tab8" class="panel" hidden="" id="p8" role="tabpanel"><h2>测试指标、报告与核对</h2><p>频率规划、幅度、占空比、参考相噪和输出 skew 属于不同测量维度。比较数据前应明确测量节点与终端条件。</p><div class="table-scroll"><table><thead><tr><th>测量项目</th><th>测试节点/仪器</th><th>报告必要字段</th></tr></thead><tbody><tr><td>参考幅度与 Slew</td><td>参考输入端；示波器</td><td>差分/单端定义、终端阻抗、上升时间、<i>V</i><sub class="inline-math-sub">pp</sub> 或共模</td></tr><tr><td>PFD 频率</td><td>R 分频输出；计数器/示波器</td><td><i>f</i><sub class="inline-math-sub">REF</sub>、R、实际 <i>f</i><sub class="inline-math-sub">PD</sub></td></tr><tr><td>输出时钟与占空比</td><td>时钟输出端；示波器/频率计</td><td><i>f</i><sub class="inline-math-sub">CLK</sub>、逻辑门限、Duty Cycle、负载</td></tr><tr><td>多输出 skew</td><td>输出脚/分配网络端；多通道示波器</td><td>测试边沿定义、通道校准、skew min/max</td></tr><tr><td>参考噪声与输出相噪</td><td>相噪分析仪</td><td>载波频率、offset 积分区间、spur 处理设置</td></tr></tbody></table></div><div class="quiz" data-ans="B" id="c5q3"><div class="quiz-title">输入参考频率稳定，但其相位噪声偏高。PLL 输出一定可以忽略这部分噪声吗？</div><div class="quiz-options"><label><input name="c5q3" type="radio" value="A"/> A. 是，PLL 能完全滤掉参考相噪</label><label><input name="c5q3" type="radio" value="B"/> B. 否，参考噪声通过 PLL 的相位传递函数影响输出</label><label><input name="c5q3" type="radio" value="C"/> C. 仅在 R=1 时有影响</label></div><div aria-live="polite" class="quiz-reveal" hidden=""><strong></strong><p>在环路带宽内，参考相位噪声通常会传递到 PLL 输出，且与分频/倍频比相关；具体大小由噪声传递函数决定。</p></div></div><h3>参考资料</h3><ul class="sources"><li><a href="https://www.analog.com/media/en/training-seminars/tutorials/MT-086.pdf">Analog Devices, MT-086, Figure 3：Reference Divider / Prescaler</a></li><li><a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-pll">JKU RFIC, PLL, Figure 97：Reference Doubler</a></li><li><a href="https://www.analog.com/en/resources/product-faqs/ad9522-5.html">ADI 时钟分配产品 FAQ：PFD 锁相与输出端零延迟的区别</a></li></ul><div class="eng-case"><h3>测试时必须明确测量的是哪个时钟节点</h3><div class="table-scroll"><table class="eng-tt"><thead><tr><th>测量节点</th><th>观察项目</th><th>典型误解</th></tr></thead><tbody><tr><td>REF<sub class="inline-math-sub">IN</sub> / R Counter 输出</td><td>参考频率、边沿质量、抖动</td><td>以 REF<sub class="inline-math-sub">IN</sub> 直接代替 <i>f</i><sub class="inline-math-sub">PFD</sub></td></tr><tr><td>PFD 输入</td><td>两路分频后的频率与相位</td><td>把输出分频比当作反馈 N</td></tr><tr><td>VCO 内部或高频测试口</td><td>调谐范围、相噪</td><td>以 RF<sub class="inline-math-sub">OUT</sub> 低频直接判断 VCO 工作频段</td></tr><tr><td>RFOUTA/B</td><td>分频后频率、输出功率、Jitter、Mute</td><td>不同输出模式的指标直接混比较</td></tr></tbody></table></div><p class="eng-src">资料来源：<a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf" rel="noopener" target="_blank">ADF4351 Datasheet</a>，Figure 1 / Specification Tables。相关电路图经简化复绘；如需核对器件级连接与产品参数，请查看来源中的原图。</p></div></section><div class="nav-footer"><button id="prev">← 上一页</button><span class="pagenum" id="count">1 / 8</span><button id="next">下一页 →</button></div></main></div></div><script>
+(()=>{const n=5, panels=[...document.querySelectorAll('.panel')],tabs=[...document.querySelectorAll('.tab')];let current=1;
+const layout=document.getElementById('layout'),close=()=>{layout.classList.remove('nav-open');document.body.style.overflow='';};
+document.getElementById('foldButton').addEventListener('click',()=>{if(innerWidth<=900){layout.classList.add('nav-open');document.body.style.overflow='hidden';}else{layout.classList.toggle('fold');}});
+document.getElementById('closeSide').addEventListener('click',close);document.getElementById('shade').addEventListener('click',close);
+function show(i,changeHash=true){if(i<1||i>8)return;current=i;panels.forEach((v,k)=>v.hidden!==undefined?v.hidden=(k!==i-1):null);tabs.forEach((v,k)=>{v.classList.toggle('on',k===i-1);v.setAttribute('aria-selected',String(k===i-1));v.tabIndex=k===i-1?0:-1});document.getElementById('count').textContent=i+' / 8'; if(changeHash)history.replaceState(null,'','#p'+i);window.scrollTo(0,0);tabs[i-1].scrollIntoView({block:'nearest',inline:'nearest'});}
+tabs.forEach((v,i)=>v.addEventListener('click',()=>show(i+1)));
+document.getElementById('prev').addEventListener('click',()=>{if(current>1)show(current-1);else location.href='PLL_第04章_PLL架构地图_标准数学公式版.html#p8';});
+document.getElementById('next').addEventListener('click',()=>{if(current<8)show(current+1);else if(true)location.href='PLL_第06章_PD_PFD_相位与频率比较.html#p1';});
+function btnUpdate(){document.getElementById('prev').textContent=current===1?'← 第04章':'← 上一页';document.getElementById('next').textContent=current===8?'第06章 →':'下一页 →';document.getElementById('next').disabled=current===8&&false;}
+const originalShow=show;show=(i,b)=>{originalShow(i,b);btnUpdate();};
+let init=Number(location.hash.match(/^#p(\d+)$/)?.[1]||'1');show(Math.max(1,Math.min(8,init)),false);
+document.querySelectorAll('.lab').forEach(lab=>lab.querySelectorAll('input[type=range],select').forEach(c=>c.disabled=true));
+document.querySelectorAll('.quiz').forEach(q=>{let selected=false;q.querySelectorAll('input').forEach(x=>x.addEventListener('change',()=>{if(selected)return;selected=true;let correct=x.value===q.dataset.ans;let reveal=q.querySelector('.quiz-reveal');reveal.hidden=false;reveal.classList.toggle('wrong',!correct);reveal.querySelector('strong').textContent=correct?'判断正确。':'正确答案：'+q.dataset.ans+'。';q.querySelectorAll('input').forEach(c=>c.disabled=true);let lab=q.closest('.lab');if(lab){lab.querySelectorAll('input[type=range],select').forEach(c=>c.disabled=false);if(window.pllRefreshLab)window.pllRefreshLab();}}));});
+})();
+
+function E(parent,tag,attr,text){const el=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const k in attr)el.setAttribute(k,attr[k]);if(text!==undefined)el.textContent=text;parent.appendChild(el);return el;}
+function trace(svg,points,color,width=2.6){E(svg,'polyline',{points:points.map(p=>p.join(',')).join(' '),fill:'none',stroke:color,'stroke-width':width,'stroke-linejoin':'round'});}
+function label(svg,x,y,t,size=13){E(svg,'text',{x,y,'font-size':size,fill:'#526b7d'},t);}
+function init5(){const ids=['r5','n5','d5'],el=ids.map(id=>document.getElementById(id));if(!el[0])return;const plot=document.getElementById('f5plot');function run(){let r=+el[0].value,n=+el[1].value,d=+el[2].value,fPD=100/r,fVCO=fPD*n,fCLK=fVCO/d;['r5v','n5v','d5v'].forEach((x,i)=>document.getElementById(x).textContent=el[i].value);document.getElementById('f5pd').textContent=fPD.toFixed(2)+' MHz';document.getElementById('f5vco').textContent=(fVCO/1000).toFixed(4)+' GHz';document.getElementById('f5clk').textContent=fCLK.toFixed(2)+' MHz';plot.replaceChildren();let vals=[fPD,fVCO,fCLK],names=['fPD','fVCO','fCLK'],cols=['#719bb7','#23668f','#2d8a62'];let scale=Math.max(...vals,100);vals.forEach((v,i)=>{let y=25+i*45;label(plot,25,y+16,names[i],13);E(plot,'rect',{x:96,y,width:640,height:22,fill:'#edf1f4'});E(plot,'rect',{x:96,y,width:640*v/scale,height:22,fill:cols[i]});label(plot,740,y+17,v.toFixed(2)+' MHz',12);});}el.forEach(x=>x.addEventListener('input',run));run();}
+function init6(){const dt=document.getElementById('c6dt'),rst=document.getElementById('c6r');if(!dt)return;const wave=document.getElementById('pfdWave');function pulseRow(y,start,end,color){const left=120,right=900;function X(t){return left+(t+700)/1400*(right-left)};let st=Math.max(-700,start),en=Math.min(700,end),x1=X(st),x2=X(en); E(wave,'path',{d:`M ${left} ${y+24} H ${x1} V ${y} H ${x2} V ${y+24} H ${right}`,stroke:color,'stroke-width':2.6,fill:'none'});}function run(){let d=+dt.value,r=+rst.value;document.getElementById('c6dtv').textContent=d+' ps';document.getElementById('c6rv').textContent=r+' ps';const up=r+Math.max(0,d),down=r+Math.max(0,-d);document.getElementById('c6up').textContent=up+' ps';document.getElementById('c6dn').textContent=down+' ps';document.getElementById('c6diff').textContent=(d>0?'+':'')+d+' ps';wave.replaceChildren();const names=['REF','FB','UP','DOWN'],y=[61,111,163,215];names.forEach((n,i)=>label(wave,24,y[i]+15,n,16));for(let t=-600;t<=600;t+=200){const x=120+(t+700)/1400*780;E(wave,'line',{x1:x,y1:45,x2:x,y2:250,stroke:'#edf1f4'});label(wave,x-16,267,t+' ps',11);}pulseRow(y[0],0,700,'#2074a4');pulseRow(y[1],d,700,'#268763');pulseRow(y[2],0,Math.max(0,d)+r,'#c17b30');pulseRow(y[3],d,Math.max(0,d)+r,'#89709b');}dt.addEventListener('input',run);rst.addEventListener('input',run);run();}
+function init6gain(){const svg=document.getElementById('c6gainplot');if(!svg)return;svg.replaceChildren();for(let i=0;i<=4;i++){let y=30+i*46;E(svg,'line',{x1:95,y1:y,x2:786,y2:y,stroke:'#e1e7ed'});}E(svg,'line',{x1:95,y1:120,x2:786,y2:120,stroke:'#435e73','stroke-width':1.4});trace(svg,[[95,219],[786,21]],'#286d98',3);label(svg,165,32,'平均电流 Iavg (µA)',14);label(svg,358,258,'时间差 Δt (ps)',14);label(svg,80,218,'−5',12);label(svg,79,124,'0',12);label(svg,80,36,'+5',12);label(svg,94,242,'−500',12);label(svg,760,242,'+500',12);}
+function init7(){const ids=['c7i','c7t','c7c','c7r'],el=ids.map(x=>document.getElementById(x));if(!el[0])return;const plot=document.getElementById('c7plot');function run(){let I=+el[0].value,t=+el[1].value,C=+el[2].value,R=+el[3].value;['c7iv','c7tv','c7cv','c7rv'].forEach((x,i)=>document.getElementById(x).textContent=el[i].value+[' µA',' ps',' pF',' kΩ'][i]);const q=I*t/1e3,v=I*t/(C*1e3),fz=1e9/(2*Math.PI*R*C);document.getElementById('c7q').textContent=q.toFixed(1)+' fC';document.getElementById('c7v').textContent=v.toFixed(3)+' mV';document.getElementById('c7fz').textContent=(fz/1e3).toFixed(1)+' kHz';plot.replaceChildren();const x1=78,x2=830,y1=30,y2=205;for(let k=0;k<=4;k++){let y=y1+(y2-y1)*k/4;E(plot,'line',{x1,y1:y,x2,y2:y,stroke:'#e7edf1'});}let pts=[];let mags=[];for(let i=0;i<=190;i++){let freq=1e3*Math.pow(1e4,i/190);let Z=Math.sqrt((R*1000)**2+(1/(2*Math.PI*freq*C*1e-12))**2);mags.push(20*Math.log10(Z));}let low=Math.floor(Math.min(...mags)/10)*10,high=Math.ceil(Math.max(...mags)/10)*10;for(let i=0;i<mags.length;i++){pts.push([x1+i/190*(x2-x1),y2-(mags[i]-low)/(high-low)*(y2-y1)]);}trace(plot,pts,'#245f8f',3);label(plot,65,18,'|Z| (dBΩ)',14);label(plot,360,244,'f (Hz) logarithmic',14);['1k','10k','100k','1M','10M'].forEach((s,i)=>label(plot,x1+i*(x2-x1)/4-12,226,s,12));label(plot,16,43,high+'',12);label(plot,16,202,low+'',12);}el.forEach(x=>x.addEventListener('input',run));run();}
+function init7m(){const svg=document.getElementById('c7mismatch');if(!svg)return;svg.replaceChildren();for(let j=0;j<4;j++){let y=45+j*52;E(svg,'line',{x1:94,y1:y,x2:810,y2:y,stroke:'#e8eef1'});}let up=[],dn=[];for(let i=0;i<=100;i++){let x=96+i*7.12,upv=100.6-2.2*Math.pow((i-52)/50,2)+.8*(i-50)/50,dnv=99.4-1.6*Math.pow((i-50)/50,2)-1.1*(i-50)/50;up.push([x,192-(upv-95)*19]);dn.push([x,192-(dnv-95)*19]);}trace(svg,up,'#286e9d',3);trace(svg,dn,'#b8803f',3);label(svg,95,22,'IUP / IDN (µA) — hypothetical',14);label(svg,390,242,'VCTRL (V)',14);label(svg,96,218,'0.2',12);label(svg,790,218,'1.0',12);label(svg,610,42,'IUP',13);label(svg,690,78,'IDN',13);}
+init5();init6();init6gain();init7();init7m();
+window.pllRefreshLab=()=>{init5();init6();init7()};
+
+</script><script id="inline-math-formatter">
+(()=>{
+ const specs={"fRFOUT":{"prefix":"","base":"f","sub":"RFOUT","italic":true},"fFREE":{"prefix":"","base":"f","sub":"FREE","italic":true},"fVCO":{"prefix":"","base":"f","sub":"VCO","italic":true},"fPFD":{"prefix":"","base":"f","sub":"PFD","italic":true},"fCLK":{"prefix":"","base":"f","sub":"CLK","italic":true},"fREF":{"prefix":"","base":"f","sub":"REF","italic":true},"fFB":{"prefix":"","base":"f","sub":"FB","italic":true},"fPD":{"prefix":"","base":"f","sub":"PD","italic":true},"fOUT":{"prefix":"","base":"f","sub":"OUT","italic":true},"fout":{"prefix":"","base":"f","sub":"OUT","italic":true},"fref":{"prefix":"","base":"f","sub":"REF","italic":true},"φREF":{"prefix":"","base":"φ","sub":"REF","italic":true},"φref":{"prefix":"","base":"φ","sub":"ref","italic":true},"φFB":{"prefix":"","base":"φ","sub":"FB","italic":true},"φfb":{"prefix":"","base":"φ","sub":"fb","italic":true},"φOUT":{"prefix":"","base":"φ","sub":"OUT","italic":true},"φout":{"prefix":"","base":"φ","sub":"out","italic":true},"eφ":{"prefix":"","base":"e","sub":"φ","italic":true},"VCTRL":{"prefix":"","base":"V","sub":"CTRL","italic":true},"Vctrl":{"prefix":"","base":"V","sub":"ctrl","italic":true},"VTUNE":{"prefix":"","base":"V","sub":"TUNE","italic":true},"VDD":{"prefix":"","base":"V","sub":"DD","italic":true},"I_CP":{"prefix":"","base":"I","sub":"CP","italic":true},"ICP":{"prefix":"","base":"I","sub":"CP","italic":true},"Icp":{"prefix":"","base":"I","sub":"CP","italic":true},"IUP":{"prefix":"","base":"I","sub":"UP","italic":true},"IDN":{"prefix":"","base":"I","sub":"DN","italic":true},"Iavg":{"prefix":"","base":"I","sub":"avg","italic":true},"KVCO":{"prefix":"","base":"K","sub":"VCO","italic":true},"Kvco":{"prefix":"","base":"K","sub":"VCO","italic":true},"KDCO":{"prefix":"","base":"K","sub":"DCO","italic":true},"KPD":{"prefix":"","base":"K","sub":"PD","italic":true},"Kφ":{"prefix":"","base":"K","sub":"φ","italic":true},"Kf":{"prefix":"","base":"K","sub":"f","italic":true},"Kp":{"prefix":"","base":"K","sub":"p","italic":true},"Ki":{"prefix":"","base":"K","sub":"i","italic":true},"TREF":{"prefix":"","base":"T","sub":"REF","italic":true},"Tref":{"prefix":"","base":"T","sub":"ref","italic":true},"tREF":{"prefix":"","base":"t","sub":"REF","italic":true},"tFB":{"prefix":"","base":"t","sub":"FB","italic":true},"tRESET":{"prefix":"","base":"t","sub":"RESET","italic":true},"TPD":{"prefix":"","base":"T","sub":"PD","italic":true},"t_d":{"prefix":"","base":"t","sub":"d","italic":true},"ΔfPVT":{"prefix":"Δ","base":"f","sub":"PVT","italic":true},"ΔfACQ":{"prefix":"Δ","base":"f","sub":"ACQ","italic":true},"ΔfTRK":{"prefix":"Δ","base":"f","sub":"TRK","italic":true},"ΔfLSB":{"prefix":"Δ","base":"f","sub":"LSB","italic":true},"ΔVC":{"prefix":"Δ","base":"V","sub":"C","italic":true},"ωn":{"prefix":"","base":"ω","sub":"n","italic":true},"C0":{"prefix":"","base":"C","sub":"0","italic":true},"C1":{"prefix":"","base":"C","sub":"1","italic":true},"C2":{"prefix":"","base":"C","sub":"2","italic":true},"R1":{"prefix":"","base":"R","sub":"1","italic":true},"D1":{"prefix":"","base":"D","sub":"1","italic":true},"D2":{"prefix":"","base":"D","sub":"2","italic":true},"M1":{"prefix":"","base":"M","sub":"1","italic":true},"M2":{"prefix":"","base":"M","sub":"2","italic":true},"M3":{"prefix":"","base":"M","sub":"3","italic":true},"M4":{"prefix":"","base":"M","sub":"4","italic":true},"M5":{"prefix":"","base":"M","sub":"5","italic":true},"INV1":{"prefix":"","base":"INV","sub":"1","italic":false},"INV2":{"prefix":"","base":"INV","sub":"2","italic":false},"INV3":{"prefix":"","base":"INV","sub":"3","italic":false},"RFOUT":{"prefix":"","base":"RF","sub":"OUT","italic":false},"REFIN":{"prefix":"","base":"REF","sub":"IN","italic":false},"CP_OUT":{"prefix":"","base":"CP","sub":"OUT","italic":false},"DOUT":{"prefix":"","base":"D","sub":"OUT","italic":true},"DFF1":{"prefix":"","base":"DFF","sub":"1","italic":false},"DFF2":{"prefix":"","base":"DFF","sub":"2","italic":false},"DB22":{"prefix":"","base":"DB","sub":"22","italic":false},"Vosc":{"prefix":"","base":"V","sub":"osc","italic":true},"Idrive":{"prefix":"","base":"I","sub":"drive","italic":true},"I_drive":{"prefix":"","base":"I","sub":"drive","italic":true},"C_L":{"prefix":"","base":"C","sub":"L","italic":true},"Vp":{"prefix":"","base":"V","sub":"p","italic":true},"Vn":{"prefix":"","base":"V","sub":"n","italic":true},"fmin":{"prefix":"","base":"f","sub":"min","italic":true},"fmax":{"prefix":"","base":"f","sub":"max","italic":true},"ton":{"prefix":"","base":"t","sub":"on","italic":true},"td":{"prefix":"","base":"t","sub":"d","italic":true},"tON":{"prefix":"","base":"t","sub":"ON","italic":true},"Td":{"prefix":"","base":"T","sub":"d","italic":true},"Vpp":{"prefix":"","base":"V","sub":"pp","italic":true},"Cfix":{"prefix":"","base":"C","sub":"fix","italic":true},"Cb":{"prefix":"","base":"C","sub":"b","italic":true},"Rp":{"prefix":"","base":"R","sub":"p","italic":true},"Rneg":{"prefix":"","base":"R","sub":"neg","italic":true}};
+ const keys=Object.keys(specs).sort((a,b)=>b.length-a.length);
+ const esc=s=>s.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&');
+ const re=new RegExp('(^|[^A-Za-z0-9_])('+keys.map(esc).join('|')+')(?=$|[^A-Za-z0-9_])','g');
+ function makePiece(parent,tag,attrs,text){
+   const el=parent.namespaceURI==='http://www.w3.org/2000/svg'?document.createElementNS('http://www.w3.org/2000/svg',tag):document.createElement(tag);
+   Object.entries(attrs||{}).forEach(([k,v])=>el.setAttribute(k,v));
+   el.textContent=text;return el;
+ }
+ function formatNode(node){
+   if(!node||node.nodeType!==Node.TEXT_NODE||!node.parentNode)return;
+   const p=node.parentElement;
+   if(!p||p.closest('script,style,code,pre,noscript,mjx-container'))return;
+   const raw=node.nodeValue;
+   re.lastIndex=0;
+   const matches=[...raw.matchAll(re)];
+   if(!matches.length)return;
+   const svg=!!p.closest('svg');
+   const frag=document.createDocumentFragment();let last=0;
+   for(const m of matches){
+     const start=m.index+m[1].length, end=start+m[2].length;
+     if(start>last)frag.appendChild(document.createTextNode(raw.slice(last,start)));
+     const s=specs[m[2]];
+     if(s.prefix)frag.appendChild(document.createTextNode(s.prefix));
+     if(s.base){
+       if(svg)frag.appendChild(makePiece(p,'tspan',{'font-style':s.italic?'italic':'normal'},s.base));
+       else if(s.italic){const i=document.createElement('i');i.textContent=s.base;frag.appendChild(i);}
+       else frag.appendChild(document.createTextNode(s.base));
+     }
+     if(s.sub){
+       if(svg)frag.appendChild(makePiece(p,'tspan',{'baseline-shift':'sub','font-size':'70%'},s.sub));
+       else {const sub=document.createElement('sub');sub.className='inline-math-sub';sub.textContent=s.sub;frag.appendChild(sub);}
+     }
+     last=end;
+   }
+   if(last<raw.length)frag.appendChild(document.createTextNode(raw.slice(last)));
+   node.parentNode.replaceChild(frag,node);
+ }
+ function walk(root){
+   if(!root)return;
+   if(root.nodeType===Node.TEXT_NODE){formatNode(root);return;}
+   if(root.nodeType===Node.ELEMENT_NODE&&root.matches('script,style,code,pre,noscript,mjx-container'))return;
+   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+   const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+   nodes.forEach(formatNode);
+ }
+ walk(document.body);
+ const observer=new MutationObserver(records=>{
+   observer.disconnect();
+   for(const r of records){
+     if(r.type==='characterData')formatNode(r.target);
+     else r.addedNodes.forEach(walk);
+   }
+   observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+ });
+ observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+})();
+</script></body></html>
