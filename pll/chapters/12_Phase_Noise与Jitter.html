@@ -252,7 +252,7 @@ function walk(root){if(!root)return;if(root.nodeType===3){fmt(root);return}if(ro
   const svg=$("plotHist6");svg.replaceChildren();svg.setAttribute("viewBox","0 0 900 330");const x0=78,x1=866,y0=34,y1=252,maxC=Math.max(...counts,1);
   for(let i=0;i<=4;i++){const y=y0+(y1-y0)*i/4;node(svg,"line",{x1:x0,y1:y,x2:x1,y2:y,stroke:"#e4ebef"});node(svg,"text",{x:x0-10,y:y+4,"font-size":11,"text-anchor":"end",fill:"#607588"},fmt(maxC*(1-i/4),0));}
   const bw=(x1-x0)/bins;counts.forEach((c,i)=>node(svg,"rect",{x:x0+i*bw+1,y:y1-c/maxC*(y1-y0),width:Math.max(1,bw-2),height:c/maxC*(y1-y0),fill:"#7fa5bc"}));
-  node(svg,"line",{x1:x0,y1:y1,x2:x1,y2:y1,stroke:"#718696"});node(svg,"text",{x:(x0+x1)/2,y:286,"font-size":12,"text-anchor":"middle",fill:"#607588"},"TIE（ps）");node(svg,"text",{x:x0,y:17,"font-size":11,fill:"#607588"},"样本数");
+  node(svg,"line",{x1:x0,y1:y1,x2:x1,y2:y1,stroke:"#718696"});for(let i=0;i<=4;i++){const x=x0+(x1-x0)*i/4;node(svg,"text",{x,y:y1+18,"font-size":11,"text-anchor":"middle",fill:"#607588"},fmt(min+(max-min)*i/4,1));}node(svg,"text",{x:(x0+x1)/2,y:286,"font-size":12,"text-anchor":"middle",fill:"#607588"},"TIE（ps）");node(svg,"text",{x:x0,y:17,"font-size":11,fill:"#607588"},"样本数");
  }
  function renderPllIntegral(){
   const f0=val("f012")*1e6,lo=val("lo12")*1e3,hi=Math.max(val("hi12")*1e3,lo*1.001);
