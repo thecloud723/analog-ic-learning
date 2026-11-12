@@ -11,13 +11,15 @@
 
 ## 当前已归档的原始图像
 
-| 原始文件 | 来源/图号 | 页面使用副本 | 许可与备注 |
-|---|---|---|---|
-| `originals/jku/jku-fig-pll-block-diagram.svg` | JKU RFIC, Figure 74 | `pll/assets/jku-fig-pll-block-diagram.svg` | 上游仓库声明 Apache-2.0；保留来源与许可 |
-| `originals/jku/jku-fig-pll-pfd-cp.svg` | JKU RFIC, Figure 83 | `pll/assets/jku-fig-pll-pfd-cp.svg` | 上游仓库声明 Apache-2.0；保留来源与许可 |
+| 文件 | 来源/图号 | 状态 |
+|---|---|---|
+| `originals/jku/fig_074.png` 至 `fig_098.png` | JKU RFIC Figures 74–98，共 25 张高分辨率裁切图 | 已推送；图号、PDF页码、图注及章节映射见 `FIGURE_MANIFEST.csv` |
+| `originals/jku/LICENSE`、`CITATION.cff` | JKU 上游仓库 | 已推送，随图保留 |
 
-## 尚未在当前仓库文件树中找到
+页面当前实际引用的两张 SVG 副本在 `pll/assets/`。这 25 张 PNG 作为原图素材单独存档；后续刷新 HTML 后，只把实际引用的图复制到 `pll/assets/`。
 
-先前下载记录提到 JKU Figures 74–98 的裁切图、JKU RFIC PDF、ADI MT-086/ADF4351、TI SNAA106C/SNAA336A 以及 ADI PLL Fundamentals 页面资料；当前 main 分支中除上表两张 JKU SVG 外，尚未看到这些文件。收到文件后放入本目录对应的 originals/source-pdfs 子目录，再把页面实际引用的副本放入 `pll/assets/`。
+## 其他来源文件
+
+ADI、TI、JKU 的原始 PDF 和 ADI 网页快照已有本地下载记录；本次提交仅推送了 25 张原图及 JKU 许可/引用文件。PDF 和网页快照仍需按本目录结构另行入库。
 
 原始来源链接和使用说明见 `SOURCES.md`。私有仓库保存只用于个人学习归档；是否可以对外分发仍需按每项资料的许可证确认。
