@@ -109,7 +109,7 @@ JKU PLL Figure 89 是连续时间一阶 Delta-Sigma 图，当前课程内容主�
 7. MDPI 65 nm LC-DCO 论文 PDF。
 8. ADI AN143。
 
-下一批工作：
+下一批工作详见 [TASK_PLL_NEXT_BATCH.md](../materials/TASK_PLL_NEXT_BATCH.md)：
 
 - 将上述 8 份 PDF 归档到 materials/pll/source-pdfs/，记录文件大小、版本、来源 URL 和下载日期。
 - 提取 ADF4351 功能框图（PDF 第 1 页）及 Figure 18（第 11 页）。
