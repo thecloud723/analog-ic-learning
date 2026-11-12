@@ -10,7 +10,7 @@
 | S02 | ADI MT-086 | PDF 已下载，待入库和提取 Figure 3A | 计划放入 pll/source-pdfs/adi/ | [ADI MT-086](https://www.analog.com/media/en/training-seminars/tutorials/MT-086.pdf) |
 | S03 | ADI PLL Fundamentals | 原网页来源已记录；离线网页快照尚待保存和入库 | 计划放入 materials/pll/originals/adi/ | [Analog Dialogue](https://www.analog.com/en/resources/analog-dialogue/articles/phase-locked-loop-pll-fundamentals.html) |
 | S04 | TI PLL Performance, Simulation, and Design | SNAA106C PDF 已下载，待入库；锁定时间图号/页码待核对 | 计划放入 pll/source-pdfs/ti/ | [TI SNAA106C](https://www.ti.com/lit/ml/snaa106c/snaa106c.pdf) |
-| S05 | ADI ADF4351 数据手册 | PDF 已下载，待入库；功能框图和 Figure 18 待提取 | 计划放入 pll/source-pdfs/adi/ | [ADI ADF4351](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf) |
+| S05 | ADI ADF4351 数据手册 | PDF 已下载待入库；官方 Figure 1 已定位，尚未下载本地图片；Figure 18 待提取 | 计划放入 pll/source-pdfs/adi/；Figure 1 原图直链：https://mds.analog.com/api/public/content/adf4351-fbl.png | [ADI ADF4351](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf) |
 | S06 | TI LMX2594 数据手册及校准资料 | SNAA336A 和 LMX2594 PDF 均已下载，待入库；Figure 1-4/功能框图待提取 | 计划放入 pll/source-pdfs/ti/ | [TI SNAA336A](https://www.ti.com/lit/an/snaa336a/snaa336a.pdf) · [LMX2594 产品页](https://www.ti.com/product/LMX2594) |
 | S07 | JKU RFIC GitHub 源码 | PLL 2 张 SVG 已用于第 1 章；Oscillators 7 张 SVG 已归档并用于第 8 章；完整源码归档待核实 | [页面资源目录](../pll/assets/) · [原始归档](pll/originals/jku/) | [JKU 上游仓库](https://github.com/iic-jku/radio-frequency-integrated-circuits) |
 | S08 | Staszewski ADPLL 课件 | IEEE 下载地址本次返回 503；仍待获取和授权核对 | 计划放入 pll/source-pdfs/papers/ | [原始下载地址](https://ewh.ieee.org/soc/cas/dallas/documents/Sem-022107-stas_adpll.pdf) |
