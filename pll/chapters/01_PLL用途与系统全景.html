@@ -236,6 +236,10 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <div class="tile"><b>环路带宽 / Phase Margin</b><p class="small">小信号模型、仿真或环路响应测量；要说明是开环交越还是闭环 −3 dB 带宽。</p></div>
 </div>
 <h3>怎样读 PLL 输出相位噪声图</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%, 250px),1fr));gap:16px;align-items:start"><figure style="margin:0"><h4>图 1 · 从载波看频谱</h4><img src="../assets/originals/adi/mt008-fig1.png" alt="ADI MT-008 图 1，从载波看频谱" loading="lazy" style="display:block;width:100%;height:auto"><figcaption>先找最高的载波尖线 f₀，再看它右侧。红框标的是用来说明噪声密度的 1 Hz 带宽。频偏 Δf 是从载波中心到这个测量位置的距离。</figcaption></figure><figure style="margin:0"><h4>图 3 · 改用频偏作横轴</h4><img src="../assets/originals/adi/mt008-fig3.png" alt="ADI MT-008 图 3，改用频偏作横轴" loading="lazy" style="display:block;width:100%;height:auto"><figcaption>把载波中心当作零点，只画右侧的噪声裙边。横轴每格按倍数展开，纵轴读相对于载波的单边带噪声密度。这里可以看到近端斜坡和远端噪声底。</figcaption></figure><figure style="margin:0"><h4>图 4 · 把指定频段换算为抖动</h4><img src="../assets/originals/adi/mt008-fig4.png" alt="ADI MT-008 图 4，把指定频段换算为抖动" loading="lazy" style="display:block;width:100%;height:auto"><figcaption>A₁ 到 A₄ 是按线性噪声功率密度积分的分段示意。原图采用 100 MHz 输出载波。教材下方另用 1.6 GHz 输出举例，积分上下限按该例的测试条件指定。</figcaption></figure></div>
+<p class="figcap">来源：<a href="https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf">Analog Devices MT-008，图 1、3、4</a>。</p>
+<h4>用 1.6 GHz PLL 输出读一次</h4>
+
 <p><strong>先看测试条件。</strong>沿用前面的整数 N 例题：参考时钟 100 MHz，反馈分频比 N = 16，参考侧和输出侧都假设没有额外分频，锁定后的输出载波为 1.6 GHz。这张图只画这一个工作点。后面的分频滑块可计算 0.4–3.2 GHz 的目标频率，实际芯片可锁定的范围还取决于 VCO 调谐范围和分频设置。</p>
 <div class="figure"><svg class="plot" role="img" aria-label="1.6 GHz 输出载波的教学相位噪声曲线，100 kHz 偏移处约为 −112 dBc/Hz" viewBox="0 0 900 315">
 <rect x="88" y="24" width="740" height="240" fill="#fff" stroke="#d5dde3"/><g stroke="#e6eaed"><path d="M88 24V264"/><path d="M236 24V264"/><path d="M384 24V264"/><path d="M532 24V264"/><path d="M680 24V264"/><path d="M828 24V264"/><path d="M88 24H828"/><path d="M88 84H828"/><path d="M88 144H828"/><path d="M88 204H828"/><path d="M88 264H828"/></g>
