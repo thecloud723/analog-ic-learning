@@ -1,5 +1,18 @@
 # PLL 素材下载清单
 
+## 本轮补图结果
+
+| 章 | 正文使用的本地原图 |
+| --- | --- |
+| 01、18 | ADI ADF4351 Fig.1 功能框图 |
+| 11 | TI SNAA336A Fig.2-2 跳频与校准曲线 |
+| 13 | ADI AN143 Fig.3 参考杂散频谱 |
+| 15 | JKU Fig.89，作为连续时间 ΔΣ 与数字 Fig.90 的对照 |
+| 17 | Liang、Liu、Gan Fig.6，0.11 µm CMOS DTC 电路。FPGA Fig.4 留在原始素材目录。 |
+
+原图路径和来源见 FIGURE_MANIFEST.csv。以下内容记录本轮补图前的状态。
+
+
 核对日期：2026-11-12。S 编号沿用原始资料需求，P 编号沿用原始插图需求。详细图片使用状态见 [PLL 全部图片盘点](../pll/FIGURE_REPLACEMENT_AUDIT.md)，下一项 Work 任务见 [TASK_PLL_NEXT_BATCH.md](TASK_PLL_NEXT_BATCH.md)。
 
 ## 按原始下载需求核对

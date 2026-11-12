@@ -6,6 +6,7 @@
 
 **[从第 1 章开始 PLL 交互课程](chapters/01_PLL用途与系统全景.html)**
 
+- [章节页面模板](PAGE_TEMPLATE.md)
 - [章节进度与验收记录](PROGRESS.md)
 - [参考资料索引](REFERENCES.md)
 - [第 11–13 章资料与模型说明](REFERENCES_11_13.md)

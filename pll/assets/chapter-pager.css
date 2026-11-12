@@ -1,0 +1,9 @@
+.sidebar-toggle:focus-visible,.lesson-tab:focus-visible,.pager-btn:focus-visible{outline:2px solid #2480b9;outline-offset:2px}
+.lesson-footer{display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid #d9e1e7;margin-top:18px;padding:19px 0 0}
+.pager-btn{border:1px solid #bdcdd8;background:white;color:#255a7c;border-radius:8px;min-height:42px;padding:10px 16px;font:700 13px/1.4 system-ui,'Noto Sans SC',sans-serif;cursor:pointer;max-width:46%;text-align:center}
+.pager-btn.next{background:#245f8f;color:white;border-color:#245f8f}
+.pager-btn:disabled{opacity:.4;cursor:not-allowed;background:#eef1f3;color:#6f7d88;border-color:#dbe1e5}
+.lesson-page-indicator{font-size:13px;color:#667989;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:760px){ .lesson-footer{gap:6px}
+ .pager-btn{max-width:43%;font-size:12px;padding:8px 9px;min-height:40px}
+ .lesson-page-indicator{font-size:12px}}
