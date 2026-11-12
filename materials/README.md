@@ -1,6 +1,6 @@
 # PLL 素材下载清单
 
-核对日期：2026-11-12。S 编号沿用原始资料需求，P 编号沿用原始插图需求。详细图片使用状态见 [PLL 全部图片盘点](../pll/FIGURE_REPLACEMENT_AUDIT.md)，下一项 Work 下载任务见 [TASK_PLL_IMAGE_REFRESH.md](TASK_PLL_IMAGE_REFRESH.md)。
+核对日期：2026-11-12。S 编号沿用原始资料需求，P 编号沿用原始插图需求。详细图片使用状态见 [PLL 全部图片盘点](../pll/FIGURE_REPLACEMENT_AUDIT.md)，下一项 Work 任务见 [TASK_PLL_NEXT_BATCH.md](TASK_PLL_NEXT_BATCH.md)。
 
 ## 按原始下载需求核对
 
@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- |
 | S01 | JKU RFIC 教材 PLL 章 | 25 张 PDF 裁切 PNG 已归档，其中 24 张已复制到页面资源并被 HTML 引用；Fig.89 保留为候选。完整 rfic.pdf 已下载，待入库 | 原图在 materials/pll/originals/jku/；页面副本在 pll/assets/originals/jku/；PDF 计划放入 materials/pll/source-pdfs/jku/ | [JKU PLL 章节](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) |
 | S02 | ADI MT-086 | PDF 已下载，待入库和提取 Figure 3A | 计划放入 pll/source-pdfs/adi/ | [ADI MT-086](https://www.analog.com/media/en/training-seminars/tutorials/MT-086.pdf) |
-| S03 | ADI PLL Fundamentals | 有网页快照下载记录，待入库 | 计划放入 pll/originals/adi/ | [Analog Dialogue](https://www.analog.com/en/resources/analog-dialogue/articles/phase-locked-loop-pll-fundamentals.html) |
+| S03 | ADI PLL Fundamentals | 原网页来源已记录；离线网页快照尚待保存和入库 | 计划放入 materials/pll/originals/adi/ | [Analog Dialogue](https://www.analog.com/en/resources/analog-dialogue/articles/phase-locked-loop-pll-fundamentals.html) |
 | S04 | TI PLL Performance, Simulation, and Design | SNAA106C PDF 已下载，待入库；锁定时间图号/页码待核对 | 计划放入 pll/source-pdfs/ti/ | [TI SNAA106C](https://www.ti.com/lit/ml/snaa106c/snaa106c.pdf) |
 | S05 | ADI ADF4351 数据手册 | PDF 已下载，待入库；功能框图和 Figure 18 待提取 | 计划放入 pll/source-pdfs/adi/ | [ADI ADF4351](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf) |
 | S06 | TI LMX2594 数据手册及校准资料 | SNAA336A 和 LMX2594 PDF 均已下载，待入库；Figure 1-4/功能框图待提取 | 计划放入 pll/source-pdfs/ti/ | [TI SNAA336A](https://www.ti.com/lit/an/snaa336a/snaa336a.pdf) · [LMX2594 产品页](https://www.ti.com/product/LMX2594) |
