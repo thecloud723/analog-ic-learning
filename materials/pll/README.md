@@ -47,7 +47,7 @@
 - 厂商原图：ADF4351 功能框图和 Figure 18、MT-086 Figure 3A、AN143 Figure 3、LMX2594 功能框图、SNAA336A Figure 1-4 等尚待从 PDF 提取。
 - SNAA106C 的锁定时间曲线图号和页码仍待核对。
 
-具体执行步骤见 materials/TASK_PLL_IMAGE_REFRESH.md；逐图状态以 FIGURE_MANIFEST.csv 为准。
+具体执行步骤见 materials/TASK_PLL_NEXT_BATCH.md；首轮任务记录见 materials/TASK_PLL_IMAGE_REFRESH.md；逐图状态以 FIGURE_MANIFEST.csv 为准。
 
 ## 授权说明
 
