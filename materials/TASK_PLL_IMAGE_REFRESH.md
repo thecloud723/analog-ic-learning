@@ -13,6 +13,12 @@
 
 已检查新增相对路径与提交中的图片一一对应。Edge、手机和 18 章实际离线打开尚未验证。
 
+### 第一章专项复核（2026-11-12）
+
+- Figure 74、83 的 JKU 原始 SVG 已在 `pll/assets/`，并已被第一章 HTML 引用；此前因图片 CSS 默认 `display:none` 且使用 `loading=lazy`，原图可能无法触发加载，页面一直显示自绘 fallback。
+- 已修复：原图现在默认显示、取消 lazy-load，fallback 默认隐藏，仅在原图加载失败时出现。代码已提交；仍需 Edge/手机实际打开验证。
+- ADF4351 商业芯片框图仍是课程教学复绘，并非原厂原图。已定位 ADI 官方 Data Sheet Rev.A Figure 1 的图片直链 `https://mds.analog.com/api/public/content/adf4351-fbl.png`（PDF 第 1 页）；尚未下载为本地文件、归档和替换。该图版权/再分发许可需单独核查。
+
 ### 下一批待办
 
 本文件下载表沿用本任务的编号，材料清单沿用原始需求编号。后续以资料名和 URL 对照。
