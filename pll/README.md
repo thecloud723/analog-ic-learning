@@ -13,6 +13,7 @@
 - [工程案例补充说明](ENGINEERING_CASES.md)
 - [行内数学符号修订记录](MATH_RENDERING_CHANGELOG.md)
 - [第 12 章曲线互动实验改造记录](CH12_CURVE_INTERACTION_AUDIT.md)
+- [第 10、11、13、15 章曲线互动改造记录](CH10_11_13_15_CURVE_INTERACTION_AUDIT.md)
 
 ## 章节目录
 
