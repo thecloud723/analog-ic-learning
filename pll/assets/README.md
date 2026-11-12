@@ -24,3 +24,7 @@
 3. HTML 只引用 pll/assets/ 下的相对路径，不使用在线 CDN 或远程图片地址。
 4. 更新 materials/pll/FIGURE_MANIFEST.csv，记录原始来源、许可证、处理方式、引用章节和页面路径。
 5. 交互实验、动态曲线和由输入参数实时生成的图不替换为静态截图。
+
+## 2026-11-12 新增本地引用
+
+共新增 35 个页面资源文件，分别位于 `originals/jku/`、`originals/jku-oscillators/`、`originals/mdpi/` 和 `originals/mdpi-dtc/`。逐图路径、来源和章节见[材料清单](../../materials/README.md)。

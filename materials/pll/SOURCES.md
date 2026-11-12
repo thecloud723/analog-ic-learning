@@ -41,3 +41,11 @@
 - 论文实测数据、厂商典型值、教学仿真值分别标注。
 - 每条引用尽量记录具体图号、表号、页码和访问日期。
 - 页面实际使用的图片必须放入 pll/assets/，未使用的原始资料放入 materials/pll/。
+
+## 本轮新增来源
+
+- [JKU Oscillators](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator.html)，Fig. 60、61、69–73，Apache-2.0。保留上游 SVG，许可和引用文件位于 `originals/jku/`。
+- [Biereigel et al.](https://doi.org/10.3390/electronics10222741)，Fig. 3、4、7，CC BY 4.0。保留出版商 PNG。
+- [Chenggang Yan、Chen Hu、Jianhui Wu](https://doi.org/10.3390/app9132705)，Fig. 4，CC BY 4.0。保留出版商 550 px JPEG。
+
+下载日期 2026-11-12。逐图链接及 PDF 下载状态见[材料清单](../README.md)。
