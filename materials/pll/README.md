@@ -44,7 +44,7 @@
 - JKU 上游源码：完整源码归档状态待核实；已使用图片的 LICENSE/CITATION 需保留。
 - Staszewski ADPLL 课件：当前 IEEE 下载地址返回 503，需寻找作者或机构的可靠替代来源。
 - ASIC ADPLL DTC：仍缺与分数相位补偿路径对应的 ASIC DTC 电路和增益校准原图。已归档的 FPGA Vernier DTC Figure 4 只能作为可编程延迟线实现例，不能替代 ASIC 图。
-- 厂商原图：ADF4351 功能框图和 Figure 18、MT-086 Figure 3A、AN143 Figure 3、LMX2594 功能框图、SNAA336A Figure 1-4 等尚待从 PDF 提取。
+- 厂商原图：ADF4351 官方 Figure 1 已定位到 `https://mds.analog.com/api/public/content/adf4351-fbl.png`，但尚未下载归档、授权核对和替换第 1 章复绘；ADF4351 Figure 18、MT-086 Figure 3A、AN143 Figure 3、LMX2594 功能框图、SNAA336A Figure 1-4 等仍待提取。
 - SNAA106C 的锁定时间曲线图号和页码仍待核对。
 
 具体执行步骤见 materials/TASK_PLL_NEXT_BATCH.md；首轮任务记录见 materials/TASK_PLL_IMAGE_REFRESH.md；逐图状态以 FIGURE_MANIFEST.csv 为准。
