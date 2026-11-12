@@ -91,7 +91,7 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 .equation-svg svg{max-width:none;display:block;margin:0 auto;}
 @media(max-width:640px){.equation-svg mjx-container{font-size:100%;}.formula,.fdef{padding:10px 8px}}
 @media(max-width:360px){.equation-svg mjx-container{font-size:95%;}}
-</style><style id="engineering-style">
+.figure-fallback{padding:14px;border:1px dashed #c28a3e;border-radius:5px;color:#8a5a22;background:#fbf6ed;font-size:13px}</style><style id="engineering-style">
 /* 工程案例的版式：正文优先，不加入装饰性标签 */
 .eng-case{margin:22px 0;padding:18px 18px 16px;border:1px solid #d2e0e9;border-radius:7px;background:#fbfdfe}
 .eng-case h3{margin:0 0 9px!important;font-size:18px!important;color:#244f6d}
@@ -163,33 +163,7 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <p>采用 JKU《Radio-Frequency Integrated Circuits》中的基本 PLL 拓扑。框图包含相位检测器、环路滤波器、压控振荡器和反馈分频器。点击模块可查看接口和功能。</p>
 <div class="figure diagram">
 <img alt="JKU Figure 74 original PLL block diagram" class="original-image" id="jkuFig74"/>
-<div id="fig74Fallback" style="display:none">
-<svg aria-label="基本PLL框图：参考时钟进入相位检测器，经过环路滤波器控制VCO，VCO输出分支，一路作为输出，一路经N分频反馈到相位检测器" role="img" viewbox="0 0 1040 380">
-<defs><marker id="arr1" markerheight="9" markerwidth="9" orient="auto" refx="7" refy="4.5"><path d="M0 0 L9 4.5 L0 9 Z" fill="#263746"></path></marker></defs>
-<!-- main path -->
-<path class="wire" d="M30 116 H190" marker-end="url(#arr1)"></path>
-<path class="wire" d="M330 116 H430" marker-end="url(#arr1)"></path>
-<path class="wire" d="M580 116 H690" marker-end="url(#arr1)"></path>
-<path class="wire" d="M840 116 H1000" marker-end="url(#arr1)"></path>
-<!-- feedback path -->
-<path class="wire" d="M900 116 V292 H700"></path>
-<path class="wire" d="M570 292 H260 V157" marker-end="url(#arr1)"></path>
-<circle class="dot" cx="900" cy="116" r="4.5"></circle>
-<!-- blocks -->
-<g class="hot" data-part="pd" role="button" tabindex="0"><rect class="block" height="82" width="140" x="190" y="75"></rect><text class="label" x="260" y="108">PD</text><text class="sub" x="260" y="131">Phase Detector</text></g>
-<g class="hot" data-part="lf" role="button" tabindex="0"><rect class="block" height="82" width="150" x="430" y="75"></rect><text class="label" x="505" y="108">Loop Filter</text><text class="sub" x="505" y="131">H(s)</text></g>
-<g class="hot" data-part="vco" role="button" tabindex="0"><rect class="block" height="82" width="150" x="690" y="75"></rect><text class="label" x="765" y="108">VCO</text><text class="sub" x="765" y="131">Voltage → Frequency</text></g>
-<g class="hot" data-part="div" role="button" tabindex="0"><rect class="block" height="78" width="130" x="570" y="253"></rect><text class="label" x="635" y="284">÷ N</text><text class="sub" x="635" y="307">Feedback Divider</text></g>
-<!-- labels -->
-<text class="wirelabel" x="30" y="94">Reference clock</text><text class="wirelabel" x="30" y="143"><tspan font-style="italic">φ</tspan><tspan baseline-shift="sub" font-size="70%">ref</tspan> / <tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">REF</tspan></text>
-<text class="wirelabel" x="350" y="94">Phase error</text><text class="wirelabel" x="600" y="94"><tspan font-style="italic">V</tspan><tspan baseline-shift="sub" font-size="70%">ctrl</tspan></text>
-<text class="wirelabel" x="930" y="94">Output</text><text class="wirelabel" x="930" y="143"><tspan font-style="italic">φ</tspan><tspan baseline-shift="sub" font-size="70%">out</tspan> / <tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">OUT</tspan></text>
-<text class="wirelabel" x="720" y="278">Feedback: <tspan font-style="italic">φ</tspan><tspan baseline-shift="sub" font-size="70%">out</tspan>/N, <tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">OUT</tspan>/N</text>
-<text class="wirelabel" x="282" y="274">Feedback input</text>
-<text fill="#5d6e7b" font-size="12" text-anchor="middle" x="260" y="195">−</text>
-<text fill="#5d6e7b" font-size="12" text-anchor="middle" x="260" y="69">+</text>
-<text fill="#687987" font-size="12" text-anchor="middle" x="520" y="358">负反馈：输出变化 → 分频反馈 → 相位比较 → 调整 VCO</text>
-</svg></div>
+<div id="fig74Fallback" class="figure-fallback" style="display:none">JKU Figure 74 原图加载失败，请检查本地资源路径。</div>
 <div class="source-switch" id="fig74Status"><span id="fig74State">正在加载 JKU Figure 74 原图…</span> <a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-output-1.svg" rel="noopener" target="_blank">在新窗口打开原图</a></div>
 </div>
 <div class="figcap">图 1-1. 基本 PLL 架构（JKU RFIC Figure 74 原始 SVG，离线本地副本）。实际相位检测器的极性、信号表示和模块实现随架构而异。</div>
@@ -208,20 +182,7 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <p>CP-PLL 采用鉴频鉴相器（PFD）产生 UP/DOWN 脉冲，电荷泵将脉冲转换为充放电电流，环路滤波器产生 VCO 控制电压，输出经分频后反馈至 PFD。</p>
 <div class="figure diagram">
 <img alt="JKU Figure 83 original PFD charge-pump PLL diagram" class="original-image" id="jkuFig83"/>
-<div id="fig83Fallback" style="display:none">
-<svg aria-label="PFD电荷泵PLL系统框图" role="img" viewbox="0 0 1080 410">
-<defs><marker id="arr2" markerheight="9" markerwidth="9" orient="auto" refx="7" refy="4.5"><path d="M0 0 L9 4.5 L0 9 Z" fill="#263746"></path></marker></defs>
-<path class="wire" d="M25 116 H165" marker-end="url(#arr2)"></path><path class="wire" d="M295 116 H390" marker-end="url(#arr2)"></path><path class="wire" d="M520 116 H615" marker-end="url(#arr2)"></path><path class="wire" d="M755 116 H855" marker-end="url(#arr2)"></path><path class="wire" d="M995 116 H1060" marker-end="url(#arr2)"></path>
-<path class="wire" d="M1020 116 V310 H735"></path><path class="wire" d="M595 310 H230 V157" marker-end="url(#arr2)"></path><circle class="dot" cx="1020" cy="116" r="4.5"></circle>
-<g class="hot" data-part="pfd" role="button" tabindex="0"><rect class="block" height="82" width="130" x="165" y="75"></rect><text class="label" x="230" y="108">PFD</text><text class="sub" x="230" y="131">UP / DOWN</text></g>
-<g class="hot" data-part="cp" role="button" tabindex="0"><rect class="block" height="82" width="130" x="390" y="75"></rect><text class="label" x="455" y="108">CP</text><text class="sub" x="455" y="131">± <tspan font-style="italic">I</tspan><tspan baseline-shift="sub" font-size="70%">CP</tspan></text></g>
-<g class="hot" data-part="lf" role="button" tabindex="0"><rect class="block" height="82" width="140" x="615" y="75"></rect><text class="label" x="685" y="108">Loop Filter</text><text class="sub" x="685" y="131">R / C network</text></g>
-<g class="hot" data-part="vco" role="button" tabindex="0"><rect class="block" height="82" width="140" x="855" y="75"></rect><text class="label" x="925" y="108">VCO</text><text class="sub" x="925" y="131"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">OUT</tspan></text></g>
-<g class="hot" data-part="div" role="button" tabindex="0"><rect class="block" height="80" width="140" x="595" y="270"></rect><text class="label" x="665" y="302">÷ N</text><text class="sub" x="665" y="325">Feedback</text></g>
-<text class="wirelabel" x="25" y="94">REF</text><text class="wirelabel" x="25" y="143"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">REF</tspan></text><text class="wirelabel" text-anchor="end" x="1060" y="94">Clock output</text><text class="wirelabel" text-anchor="end" x="1060" y="143"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">OUT</tspan></text><text class="wirelabel" x="313" y="95">UP / DN</text><text class="wirelabel" x="540" y="95"><tspan font-style="italic">I</tspan><tspan baseline-shift="sub" font-size="70%">CP</tspan></text><text class="wirelabel" x="780" y="95"><tspan font-style="italic">V</tspan><tspan baseline-shift="sub" font-size="70%">ctrl</tspan></text><text class="wirelabel" x="770" y="295"><tspan font-style="italic">f</tspan><tspan baseline-shift="sub" font-size="70%">OUT</tspan> / N</text>
-<text fill="#5d6e7b" font-size="12" text-anchor="middle" x="230" y="195">FB</text><text fill="#5d6e7b" font-size="12" text-anchor="middle" x="230" y="69">REF</text>
-<text fill="#687987" font-size="12" text-anchor="middle" x="540" y="390">PFD 产生脉冲宽度 → CP 转换电荷 → LF 形成 <tspan font-style="italic">V</tspan><tspan baseline-shift="sub" font-size="70%">ctrl</tspan> → VCO 改变频率</text>
-</svg></div>
+<div id="fig83Fallback" class="figure-fallback" style="display:none">JKU Figure 83 原图加载失败，请检查本地资源路径。</div>
 <div class="source-switch" id="fig83Status"><span id="fig83State">正在加载 JKU Figure 83 原图…</span> <a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-pfd-cp-output-1.svg" rel="noopener" target="_blank">查看上游原图</a></div>
 </div>
 <div class="figcap">图 1-2. PFD–CP–LF–VCO 闭环功能图（JKU RFIC Figure 83 原始 SVG，离线本地副本）。本章只讲系统功能，PFD 门级电路和 CP 电流源电路分别在第 6、7 章展开。</div>
