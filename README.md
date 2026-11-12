@@ -15,10 +15,12 @@
 
 ## 课程专题
 
+[打开课程首页](index.html)
+
 | 专题 | 入口 | 状态 |
 |---|---|---|
-| PLL | [打开 PLL 课程](pll/index.html) · [专题说明](pll/README.md) | <b>01–16 章已导入</b>，17–18 章待制作 |
-| SerDes | [专题目录](serdes/README.md) | 规划中 |
+| PLL | [打开 PLL 第 1 章](pll/chapters/01_PLL用途与系统全景.html) · [专题说明](pll/README.md) | 01–18 章已上线 |
+| SerDes | [打开 SerDes 教程](serdes/clock-recovery.html) | 已上线 |
 | 时钟与振荡器 | [专题目录](clocking/README.md) | 规划中 |
 | ADC / DAC | [专题目录](adc-dac/README.md) | 规划中 |
 | DDR / HBM | [专题目录](ddr-hbm/README.md) | 规划中 |
@@ -26,8 +28,8 @@
 
 ## PLL 当前内容
 
-- 16 个独立 HTML 页面。
-- 每章 8 个页签，共 128 个教学页签。
+- 18 个独立 HTML 页面。
+- 每章 8 个页签，共 144 个教学页签。
 - 第 01–13 章公式为内嵌 MathJax SVG；第 14–16 章采用浏览器原生 MathML，均不依赖在线公式库。
 - 页面样式与交互脚本内嵌，可离线打开。
 - 包含基础理论、真实工程案例、性能指标、测试方法和交互实验。

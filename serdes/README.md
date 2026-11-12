@@ -1,6 +1,6 @@
 # SerDes 专题
 
-状态：规划中。
+[打开 SerDes 链路与时钟恢复教程](clock-recovery.html)
 
 拟覆盖：
 - 高速串行链路基础：通道损耗、反射、串扰、眼图与 BER。

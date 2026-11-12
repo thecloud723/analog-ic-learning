@@ -1,14 +1,90 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="refresh" content="0;url=pll/index.html">
-<link rel="canonical" href="pll/index.html">
-<title>正在进入模拟与混合信号电路学习</title>
-<script>window.location.replace("pll/index.html");</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>模拟与混合信号电路学习</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      color: #17263a;
+      font: 16px/1.65 system-ui, "Microsoft YaHei", sans-serif;
+    }
+    main { max-width: 72rem; margin: auto; padding: clamp(2rem, 7vw, 5rem) 1.25rem; }
+    h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2; }
+    header p { margin: .75rem 0 2rem; color: #47566a; }
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+      gap: 1rem;
+    }
+    .card {
+      --accent: #2956a5;
+      --tint: #e4edff;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 11rem;
+      padding: 1.25rem;
+      border: 1px solid #d5dce7;
+      border-top: 4px solid var(--accent);
+      border-radius: 1rem;
+      background: linear-gradient(145deg, var(--tint), #fff);
+      color: inherit;
+      text-decoration: none;
+    }
+    .card h2 { margin: 0; font-size: 1.4rem; color: var(--accent); }
+    .card p { margin: .5rem 0 1rem; }
+    .card span { margin-top: auto; font-size: .9rem; font-weight: 650; color: var(--accent); }
+    a.card:hover { box-shadow: 0 5px 16px #17263a22; }
+    a.card:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .serdes { --accent: #08685e; --tint: #dff6ee; }
+    .clocking { --accent: #7841a1; --tint: #f2e7fc; }
+    .adc { --accent: #965019; --tint: #fff0dc; }
+    .ddr { --accent: #993759; --tint: #fde8ef; }
+    .die { --accent: #3e5c72; --tint: #e6eff6; }
+  </style>
 </head>
 <body>
-<p>正在进入课程目录……如果没有自动跳转，请<a href="pll/index.html">点击这里</a>。</p>
+  <main>
+    <header>
+      <h1>模拟与混合信号电路学习</h1>
+      <p>面向数字电路工程师的交互教程</p>
+    </header>
+    <div class="courses">
+      <a class="card" href="pll/chapters/01_PLL用途与系统全景.html">
+        <h2>PLL 锁相环</h2>
+        <p>锁相原理、环路响应、相位噪声与 ADPLL。</p>
+        <span>打开第 1 章 →</span>
+      </a>
+      <a class="card serdes" href="serdes/clock-recovery.html">
+        <h2>SerDes 与时钟恢复</h2>
+        <p>通道、眼图、均衡、采样与 CDR 闭环。</p>
+        <span>打开教程 →</span>
+      </a>
+      <article class="card clocking">
+        <h2>时钟与振荡器</h2>
+        <p>时钟源、振荡器与时钟分配。</p>
+        <span>规划中</span>
+      </article>
+      <article class="card adc">
+        <h2>ADC / DAC</h2>
+        <p>采样、量化与转换器指标。</p>
+        <span>规划中</span>
+      </article>
+      <article class="card ddr">
+        <h2>DDR / HBM</h2>
+        <p>存储器接口、时序与训练。</p>
+        <span>规划中</span>
+      </article>
+      <article class="card die">
+        <h2>Die-to-Die</h2>
+        <p>芯粒互连与接口 PHY。</p>
+        <span>规划中</span>
+      </article>
+    </div>
+  </main>
 </body>
 </html>
