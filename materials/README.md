@@ -6,27 +6,36 @@
 
 | 需求 | 资料 | 下载与入库状态 | 仓库路径或计划归档位置 | 来源 |
 | --- | --- | --- | --- | --- |
-| S01 | JKU RFIC 教材 PLL 章 | 25 张 PDF 裁切 PNG 已入库；完整 PDF 尚未入库 | PNG 在 pll/originals/jku/；PDF 计划放入 pll/source-pdfs/jku/ | [JKU PLL 章节](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) |
-| S02 | ADI MT-086 | 有 PDF 下载记录，待入库 | 计划放入 pll/source-pdfs/adi/ | [ADI MT-086](https://www.analog.com/media/en/training-seminars/tutorials/MT-086.pdf) |
+| S01 | JKU RFIC 教材 PLL 章 | 25 张 PDF 裁切 PNG 已归档，其中 24 张已复制到页面资源并被 HTML 引用；Fig.89 保留为候选。完整 rfic.pdf 已下载，待入库 | 原图在 materials/pll/originals/jku/；页面副本在 pll/assets/originals/jku/；PDF 计划放入 materials/pll/source-pdfs/jku/ | [JKU PLL 章节](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) |
+| S02 | ADI MT-086 | PDF 已下载，待入库和提取 Figure 3A | 计划放入 pll/source-pdfs/adi/ | [ADI MT-086](https://www.analog.com/media/en/training-seminars/tutorials/MT-086.pdf) |
 | S03 | ADI PLL Fundamentals | 有网页快照下载记录，待入库 | 计划放入 pll/originals/adi/ | [Analog Dialogue](https://www.analog.com/en/resources/analog-dialogue/articles/phase-locked-loop-pll-fundamentals.html) |
-| S04 | TI PLL Performance, Simulation, and Design | 有 SNAA106C PDF 下载记录，待入库 | 计划放入 pll/source-pdfs/ti/ | [TI SNAA106C](https://www.ti.com/lit/ml/snaa106c/snaa106c.pdf) |
-| S05 | ADI ADF4351 数据手册 | 有 PDF 下载记录，待入库 | 计划放入 pll/source-pdfs/adi/ | [ADI ADF4351](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf) |
-| S06 | TI LMX2594 数据手册及校准资料 | 有 SNAA336A 下载记录，待入库；数据手册下载待核实 | 计划放入 pll/source-pdfs/ti/ | [TI SNAA336A](https://www.ti.com/lit/an/snaa336a/snaa336a.pdf) · [LMX2594 产品页](https://www.ti.com/product/LMX2594) |
-| S07 | JKU RFIC GitHub 源码 | 已入库 2 张 SVG 页面资源副本、LICENSE、CITATION；完整源码归档待核实 | [页面资源目录](../pll/assets/) · [原始归档](pll/originals/jku/) | [JKU 上游仓库](https://github.com/iic-jku/radio-frequency-integrated-circuits) |
-| S08 | Staszewski ADPLL 课件 | 下载及入库待核实 | 计划放入 pll/source-pdfs/papers/ | [原始下载地址](https://ewh.ieee.org/soc/cas/dallas/documents/Sem-022107-stas_adpll.pdf) |
+| S04 | TI PLL Performance, Simulation, and Design | SNAA106C PDF 已下载，待入库；锁定时间图号/页码待核对 | 计划放入 pll/source-pdfs/ti/ | [TI SNAA106C](https://www.ti.com/lit/ml/snaa106c/snaa106c.pdf) |
+| S05 | ADI ADF4351 数据手册 | PDF 已下载，待入库；功能框图和 Figure 18 待提取 | 计划放入 pll/source-pdfs/adi/ | [ADI ADF4351](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf) |
+| S06 | TI LMX2594 数据手册及校准资料 | SNAA336A 和 LMX2594 PDF 均已下载，待入库；Figure 1-4/功能框图待提取 | 计划放入 pll/source-pdfs/ti/ | [TI SNAA336A](https://www.ti.com/lit/an/snaa336a/snaa336a.pdf) · [LMX2594 产品页](https://www.ti.com/product/LMX2594) |
+| S07 | JKU RFIC GitHub 源码 | PLL 2 张 SVG 已用于第 1 章；Oscillators 7 张 SVG 已归档并用于第 8 章；完整源码归档待核实 | [页面资源目录](../pll/assets/) · [原始归档](pll/originals/jku/) | [JKU 上游仓库](https://github.com/iic-jku/radio-frequency-integrated-circuits) |
+| S08 | Staszewski ADPLL 课件 | IEEE 下载地址本次返回 503；仍待获取和授权核对 | 计划放入 pll/source-pdfs/papers/ | [原始下载地址](https://ewh.ieee.org/soc/cas/dallas/documents/Sem-022107-stas_adpll.pdf) |
 | S09 | JKU RFIC Oscillators 章节 | 7 张上游 SVG 已归档并用于第 8 章 | [原图目录](pll/originals/jku-oscillators/) | [JKU Oscillators](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator.html) |
 | S10 | MDPI 65 nm LC-DCO 论文 | Fig. 3、4、7 已归档并在第 8 章本地展示；PDF 已下载待入库 | [原图目录](pll/originals/mdpi/) | [论文 DOI](https://doi.org/10.3390/electronics10222741) |
-| S11 | ADI AN143 Reference Spurs | 第 13 章有 Figure 3 数据复绘；原始 PDF 待入库 | 计划放入 pll/source-pdfs/adi/ | [ADI AN143 PDF](https://www.analog.com/media/en/technical-documentation/application-notes/AN143f.pdf) |
+| S11 | ADI AN143 Reference Spurs | PDF 已下载，待入库；Figure 3 待提取并核对复绘曲线条件 | 计划放入 pll/source-pdfs/adi/ | [ADI AN143 PDF](https://www.analog.com/media/en/technical-documentation/application-notes/AN143f.pdf) |
 | S12 | DTC 专项资料 | FPGA Vernier DTC Fig. 4 已归档并用于第 17 章；ASIC ADPLL DTC 原图待补 | [原图目录](pll/originals/mdpi-dtc/) | [论文 DOI](https://doi.org/10.3390/app9132705) |
 
 ## 已实际被章节 HTML 使用的图片
 
-目前确认的页面运行时原图只有以下两张，均在 pll/assets/，第 1 章通过相对路径加载：
+截至本次提交，18 章中有 14 章新增了本地原图引用，共 42 处引用、35 个新增页面资源文件。加上第 1 章原有的 2 张 JKU SVG，当前 pll/assets/ 下共有 **37 个页面资源文件**。其中 11 张是本轮新下载归档的原图，另外 24 张 JKU PLL PNG 是之前已归档的候选图，本轮复制到页面资源目录并实际使用。
 
-- JKU Figure 74：pll/assets/jku-fig-pll-block-diagram.svg
-- JKU Figure 83：pll/assets/jku-fig-pll-pfd-cp.svg
+| 来源 | 页面资源数量 | 使用章节 | 页面资源路径 |
+|---|---:|---|---|
+| JKU PLL Figures 74–88、90–98 | 24 张 PNG | 2、3、4、5、6、7、8、9、10、12、14、15、16、17 | pll/assets/originals/jku/ |
+| JKU PLL Figures 74、83 | 2 张 SVG | 1 | pll/assets/jku-fig-pll-block-diagram.svg、pll/assets/jku-fig-pll-pfd-cp.svg |
+| JKU Oscillators Figures 60、61、69–73 | 7 张 SVG | 8 | pll/assets/originals/jku-oscillators/ |
+| MDPI 65 nm LC-DCO Figures 3、4、7 | 3 张 PNG | 8 | pll/assets/originals/mdpi/ |
+| FPGA Vernier DTC Figure 4 | 1 张 JPEG | 17 | pll/assets/originals/mdpi-dtc/ |
 
-materials/pll/originals/jku/ 下的 25 张 PNG 是已下载候选图，不代表已经被 HTML 使用。第 8 章 MDPI Figure 3、4、7 目前只是来源超链接，并非本地显示图片。
+JKU PLL Figure 89 仍保留在 materials/pll/originals/jku/，当前 HTML 没有引用，因此状态仍是 archived_candidate。其余 24 张 JKU PLL PNG 已在 pll/assets/originals/jku/ 建立页面副本，并在章节中通过相对路径引用。
+
+第 8 章 MDPI Figure 3、4、7 已经是正文中的本地图片，不再依赖外链。第 17 章的 FPGA Vernier DTC Figure 4 是可编程延迟线实现例，不等同于本课程 ADPLL 分数相位补偿所需的 ASIC DTC 电路及增益校准图；后者仍缺。
+
+逐图原始归档路径、页面副本路径、图号、来源、状态和章节映射见 [FIGURE_MANIFEST.csv](pll/FIGURE_MANIFEST.csv)。逐章引用数量和缺图情况见 [PLL 图片审计](../pll/FIGURE_REPLACEMENT_AUDIT.md)。
 
 ## 图片使用和授权原则
 
