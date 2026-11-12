@@ -4,7 +4,7 @@
 
 ## 课程入口
 
-**[打开 PLL 交互课程](index.html)**
+**[从第 1 章开始 PLL 交互课程](chapters/01_PLL用途与系统全景.html)**
 
 - [章节进度与验收记录](PROGRESS.md)
 - [参考资料索引](REFERENCES.md)
