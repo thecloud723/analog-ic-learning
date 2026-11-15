@@ -5,8 +5,8 @@ planned_levels: [L1, L2, L3, L4]
 status:
   l1: "implemented_in_course"
   l2: "27_precomputed_SPICE_cases_in_course"
-  l3: "not_published_not_rerun"
-  l4: "not_verified"
+  l3: "real_27_case_spice_reproduced_on_github_actions; Kaggle_not_published"
+  l4: "two_changed_parameter_raw_runs_passed_CI; Kaggle_reader_copy_not_verified"
 source:
   repository: "thecloud723/analog-ic-learning"
   artifact: "pll/assets/lc-vco-lab.zip"
@@ -61,4 +61,20 @@ limitations:
 publication:
   target: "Public Kaggle Notebook"
   kaggle_url: null
-  status: "pending manual platform access and real run"
+  status: "pending Kaggle account/browser access; SPICE engine and exports validated in CI"
+
+validation:
+  static_source_action:
+    url: "https://github.com/thecloud723/analog-ic-learning/actions/runs/43682059029"
+    result: "PASS: 27 embedded L2 records, ZIP baseline, export smoke, notebook syntax"
+  actual_spice_action:
+    url: "https://github.com/thecloud723/analog-ic-learning/actions/runs/43682286383"
+    result: "PASS: 27/27 full SPICE simulations; L2 export; two changed-parameter raw transient runs"
+    baseline_max_abs_difference: {f: 0.0, vpp: 0.0, power: 0.0}
+    raw_case_a: {l_nH: 1, c_fF: 810, rs_ohm: 2.2, w_um: 2.4, state: steady}
+    raw_case_b: {l_nH: 1, c_fF: 810, rs_ohm: 3.3, w_um: 3.0, state: decay}
+  remaining:
+    - "Upload/import Notebook into Kaggle and Save Version with complete outputs"
+    - "Verify Kaggle anonymous L3 reading and downloading"
+    - "Verify Kaggle L4 Copy & Edit from a fresh user environment"
+    - "Check Kaggle Internet, Node>=22 setup and npminstall/runtime limits"
