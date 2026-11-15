@@ -2,6 +2,8 @@
 
 本文件汇总课程引用的教材、论文、工业产品数据手册与应用笔记。章节页面应标注具体来源、图号/页码和许可要求。
 
+[逐式索引与网页 Ref 对照](FORMULA_REFERENCES.md)
+
 ## 教材与课程
 
 - JKU, Radio-Frequency Integrated Circuits — PLL、Oscillator 等课程章节：https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html
