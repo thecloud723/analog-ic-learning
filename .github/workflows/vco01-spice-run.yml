@@ -1,0 +1,58 @@
+name: VCO-01 Actual SPICE 27-Case Reproduction
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/vco01-spice-run.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Unpack original source ZIP and install locked simulator
+        run: |
+          mkdir -p /tmp/vco01
+          unzip -q pll/assets/lc-vco-lab.zip -d /tmp/vco01
+          cd /tmp/vco01/lc-vco-lab
+          npm ci --no-audit --no-fund
+          node --version
+          npm --version
+      - name: Run 27 transistor SPICE cases, same as web results
+        timeout-minutes: 25
+        run: |
+          cd /tmp/vco01/lc-vco-lab
+          node run.mjs --web --out /tmp/vco01/web | tee /tmp/vco01/simulation.log
+          test -s /tmp/vco01/web/metrics.csv
+          test -s /tmp/vco01/web/web-data.json
+      - name: Validate original baseline and export L2 from actual L3 run
+        run: |
+          python3 pll/labs/VCO-01/export_l2.py \
+            --web-json /tmp/vco01/web/web-data.json \
+            --baseline /tmp/vco01/lc-vco-lab/baseline.csv \
+            --package-zip pll/assets/lc-vco-lab.zip \
+            --source-commit "$GITHUB_SHA" \
+            --output-dir /tmp/vco01/l2
+          python3 -c "import json; d=json.load(open('/tmp/vco01/web/web-data.json')); print('Actual SPICE run cases:',len(d)); assert len(d)==27"
+      - name: Save verified experiment outputs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vco01-spice-results
+          path: |
+            /tmp/vco01/web/metrics.csv
+            /tmp/vco01/web/web-data.json
+            /tmp/vco01/l2/web-data.json
+            /tmp/vco01/l2/web-data.js
+            /tmp/vco01/l2/l2_manifest.json
+            /tmp/vco01/simulation.log
+          retention-days: 14
+          if-no-files-found: warn
