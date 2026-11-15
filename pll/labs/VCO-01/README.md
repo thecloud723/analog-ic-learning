@@ -8,8 +8,16 @@
 |---|---|---|
 | L1 · 公式交互 | 源码已有 | 第 8 章理想 LC 频率、Bank、RO 等教学交互 |
 | L2 · 真实仿真预计算 | 源码已有，待复核 | 第 8 章内嵌的 27 组 SKY130 TT SPICE 结果；原始 [ZIP](../../assets/lc-vco-lab.zip) |
-| L3 · 公开详细实验 | **Notebook 已编写，未在 Kaggle 运行/发布** | [Kaggle L3/L4 Notebook 源码](VCO-01_Kaggle_L3_L4.ipynb) |
-| L4 · 读者复现 | **未验证** | 发布后需要用其他账号/洁净会话 Copy & Edit 实测 |
+| L3 · 公开详细实验 | **27 组真实 SPICE 已经 CI 重跑、L2 导出已通过；Kaggle 尚未发布** | [Kaggle L3/L4 Notebook 源码](VCO-01_Kaggle_L3_L4.ipynb) |
+| L4 · 读者复现 | **已在 CI 中两次改参并生成完整 CSV；读者在 Kaggle Copy & Edit 仍未验证** | 发布后需要用其他账号/洁净会话 Copy & Edit 实测 |
+
+## 真实仿真验证（2026-11-15）
+
+- [源码检查：GitHub Actions 通过](https://github.com/thecloud723/analog-ic-learning/actions/runs/43682059029)：确认旧 HTML 的 27 组数据、ZIP 内 27 组 baseline 一致；Notebook 16 个单元格通过 Python AST 解析。
+- [实际 SPICE 验证：GitHub Actions 通过](https://github.com/thecloud723/analog-ic-learning/actions/runs/43682286383)：从 ZIP 原始 Node/ngspice WASM 环境重新运行 **27/27** 组，自动导出 L2；频率、Vpp、功率相对 baseline 的最大绝对偏差均为 **0**。
+- 同一 Runner 还验证了两个可修改参数的详细时域运行：`L=1 nH,C=810 fF,Rs=2.2 Ω,W=2.4 µm` 得到 `steady`，`Rs=3.3 Ω,W=3.0 µm` 得到 `decay`，均生成完整原始 CSV。
+- Actions 附件含网格输出、L2 导出、日志和至少一个完整时域 CSV；附件有保留期限且下载受 GitHub 登录限制，**不替代 L3 的 Kaggle 公开发布**。
+- 尚未测试 Kaggle 的网络/安装/会话限制，也没有通过读者账号的 L4 复现。上述 CI 通过只说明**仿真工程和数据通路可真实运行**。
 
 ## 与旧 ZIP 的关系
 
