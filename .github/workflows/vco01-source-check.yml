@@ -1,0 +1,24 @@
+name: VCO-01 Source and Notebook Check
+
+on:
+  push:
+    paths:
+      - "pll/labs/VCO-01/**"
+      - "pll/assets/lc-vco-lab.zip"
+      - "pll/chapters/08_VCO与DCO可控振荡器.html"
+      - ".github/workflows/vco01-source-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-consistency:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax and existing SPICE data consistency
+        run: |
+          python3 --version
+          python3 pll/labs/VCO-01/validate_source.py
