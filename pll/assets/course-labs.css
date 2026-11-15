@@ -1,0 +1,11 @@
+.pll-study{margin:1.2rem 0;padding:clamp(12px,2vw,24px);border:1px solid #acc9d9;border-radius:14px;background:#f3f8fb;color:#163247}
+.pll-study h3,.pll-study h4{margin:.25rem 0 .6rem}.pll-study p{margin:.5rem 0}
+.pll-study .study-controls,.pll-study .study-flow,.pll-study .study-key{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center;margin:.8rem 0}
+.pll-study .study-controls label,.pll-study button,.pll-study select{display:inline-flex;align-items:center;gap:.4rem;padding:.36rem .55rem;border:1px solid #96b5c6;border-radius:6px;color:#163247;background:#fff;font:inherit}
+.pll-study button,.pll-study select{cursor:pointer}.pll-study button[aria-pressed=true]{background:#155d79;color:#fff}
+.pll-study :focus-visible{outline:3px solid #a65813;outline-offset:3px}
+.pll-study .study-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:12px}
+.pll-study .study-card,.pll-study .study-step{min-width:0;background:white;border:1px solid #cadce7;border-radius:8px;padding:9px}
+.pll-study svg{display:block;width:100%;height:auto}.pll-study .study-key{font-size:.86em}
+.pll-study output{display:block;margin:.7rem 0;font-weight:650}.pll-study a{color:#165d80;text-decoration:underline}
+.pll-study table{width:100%;text-align:left}.pll-study .study-scroll{overflow-x:auto}

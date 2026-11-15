@@ -184,6 +184,8 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <main class="course-body wrap" id="courseContent">
 <section aria-labelledby="tab-why" class="lesson-panel" id="why" role="tabpanel">
 <h2>PLL 的作用</h2>
+<p><strong>从 100 MHz 参考得到 1.6 GHz 时钟。</strong>先在框图上找参考、输出和反馈。往后依次学习边沿怎么比较、环路怎么把频率拉回来，以及输出时钟够不够干净。</p><h3>后面各组会回答什么</h3><ul><li><a href="02_频率相位时间差与锁定.html#p1">02–04 · 系统总览</a>　频率相等后，为什么还要比较相位？</li><li><a href="05_参考源与时钟输出链.html#p1">05–09 · 组成模块</a>　参考、PFD、充电泵、滤波器和 VCO 怎样接成闭环？</li><li><a href="10_相位域模型与Type_I_II.html#p1">10–13 · 控制与性能</a>　多久能锁住？怎样读 Bode 图、相噪和杂散？</li><li><a href="PLL_第14章_Integer-N与Fractional-N.html#p1">14–17 · 分数合成与数字环路</a>　如何得到小数分频比，如何用数字码控制并校准振荡器？</li><li><a href="PLL_第18章_完整系统设计与指标.html#p1">18 · 系统验收</a>　怎样把规格换成可以执行的调试与测试？</li></ul>
+
 <p class="lead">自由振荡器的频率受工艺、电源电压、温度及负载影响。PLL 以稳定参考信号为基准，通过相位反馈调节振荡器频率，实现频率合成和相位同步。</p>
 <div class="grid2">
 <div class="tile"><strong>自由振荡器（Free-running Oscillator）</strong>输出频率由器件与电路参数决定。温度、电源、工艺和负载变化会改变振荡频率；没有参考反馈时，频率误差会转化为持续累积的相位漂移。</div>
@@ -213,6 +215,12 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <tr><td>Divider ÷N</td><td>VCO 输出</td><td>反馈时钟</td><td>缩放频率与相位，使其能与参考进行比较。</td></tr>
 </tbody></table></div>
 <div class="note warn"><b>反馈关系：</b>整数-N PLL 的相位检测器比较参考时钟与分频后的反馈时钟，稳态频率关系为 f<sub>OUT</sub>/N = f<sub>REF</sub>。</div>
+<h3>改 N 之前，先猜输出和反馈各是多少</h3>
+<p>先在心里预测：参考频率固定为 100 MHz，N 从 16 改为 20，锁定后的输出频率会怎样变化？选择答案后才能操作。</p>
+<div class="quiz" data-quiz="n"><div class="qtitle">预测：N 从 16 增加到 20，输出频率……</div><div class="opts"><label><input name="n" type="radio" value="a"/>A. 降低到 1.28 GHz</label><label><input name="n" type="radio" value="b"/>B. 升高到 2.00 GHz</label><label><input name="n" type="radio" value="c"/>C. 保持 1.60 GHz</label></div><div class="feedback"></div></div>
+<div class="rangebox"><label for="nSlider"><span>反馈分频比 N</span><output id="nOut">16</output></label><input disabled="" id="nSlider" max="32" min="4" step="1" type="range" value="16"/><div class="small muted">参考频率固定为 100 MHz；假设整数-N 且已锁定。</div></div>
+<div class="metric"><div><div class="k">Reference</div><div class="v">100 MHz</div></div><div><div class="k">Target Output</div><div class="v" id="fOut">1.600 GHz</div></div><div><div class="k">Feedback</div><div class="v" id="fFb">100 MHz</div></div></div>
+<div class="figure"><svg aria-label="同一时间窗口内参考时钟一个周期与VCO输出N个周期的关系" class="plot" role="img" viewbox="0 0 900 180"><g fill="#566b7b" font-size="13"><text x="18" y="47">REF</text><text x="18" y="119">VCO</text><text text-anchor="middle" x="450" y="168">同一时间窗口：一个参考周期 <tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="70%">ref</tspan></text></g><path d="M100 62 H820" stroke="#aab6bf" stroke-width="1"></path><path d="M100 134 H820" stroke="#aab6bf" stroke-width="1"></path><path d="M100 62 V22 H460 V62 H820" fill="none" id="refWave" stroke="#7897ad" stroke-width="2.5"></path><path d="" fill="none" id="outWave" stroke="#245f8f" stroke-width="2"></path><g fill="#647786" font-size="11"><text x="100" y="80">0</text><text text-anchor="end" x="820" y="80"><tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="70%">ref</tspan></text><text id="waveNLabel" text-anchor="middle" x="450" y="15">N = 16 个输出周期</text></g></svg></div>
 </section>
 <section aria-labelledby="tab-cppll" class="lesson-panel" hidden="" id="cppll" role="tabpanel">
 <h2>电荷泵锁相环（CP-PLL）</h2>
@@ -273,7 +281,12 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <div class="tile"><b>Lock Time</b><p class="small">示波器/时间相关测量；必须定义起点、频率/相位 guard band 和持续保持时间。</p></div>
 <div class="tile"><b>环路带宽 / Phase Margin</b><p class="small">小信号模型、仿真或环路响应测量；要说明是开环交越还是闭环 −3 dB 带宽。</p></div>
 </div>
-<h3>怎样读 PLL 输出相位噪声图</h3>
+<h3>先认载波和旁边的小尖峰</h3>
+<figure><img src="../assets/originals/adi/an143-fig3.png" alt="ADI AN143 实测 2.1 GHz 整数-N PLL 输出频谱" loading="lazy" style="display:block;width:min(100%,620px);height:auto">
+<figcaption>ADI AN143 图 3。中间最高的一根是 2.1 GHz 载波。旁边的 spur 按 1 MHz 鉴相频率间隔分布。</figcaption></figure>
+<p>频偏回答尖峰离载波多远。dBc 回答这一根谱线的功率相对载波有多大，例如 −60 dBc 表示百万分之一。</p>
+<p><a href="12_Phase_Noise与Jitter.html#p1">第 12 章：连续噪声、dBc/Hz 和 RMS 抖动</a> · <a href="13_Spur非线性与PVT.html#p7">第 13 章：用这张实测频谱追参考杂散</a></p>
+<details><summary>进阶读图与原有练习</summary><h3>怎样读 PLL 输出相位噪声图</h3>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%, 250px),1fr));gap:16px;align-items:start"><figure style="margin:0"><h4>图 1 · 从载波看频谱</h4><img src="../assets/originals/adi/mt008-fig1.png" alt="ADI MT-008 图 1，从载波看频谱" loading="lazy" style="display:block;width:100%;height:auto"><figcaption>先找最高的载波尖线 f₀，再看它右侧。红框标的是用来说明噪声密度的 1 Hz 带宽。频偏 Δf 是从载波中心到这个测量位置的距离。</figcaption></figure><figure style="margin:0"><h4>图 3 · 改用频偏作横轴</h4><img src="../assets/originals/adi/mt008-fig3.png" alt="ADI MT-008 图 3，改用频偏作横轴" loading="lazy" style="display:block;width:100%;height:auto"><figcaption>把载波中心当作零点，只画右侧的噪声裙边。横轴每格按倍数展开，纵轴读相对于载波的单边带噪声密度。这里可以看到近端斜坡和远端噪声底。</figcaption></figure><figure style="margin:0"><h4>图 4 · 把指定频段换算为抖动</h4><img src="../assets/originals/adi/mt008-fig4.png" alt="ADI MT-008 图 4，把指定频段换算为抖动" loading="lazy" style="display:block;width:100%;height:auto"><figcaption>A₁ 到 A₄ 是按线性噪声功率密度积分的分段示意。原图采用 100 MHz 输出载波。教材下方另用 1.6 GHz 输出举例，积分上下限按该例的测试条件指定。</figcaption></figure></div>
 <p class="figcap">来源：<a href="https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf">Analog Devices MT-008，图 1、3、4</a>。</p>
 <h4>用 1.6 GHz PLL 输出读一次</h4>
@@ -289,16 +302,11 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <div class="note warn"><b>从曲线到 RMS Jitter。</b>假设报告指定积分频段为 10 kHz–10 MHz，就在横轴上圈出这段范围，先把 dBc/Hz 换成线性功率密度，再对频率积分。计入对称的两侧噪声后开平方得到 RMS 相位抖动（rad），再除以 2π × 1.6 GHz 得到 RMS 时间抖动（s）。离散 spur 若计入，要按其 dBc 对应的功率单独加进去。原先举的 80 fs 是报告读数示例，图 1-3 没有对应这笔测量。比较两份报告时，核对载波、积分起止点、spur 计入方式、SSC 状态、测量节点和仪器设置。<a href="https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf">积分方法见 ADI MT-008</a>。</div>
 <h3>测试报告阅读练习</h3>
 <div class="quiz" data-quiz="metric"><div class="qtitle">两份 PLL 报告分别写 80 fs RMS 和 100 fs RMS。能否直接判断第一份更好？</div><div class="opts"><label><input name="metric" type="radio" value="a"/>A. 可以，80 fs 一定更好</label><label><input name="metric" type="radio" value="b"/>B. 不一定，先核对积分频段、载波、spur 处理和测试条件</label><label><input name="metric" type="radio" value="c"/>C. 不可以，RMS Jitter 不是 PLL 指标</label></div><div class="feedback"></div></div>
+</details>
 <div class="eng-case"><h3>实际器件规格怎样与结构对应</h3><p>ADF4351 数据手册给出了两种不同层次的频率：VCO 本振频率 2.2–4.4 GHz，以及经输出分频后的 RF<sub class="inline-math-sub">OUT</sub> 约 35–4400 MHz。输出频率下限并不代表 VCO 自身可以振荡到 35 MHz。</p><div class="table-scroll"><table class="eng-tt"><thead><tr><th>数据手册字段</th><th>数值 / 说明</th><th>对应结构</th></tr></thead><tbody><tr><td>VCO Fundamental Frequency</td><td>2200–4400 MHz</td><td>VCO Core</td></tr><tr><td>RF Output Frequency</td><td>约 35–4400 MHz</td><td>VCO + 输出 Divider</td></tr><tr><td>Typical RMS Jitter</td><td>0.3 ps rms（数据手册典型值）</td><td>整个合成链，比较时需检查测量条件</td></tr><tr><td>Lock Detect</td><td>模拟/数字锁定检测</td><td>状态输出不是 PLL 相位检测器本身</td></tr></tbody></table></div><p class="eng-src">资料来源：<a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf" rel="noopener" target="_blank">Analog Devices ADF4351 Datasheet</a>，Features 与 Specifications。器件连接与产品参数见数据手册。</p></div></section>
 <section aria-labelledby="tab-lab" class="lesson-panel" hidden="" id="lab" role="tabpanel">
-<h2>实验一：分频比 N 如何决定输出频率？</h2>
-<p>先在心里预测：参考频率固定为 100 MHz，N 从 16 改为 20，锁定后的输出频率会怎样变化？选择答案后才能操作。</p>
-<div class="quiz" data-quiz="n"><div class="qtitle">预测：N 从 16 增加到 20，输出频率……</div><div class="opts"><label><input name="n" type="radio" value="a"/>A. 降低到 1.28 GHz</label><label><input name="n" type="radio" value="b"/>B. 升高到 2.00 GHz</label><label><input name="n" type="radio" value="c"/>C. 保持 1.60 GHz</label></div><div class="feedback"></div></div>
-<div class="rangebox"><label for="nSlider"><span>反馈分频比 N</span><output id="nOut">16</output></label><input disabled="" id="nSlider" max="32" min="4" step="1" type="range" value="16"/><div class="small muted">参考频率固定为 100 MHz；假设整数-N 且已锁定。</div></div>
-<div class="metric"><div><div class="k">Reference</div><div class="v">100 MHz</div></div><div><div class="k">Target Output</div><div class="v" id="fOut">1.600 GHz</div></div><div><div class="k">Feedback</div><div class="v" id="fFb">100 MHz</div></div></div>
-<div class="figure"><svg aria-label="同一时间窗口内参考时钟一个周期与VCO输出N个周期的关系" class="plot" role="img" viewbox="0 0 900 180"><g fill="#566b7b" font-size="13"><text x="18" y="47">REF</text><text x="18" y="119">VCO</text><text text-anchor="middle" x="450" y="168">同一时间窗口：一个参考周期 <tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="70%">ref</tspan></text></g><path d="M100 62 H820" stroke="#aab6bf" stroke-width="1"></path><path d="M100 134 H820" stroke="#aab6bf" stroke-width="1"></path><path d="M100 62 V22 H460 V62 H820" fill="none" id="refWave" stroke="#7897ad" stroke-width="2.5"></path><path d="" fill="none" id="outWave" stroke="#245f8f" stroke-width="2"></path><g fill="#647786" font-size="11"><text x="100" y="80">0</text><text text-anchor="end" x="820" y="80"><tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="70%">ref</tspan></text><text id="waveNLabel" text-anchor="middle" x="450" y="15">N = 16 个输出周期</text></g></svg></div>
-<h2 style="margin-top:28px">实验二：相同的时间差，在不同参考频率下代表多少相位？</h2>
-<p>设对应边沿的时间差为 40 ps，改变参考频率，计算相位差 Δφ = 2πf<sub>REF</sub>Δt。</p>
+<h2>相位换算实验：相同的时间差，在不同参考频率下代表多少相位？</h2>
+<p>滑块默认时间差为 40 ps。改变参考频率或边沿时间差，计算相位差 Δφ = 2πf<sub>REF</sub>Δt。</p>
 <div class="rangegrid"><div class="rangebox"><label for="refSlider"><span>参考频率</span><output id="refOut">100 MHz</output></label><input id="refSlider" max="400" min="25" step="25" type="range" value="100"/></div><div class="rangebox"><label for="dtSlider"><span>边沿时间差 Δt</span><output id="dtOut">40 ps</output></label><input id="dtSlider" max="200" min="5" step="5" type="range" value="40"/></div></div>
 <div class="metric"><div><div class="k">Reference Period</div><div class="v" id="periodOut">10 ns</div></div><div><div class="k">Phase Difference</div><div class="v" id="phaseDeg">1.44°</div></div><div><div class="k">Radians</div><div class="v" id="phaseRad">0.0251 rad</div></div></div>
 <div class="note">本实验仅进行时间差与相位差的换算，不包含 PFD 非线性、Charge Pump 和锁定瞬态。</div>
@@ -307,7 +315,7 @@ html{scroll-behavior:auto}body{overflow-x:hidden}
 <h2>本章理解核对</h2>
 <div class="quiz" data-quiz="q1"><div class="qtitle">Q1. 基本整数-N PLL 锁定时，鉴相器反馈端的频率应当是多少？</div><div class="opts"><label><input name="q1" type="radio" value="a"/>A. <i>f</i><sub class="inline-math-sub">OUT</sub></label><label><input name="q1" type="radio" value="b"/>B. <i>f</i><sub class="inline-math-sub">OUT</sub> / N</label><label><input name="q1" type="radio" value="c"/>C. N × <i>f</i><sub class="inline-math-sub">OUT</sub></label></div><div class="feedback"></div></div>
 <div class="quiz" data-quiz="q2"><div class="qtitle">Q2. 若两个时钟同频，但反馈边沿始终晚 40 ps，能否说频率已经相等？</div><div class="opts"><label><input name="q2" type="radio" value="a"/>A. 可以；相位差可以是非零常数</label><label><input name="q2" type="radio" value="b"/>B. 不可以；只要有相位差就一定有频率差</label></div><div class="feedback"></div></div>
-<div class="quiz" data-quiz="q3"><div class="qtitle">Q3. “Reference Spur = −60 dBc”和“Phase Noise = −120 dBc/Hz”可以直接比较哪个更大吗？</div><div class="opts"><label><input name="q3" type="radio" value="a"/>A. 可以，−60 数值更大</label><label><input name="q3" type="radio" value="b"/>B. 不可以，离散谱线和噪声功率谱密度的单位/定义不同</label></div><div class="feedback"></div></div>
+<div class="quiz" data-quiz="q3"><div class="qtitle">Q3. 2.1 GHz 载波右侧 1 MHz 的谱线，实际频率是多少？</div><div class="opts"><label><input name="q3" type="radio" value="a">A. 2.101 GHz</label><label><input name="q3" type="radio" value="b">B. 1 MHz</label></div><div class="feedback"></div></div>
 <div class="note good"><b>本章小结：</b>整数-N PLL 的稳态频率满足 f<sub>OUT</sub>=Nf<sub>REF</sub>；反馈环路通过控制振荡器频率调节相位。性能评价应结合频率、抖动、噪声、杂散及测量条件。</div>
 <details class="reference-drawer"><summary>参考资料与授权</summary><div class="reference-content"><h2>本章参考资料</h2>
 <ol class="sources">
@@ -332,7 +340,7 @@ const partText={
  div:['÷N · Feedback Divider','把 VCO 输出按 N 分频后送回鉴相器。锁定时 fOUT/N = fREF，所以 fOUT = N·fREF（本章基础结构假设没有 R 分频和额外输出分频）。']
 };
 document.querySelectorAll('[data-part]').forEach(el=>{const show=()=>{document.querySelectorAll('[data-part]').forEach(x=>x.classList.toggle('active',x===el));const [h,t]=partText[el.dataset.part];document.getElementById('partExplain').innerHTML='<b>'+h+'</b><span>'+t+'</span>';};el.addEventListener('click',show);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show();}})});
-const quizAnswers={metric:['b','不能只比较数值。必须统一载波频率、积分频段、spur 计入方式、SSC 状态、测量节点和仪器设置。'],n:['b','锁定关系为 fOUT=N×fREF。100 MHz×20=2.00 GHz。滑块会显示输出目标和反馈频率。'],q1:['b','鉴相器比较参考时钟与反馈分频时钟，因此反馈频率是 fOUT/N。锁定时它等于 fREF。'],q2:['a','频率是相位对时间的导数。同频时相位差的导数为零，因此相位差可以保持为一个非零常数。'],q3:['b','dBc 表示离散谱线相对载波的功率比；dBc/Hz 表示单位带宽内的噪声功率谱密度，量纲和测量定义不同。']};
+const quizAnswers={metric:['b','不能只比较数值。必须统一载波频率、积分频段、spur 计入方式、SSC 状态、测量节点和仪器设置。'],n:['b','锁定关系为 fOUT=N×fREF。100 MHz×20=2.00 GHz。滑块会显示输出目标和反馈频率。'],q1:['b','鉴相器比较参考时钟与反馈分频时钟，因此反馈频率是 fOUT/N。锁定时它等于 fREF。'],q2:['a','频率是相位对时间的导数。同频时相位差的导数为零，因此相位差可以保持为一个非零常数。'],q3:['a','2.1 GHz 加 1 MHz 等于 2.101 GHz。']};
 const letter={a:'A',b:'B',c:'C'};
 document.querySelectorAll('.quiz').forEach(box=>{box.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{if(box.dataset.done==='1')return;box.dataset.done='1';const [ans,why]=quizAnswers[box.dataset.quiz];const ok=inp.value===ans;const fb=box.querySelector('.feedback');fb.classList.add('show');fb.innerHTML='<b style="color:'+(ok?'#26734d':'#925b1c')+'">'+(ok?'预测正确':'再看一下解析')+' · 正确答案 '+letter[ans]+'</b><div>'+why+'</div>';box.querySelectorAll('input').forEach(x=>x.disabled=true);if(box.dataset.quiz==='n'){document.getElementById('nSlider').disabled=false;updateN();}}));});
 const nSlider=document.getElementById('nSlider');function squareWavePath(x0,x1,yHigh,yLow,cycles){const w=(x1-x0)/cycles;let d=`M ${x0} ${yLow}`;for(let i=0;i<cycles;i++){const x=x0+i*w;d+=` H ${x} V ${yHigh} H ${x+w/2} V ${yLow} H ${x+w}`;}return d;}
