@@ -1,5 +1,14 @@
 # 更新记录
 
+## 2026-11-15 · VCO-01 L3/L4 云端实验发布前准备
+
+- 新建 `pll/labs/VCO-01/`：Kaggle Notebook、真实SPICE结果到L2格式的导出器、实验参数元数据和离线源码检查。
+- 用 GitHub Actions 重新执行 27 组 SKY130 ngspice-WASM 瞬态仿真，并从同一运行结果导出 L2；对照历史 baseline 的频率、振幅、功耗均无差异。
+- 验证两组不同电感损耗/MOS W 参数的详细瞬态运行和原始 CSV 输出。
+- L3 Kaggle 发布和 L4 读者登录复制复现尚待进行；没有改第8章HTML。
+
+
+
 ## 2026-11-11 — PLL 第 14–16 章制作
 - 新增 Integer-N/Fractional-N、ΣΔ/MASH/Dither、ADPLL/数字 PI 三章独立 HTML，共 24 个教学页签。
 - 加入 LMX2594、ADF4159 产品结构重绘、MASH 三级噪声抵消图、ADPLL 完整反馈图。
