@@ -16,6 +16,14 @@
 
 说明：L3 与 L4 通常是**同一个工程/Notebook**，L3 为作者已完成的发布快照，L4 为读者复制后运行；二者不要求两套仿真系统。L1 与 L2 可以同时放在一个知识点上，用于比较“理想机理”和“真实非理想”。并不是所有图都必须做到 L4。
 
+## 1.1. VCO-01 实际仿真复现里程碑（2026-11-15）
+
+- **当前实际验证已经超过静态源码检查**： [GitHub Actions 27组真实 SPICE 复跑](https://github.com/thecloud723/analog-ic-learning/actions/runs/43682286383) 已通过，使用原 ZIP 的 Node.js + EEcircuit-engine（ngspice WASM）和 SKY130 模型，且 27 组导出结果与原 ZIP 的 baseline 频率、Vpp、功耗逐项一致（最大差值 0）。
+- **L4 引擎级改参能力**：同一 CI 验证两套不同 Rs / MOS W 组合，均生成完整时域 CSV，且显示不同的起振结果。属于**改参能力已验证**，不等于读者 Kaggle 复制/运行体验已通过。
+- **Kaggle L3/L4 尚未发布**：独立工程见 [`labs/VCO-01/`](labs/VCO-01/)，包含 Notebook（16单元格）、原 ZIP 复用逻辑、基准比较、L2 自动导出、实验元数据。后续仍需在 Kaggle 开启 CPU/Internet 完整执行、Save Version、无账号阅读、洁净账号 Copy & Edit。
+- **平台口径明确**：现有包的真实执行器是 **eecircuit-engine 1.9.0 / ngspice 45.2 WASM**，不是独立的原生 ngspice CLI 依赖；尽管网表可供原生 ngspice 运行，但两者不保证数值完全相同。
+- 本文逐项表的 L3/L4 栏仍是**计划**，不能因 CI 通过而标成 Kaggle 已发布。
+
 ## 2. 当前基线与容易误判的地方
 
 - 第 07 章 CP 纹波：`pll/assets/course-cp-data.js` 已保存 **3 组失配比例 × 3 组电容 = 9 组**局部 SPICE 最后一个周期波形；`course-labs.js` 的 `data-study=cp` 做直接切换；页面已链接 `cp-ripple-lab.zip`。这符合 **L2 的实现形式**，但完整云端 L3 未发布。
