@@ -33,6 +33,26 @@ jobs:
           node run.mjs --web --out /tmp/vco01/web | tee /tmp/vco01/simulation.log
           test -s /tmp/vco01/web/metrics.csv
           test -s /tmp/vco01/web/web-data.json
+      - name: L4 changed-parameter raw transient smoke
+        timeout-minutes: 5
+        run: |
+          cd /tmp/vco01/lc-vco-lab
+          node run.mjs --l 1 --c 810 --rs 2.2 --out /tmp/vco01/detail-a
+          node run.mjs --l 1 --c 810 --rs 3.3 --w 3.0 --out /tmp/vco01/detail-b
+          test -s /tmp/vco01/detail-a/case-01.csv
+          test -s /tmp/vco01/detail-b/case-01.csv
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+          root = Path('/tmp/vco01')
+          for folder, rs, w in [('detail-a',2.2,2.4),('detail-b',3.3,3.0)]:
+              rows = list(csv.DictReader((root/folder/'metrics.csv').open()))
+              assert len(rows) == 1, folder
+              assert float(rows[0]['rs']) == rs and float(rows[0]['w']) == w, rows
+              with (root/folder/'case-01.csv').open() as f:
+                  assert sum(1 for _ in f) > 10000, 'raw waveform too short'
+              print('PASS parameter edit and raw waveform:', folder, rows[0]['state'])
+          PY
       - name: Validate original baseline and export L2 from actual L3 run
         run: |
           python3 pll/labs/VCO-01/export_l2.py \
@@ -54,5 +74,8 @@ jobs:
             /tmp/vco01/l2/web-data.js
             /tmp/vco01/l2/l2_manifest.json
             /tmp/vco01/simulation.log
+            /tmp/vco01/detail-a/metrics.csv
+            /tmp/vco01/detail-a/case-01.csv
+            /tmp/vco01/detail-b/metrics.csv
           retention-days: 14
           if-no-files-found: warn
