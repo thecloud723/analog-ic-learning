@@ -6,6 +6,7 @@
 
 **[从第 1 章开始 PLL 交互课程](chapters/01_PLL用途与系统全景.html)**
 
+- **[逐实验四级状态台账与 L3/L4 规划](EXPERIMENT_LEVEL_ROADMAP.md)**（18章、49项；Kaggle发布为下一步）
 - [章节页面模板](PAGE_TEMPLATE.md)
 - [章节进度与验收记录](PROGRESS.md)
 - [参考资料索引](REFERENCES.md)
@@ -38,6 +39,15 @@
 | 16 | ADPLL 的结构与数字 PI | [打开](chapters/PLL_第16章_ADPLL结构与数字PI.html) |
 | 17 | TDC/DTC、DCO 校准 | [打开](chapters/PLL_第17章_TDC_DTC与DCO校准.html) |
 | 18 | 完整系统与指标 | [打开](chapters/PLL_第18章_完整系统设计与指标.html) |
+
+## 四级实验路线
+
+- **L1**：浏览器本地公式/教学行为模型，拖动滑块立即计算。
+- **L2**：网页本地选择真实仿真预计算数据；当前第 07 章 CP 纹波、第 08 章 LC VCO 已有原型。
+- **L3**：作者发布完整已运行的云端实验；计划首选 Kaggle，但尚未发布，须验证无登录阅读。
+- **L4**：读者登录并复制 L3 Notebook，修改参数、重跑、保存结果；与 L3 共用仿真工程。
+
+不是所有图都需要 L3/L4；详细到每个实验的当前证据、后续引擎、可调参数和优先级，统一维护在 [实验四级台账](EXPERIMENT_LEVEL_ROADMAP.md)。L1 与 L2 继续支持离线，不能把 JS 公式缓存误标为真实仿真。
 
 ## 页面规范
 
