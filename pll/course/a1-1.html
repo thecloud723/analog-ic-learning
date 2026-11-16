@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>整机由哪些模块组成 · PLL 教程</title><link rel="stylesheet" href="course.css"><script defer src="course.js"></script></head><body><header><div><a href="../../index.html">模拟与混合信号课程</a><span aria-hidden="true">/</span><a href="index.html">PLL 新目录</a></div></header><div class="shell"><aside><nav aria-label="PLL 课程"><strong>A · 认识整机</strong><ul><li><a href="a1-1.html" aria-current="page">A1.1 整机由哪些模块组成</a></li><li><a href="a1-2.html">A1.2 锁之前与锁之后</a></li><li><a href="a1-3.html">A1.3 第一张相噪图怎么读</a></li><li><a href="a2-1.html">A2.1 时间差怎样变成相位差</a></li><li><a href="a2-2.html">A2.2 频差怎样积成相位差</a></li><li><a href="a2-3.html">A2.3 PLL 第一次怎么纠偏</a></li></ul><a href="../chapters/01_PLL用途与系统全景.html">旧版 01–18 章</a></nav></aside><main><h1>整机由哪些模块组成</h1><p class="intro">沿参考边沿走一圈，找出频率在哪改变、比较发生在哪里。</p>
+<p>数字逻辑需要节拍稳定的时钟，射频收发器需要频率准确的本振。两者都可以用 PLL 把参考源的稳定性带到另一个频率。</p>
+<figure><img src="../assets/originals/jku/fig_074.png" alt="基本 PLL：比较参考和反馈，再调整振荡器"><figcaption>基本 PLL：比较参考和反馈，再调整振荡器 · <a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#basic-pll-architecture">JKU Fig. 74 原图</a></figcaption></figure>
+<ol><li>参考源给出比较节拍。</li><li>检测器比较参考和反馈相位，滤波器把纠偏信息变成控制量。</li><li>振荡器改变输出频率。加入反馈分频器后，检测器看到的是分频后的频率。</li></ol>
+<h2>改一次分频比</h2>
+<p>这里用 40 MHz PFD 和整数反馈分频，观察锁定后的频率关系。</p>
+<div class="math">f<sub>VCO</sub> = N × f<sub>PFD</sub><p class="source"><a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fractional-n-pll">JKU §7.4 · 整数分频关系</a></p></div>
+<div class="lab" data-lab="ratio"><label class="control" for="n">反馈分频 N<output for="n" id="n-value"></output><input id="n" type="range" min="100" max="150" step="1" value="125"></label><p class="result" data-result></p></div>
+<h2>在芯片框图里找这条回路</h2>
+<figure><img src="../assets/originals/adi/adf4351-fig1.png" alt="ADF4351：从参考输入、PFD、CP 到 VCO 和反馈分频器"><figcaption>ADF4351：从参考输入、PFD、CP 到 VCO 和反馈分频器 · <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf">ADI 数据手册 Fig. 1</a></figcaption></figure>
+<p>ADF4351 还带参考分频和输出分频。观察 VCO 输出与外部 RF 输出各在哪个节点。</p><footer><a href="index.html">← 新课程目录</a><a href="a1-2.html">锁之前与锁之后 →</a></footer></main></div></body></html>
