@@ -155,8 +155,10 @@ function calibrate(){
   const f=code=>4800+(2*(1+drift/100))*code+.004*code**2;
   const a=10,b=40,slope=(f(b)-f(a))/(b-a),estimate=estimateMode==="measured"?slope:2;
   const requested=a+Math.round(delta/estimate), code=Math.min(63,Math.max(0,requested)), goal=f(a)+delta;
+  const floor=Math.min(4780,goal-10), ceiling=Math.max(5020,goal+10,f(63)+10);
+  const frequencies=[4800,4880,4960,5040].filter(y=>y>floor&&y<ceiling);
   eChart(0,[eLine(eRange(0,63,f)),eLine([[0,goal],[63,goal]],rust),{...eLine([[code,f(code)]],rust),dots:true}],
-    0,63,ticks([0,16,32,48,63]),4780,Math.max(5020,goal+10,f(63)+10),ticks([4800,4880,4960,5040].filter(y=>y<Math.max(5020,goal+10,f(63)+10))," MHz"));
+    0,63,ticks([0,16,32,48,63]),floor,ceiling,ticks(frequencies," MHz"));
   eResult("两点斜率 "+slope.toFixed(3)+" MHz/码 · 选码 "+code+(requested!==code?"（限幅）":"")+" · 实际误差 "+signed(f(code)-goal,2)+" MHz");
 }
 const eRender={fractional,pattern,firstOrder,mashView,ditherView,walk,pi,tdc,dtc,calibrate};
