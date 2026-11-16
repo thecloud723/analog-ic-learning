@@ -5,3 +5,10 @@
 main table{border-collapse:collapse;width:100%}main th,main td{border-bottom:1px solid var(--line);padding:.45rem .6rem;text-align:left}
 @media(min-width:681px){.course-sidebar{position:sticky;top:12px;align-self:start;max-height:calc(100vh - 24px);overflow:auto;padding-right:4px}}
 @media(max-width:680px){.course-sidebar nav{max-height:12rem;overflow:auto;border-bottom:1px solid var(--line);margin-bottom:1rem}.course-sidebar ul{gap:0}.course-sidebar a{padding:3px 8px}}
+
+.math math{display:block;margin:.25rem 0 .6rem;text-align:left}
+.math{overflow-x:auto}
+.course-sidebar .course-group{margin:.65rem 0;border-top:1px solid var(--line);padding-top:.4rem}
+.course-sidebar .course-group h3{color:var(--ink);font-size:.95rem}
+.course-sidebar .course-subgroup h4{font-size:.83rem;margin:.25rem 0 .2rem .6rem;color:var(--muted)}
+.course-sidebar .course-subgroup ul,.course-sidebar .course-subgroups{padding-inline-start:1rem}

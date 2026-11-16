@@ -61,6 +61,21 @@ Slides 目录中的 11 个课件由完整讲义生成；课件适合快速浏览
 | 10 | [Appendix: RF Circuit Simulation](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/simulation.html) | DC 工作点/扫描、AC、S 参数、小信号噪声、Transient、Transient Noise、PSS、HB、PAC/HBAC、PNOISE/HBNOISE、仿真器支持 | 建立全课程统一的仿真方法地图；为 L3/L4 实验选择分析类型、理解结果边界提供依据 |
 | 11 | [Appendix: Case Study Fairphone (Gen. 6) RF Front-End](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/fp6.html) | 手机 RF 架构、频段、天线、SDR735、接收/发射链、APT、反馈接收、双上行与自干扰、Wi-Fi/BT | 作为系统级案例，把前端模块、指标、校准和共存问题串起来 |
 
+### 完整讲义 12 章的纳入范围
+
+总纲跟踪下面全部 12 章。表中的「纳入」是课程规划，逐页制作与发布另按专题进度记录。Slides 共 11 套，完整讲义另有第 12 章习题。
+
+| JKU 完整讲义 | 在本项目的安排 |
+|---|---|
+| [1–3 无线基础、系统指标与收发机](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-intro) | 纳入 RFIC 主线。从链路预算、噪声/线性度到收发机架构。PLL 开篇引用本振用途。 |
+| [4–5 LNA 和混频器](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-lna) | 纳入 RFIC 接收前端，包括匹配、噪声、混频和 LO；进阶电路按阅读所需展开。 |
+| [6–7 振荡器和 PLL](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator) | 纳入 PLL A–E 主线。Reciprocal Mixing 与接收前端互链。F 组整机验收继续用公开评估板、论文和课程仿真。 |
+| [8 功率放大器](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-poweramp) | 纳入 RFIC 发射前端，包括效率、线性度和放大器类别。 |
+| [9 杂散、串扰与自干扰](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-spurs) | 频率合成器杂散进入 PLL D3；收发通路与共存问题纳入 RFIC。 |
+| [10 RF 仿真](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-simulation) | 纳入公共仿真方法，PLL 附录先讲 tran/FFT、PSS/HB 与周期噪声。 |
+| [11 Fairphone 6 RF 前端](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-fp6) | 纳入 RFIC 系统案例，介绍手机实物和信号链。 |
+| [12 习题](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-exam-questions) | 纳入习题索引，PLL 和 RFIC 按专题选用预测题与计算题。 |
+
 ### 与现有专题的映射及改造重点
 
 | 本项目位置 | JKU 对应内容 | 使用方式 / 待办 |
