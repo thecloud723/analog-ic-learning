@@ -79,6 +79,10 @@ Slides 目录中的 11 个课件由完整讲义生成；课件适合快速浏览
 | SerDes | Fundamentals、Oscillators、PLL、Spurs、Simulation 中的相关知识 | 复用噪声、线性度、Jitter、相噪、耦合和仿真方法；JKU 不覆盖本项目 SerDes 的 FFE/DFE/CTLE、眼图、BER、CDR 架构等核心内容，不能替代 SerDes 专用教材 |
 | ADC/DAC、DDR/HBM、Die-to-Die | JKU RFIC 仅提供部分通用模拟/RF 背景 | 不视为这些专题的完整教材，仍需各自寻找对应的架构、协议、测试和电路资料 |
 
+### PLL 改造执行方案
+
+PLL 和振荡器部分拟以 JKU Oscillators、PLL、Spurs 和 RF Circuit Simulation 的推导为主线重组，先校正共用环路模型，再打通起振、相噪和杂散读图与实验。新版目录、现有 18 章迁移方案、图号缺口和分批验收见 [PLL 改造方案](../pll/docs/JKU_PLL_REDESIGN.md)。现有来源见 [296 处公式标注台账](../pll/docs/PLL_FORMULA_SOURCE_INVENTORY.md)。
+
 ### JKU 图表、引用和许可使用规范
 
 1. **优先定位到完整讲义中的具体图号。** 不要只把图注链接到 Slides 首页或整份课件；引用时尽量链接到 `rfic.html#fig-...` 的具体图锚点，并在图注写明作者/课程、Figure 编号和来源。
