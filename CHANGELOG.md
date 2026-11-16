@@ -1,5 +1,15 @@
 # 更新记录
 
+## 2026-11-16 · JKU RFIC 纳入课程总路线图
+
+- 将 JKU《Radio-Frequency Integrated Circuits》作为全课程公共参考体系记录，纳入 11 个课件及其知识范围、官方讲义/Slides/源码/Apache-2.0 入口。
+- 增加 JKU 与现有 PLL 18 章、SerDes，以及新增规划的 RFIC 基础与模拟射频前端专题之间的映射。
+- 明确 JKU 对相噪/Jitter、Spur/串扰、TDC/DCO 和 RF 仿真方法的补充价值，以及其对 FFE/DFE/CTLE、眼图/BER、DTC 等内容的覆盖边界。
+- 补充 Figure 75/84/86/97 的精确来源链接示例、原图/重绘标注要求和 Apache-2.0/第三方素材许可检查原则。
+- 本次仅更新课程总路线图与更新记录；未修改任何专题 HTML、图片、公式或实验代码，未将尚未制作的专题/实验标记为完成。
+
+# 更新记录
+
 ## 2026-11-15 · VCO-01 L3/L4 云端实验发布前准备
 
 - 新建 `pll/labs/VCO-01/`：Kaggle Notebook、真实SPICE结果到L2格式的导出器、实验参数元数据和离线源码检查。
