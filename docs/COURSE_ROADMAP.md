@@ -81,7 +81,7 @@ Slides 目录中的 11 个课件由完整讲义生成；课件适合快速浏览
 
 ### PLL 改造执行方案
 
-PLL 和振荡器部分拟以 JKU Oscillators、PLL、Spurs 和 RF Circuit Simulation 的推导为主线重组，先校正共用环路模型，再打通起振、相噪和杂散读图与实验。新版目录、现有 18 章迁移方案、图号缺口和分批验收见 [PLL 改造方案](../pll/docs/JKU_PLL_REDESIGN.md)。现有来源见 [296 处公式标注台账](../pll/docs/PLL_FORMULA_SOURCE_INVENTORY.md)。
+PLL 教程已确定按 A–F 重排，保留旧 01–18 章链接和页签映射。JKU 支撑原理推导；TI LMX2594EVM 提供整机建模与实测对照，ADI AN143 提供参考杂散验证，论文提供片内电路案例。自建 SKY130 配置用于可改电路的整机实验，各自使用可追溯的参数和工况。先做共享 Type-II 模型修正、EVM 频响复算，再完成杂散、相噪和整机验收。[PLL 改造计划](../pll/docs/JKU_PLL_REDESIGN.md) · [实验台账](../pll/EXPERIMENT_LEVEL_ROADMAP.md) · [296 处公式标注台账](../pll/docs/PLL_FORMULA_SOURCE_INVENTORY.md)
 
 ### JKU 图表、引用和许可使用规范
 
