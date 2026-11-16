@@ -149,7 +149,8 @@
 - C1.1–C3.4 共 12 页已实现。CP-01 复用现有 SPICE 数据；C2 用共享的教学边沿事件模型，VCO 调谐增益尚未用 f(VCTRL) 标定；C3.3 按 15 GHz 设计点复算 EVM 实装 RC 网络。
 - D1.1–D3.3 共 10 页已实现。含 SSB/RBW、相噪积分、噪声注入、EVM 实测读数、CP-01 边带计算与 AN143 注流对照。EVM 目前提供实测点插值读图；同工况逐源预测待获得输入数据。AN143 实测值按原图近似读取。
 - E1.1–E4.3 共 10 页已实现。覆盖分频序列、MASH、dither、逐拍 ADPLL、TDC/DTC 与 DCO 两点校准；交互采用教学定点或行为模型，器件校准数据另待实测。
-- F 与仿真附录待迁移。首页直达 A1.1，正文左栏是 A–F 的唯一课程目录，F 在导航中标为待发布。
+- F1.1–F1.3 及仿真附录两页已实现。F 组提供 EVM 工况复核、闭环与局部纹波分项复算、论文结果读图。附录提供窗函数演示、CP-01 CSV 导出与网表入口。
+- 新版 52 页已齐全。首页直达 A1.1，正文左栏串接 A–F 和附录。SKY130 整机耦合验证、同工况 EVM 逐源噪声与全套云端实跑继续按实验台账追踪。
 - 已统一旧第 12 章交互的 Type-II 传递函数及其相噪绘图计算。
 
 ## 贯穿教程的数据手册阅读练习
@@ -164,7 +165,7 @@
 | D1–D3 性能图 | [第 9–10 页典型特性](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=9)；[第 10 页 Figs. 10–12](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=10) | 对每张选用图记录横纵轴、载波、PFD、环路带宽、噪声模式和适用条件，解释连续相噪、离散 spur、RMS jitter 与输出功率的读法。用 Figs. 10–12 找出哪些条件变化后才可以比较。 |
 | E1/F1 配置与复核 | [第 14–20 页寄存器与初始化](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=14)；[第 21 页算例](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=21) | 从目标频率反推配置，查对应寄存器，再选一张有匹配工况的性能图。输出一张「需求 → 参数/寄存器 → 计算 → 测量条件 → 手册出处」对照表。 |
 
-B1.2 已加入式 (3)–(4) 的符号对照和直达页链接，其余练习随对应章节实现。
+B1.2 已加入式 (3)–(4) 对照，F1.1 已加入从第 21 页算例回查寄存器和性能图工况的复核步骤。
 
 ## 上游资料索引
 
