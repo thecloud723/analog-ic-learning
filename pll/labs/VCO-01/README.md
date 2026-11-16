@@ -36,13 +36,13 @@
 
 ## Kaggle 首次发布操作（下一阶段，尚未执行）
 
-1. Kaggle → Notebooks → New Notebook → Import 本目录的 `.ipynb`。配置 **CPU**，打开 **Internet**，不需要 GPU。
+1. Kaggle → Notebooks → New Notebook → Import 本目录的 `.ipynb`。配置 **CPU**，打开 **Internet**，不需要 GPU。附加一个版本化的 Kaggle Dataset，里面放原始 `lc-vco-lab.zip` 和 `export_l2.py`。Notebook 直接展示可编辑网表，官方 27 组扫参读取原始网表，详细单点可启用 `USE_EDITED_NETLIST`。扫参参数行由运行脚本生成，修改 L、C、Rs 等用 Notebook 参数单元。
 2. 运行全部单元格；先完成 27 组网格与 `baseline.csv` 检查，再完成默认一个详细点、FFT 与结果打包。任何检查失败都不得标记 L3 已完成。
 3. `Save Version` 保存带输出的 Notebook，公开发布前核对模型/图片/代码许可，并确认原始数据、运行日志、结果 ZIP 可以访问。
 4. 用**未登录浏览器**验证是否能查看 L3；随后用**另一个账号/洁净环境** Copy & Edit、改至少两个参数、重新运行，验证 L4。
 5. 把真实 Kaggle URL、运行耗时、commit、验收记录补到 `experiment.yaml` 和 [实验台账](../../EXPERIMENT_LEVEL_ROADMAP.md)；再按需要把导出的 L2 放回课程资源目录。
 
-**注意**：Notebook 首次运行需要公开 GitHub、Node 下载站与 npm Registry 的网络访问。Kaggle 对 Internet、CPU 时间和文件保留的限制可能变化；网络不通时可以把 ZIP 与依赖做成版本化 Kaggle Dataset，再验证脱离在线安装的路径。
+**注意**：Kaggle 首次运行需附加实验输入，并访问 Node 下载站（如果 Node 低于 22）和 npm Registry。Kaggle 对 Internet、CPU 时间和文件保留的限制可能变化；网络不通时可以把 ZIP 与依赖做成版本化 Kaggle Dataset，再验证脱离在线安装的路径。
 
 ## 本地复现（不需要 Kaggle 账号）
 
