@@ -53,7 +53,7 @@
 
 ## 优先纠正的技术问题
 
-1. **统一第 10–12 章的二阶 Type-II 模型。** 第 11 章已有含零点的参考相位传递，第 12 章 REF/VCO 互动卡片却写成分子为常数的 $T$ 和分子为 $s(s+2\zeta\omega_n)$ 的 $S$。对采用串联 RC 并忽略并联小电容的同一模型，令 $D=s^2+2\zeta\omega_n s+\omega_n^2$，应使用 $T=(2\zeta\omega_n s+\omega_n^2)/D$、$S=s^2/D$。实现时核查正文、曲线生成、抖动积分三处，用复数域 $T+S=1$、DC 与高频极限、低频 $S$ 约 40 dB/dec 检查。并联电容启用时由完整 $Z(s)$ 重算。源 PSD 在线性功率域相加，参考相位通道的倍频增益只计一次。 [JKU §7.2，式 (67) 与 Fig. 84](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-phase-noise)
+1. **统一第 10–12 章的二阶 Type-II 模型。** 第 11 章已有含零点的参考相位传递，第 12 章 REF/VCO 互动卡片却写成分子为常数的 $T$ 和分子为 $s(s+2\zeta\omega_n)$ 的 $S$。对采用串联 RC 并忽略并联小电容的同一模型，令 $D=s^2+2\zeta\omega_n s+\omega_n^2$，应使用 $T=(2\zeta\omega_n s+\omega_n^2)/D$、$S=s^2/D$。已核对第 12 章 JS 的 `pllParts()` 也采用卡片上的两组分子，`renderTransfer()` 直接用其结果。实现时替换 `pllParts()` 的幅度计算并核查正文、曲线生成、抖动积分三处，用复数域 $T+S=1$、DC 与高频极限、低频 $S$ 约 40 dB/dec 检查。并联电容启用时由完整 $Z(s)$ 重算。源 PSD 在线性功率域相加，参考相位通道的倍频增益只计一次。 [JKU §7.2，式 (67) 与 Fig. 84](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-phase-noise)
 2. **拆出“如何测出这条曲线”。** 先展示仪器横轴、纵轴、RBW 和积分上下限，再显示推导与滑块。相噪用 dBc/Hz，离散 spur 用 dBc；在图上标载波以及观测频偏。积分抖动先转线性谱，再积分，最后除载波角频率；独立报告是否含离散项。用 12 kHz–20 MHz 示例对照更换上下限的结果。 [JKU §6.1–6.3](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html)
 3. **建立共用仿真说明。** 以 JKU Fig. 106 衔接 L1–L4。用瞬态确认起振、捕获和纹波，给 FFT 标有效数据窗、分辨率与窗函数；自由振荡器的器件本底相噪专门核对自主周期稳态与周期噪声分析能力。L2 由可复跑数据导出，现有 VCO-01、VCO-02 和 CP 实验先做身份与入口对照。 [JKU 第 10 章](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html)
 
