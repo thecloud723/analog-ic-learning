@@ -126,6 +126,79 @@ const render = {
   }
 };
 
+const startupRuns = [{"rs":2.2,"f":5.429311599061681,"vpp":0.4610162755084226,"env":[0,0,0.00758,0.00949,0.01145,0.01423,0.01727,0.0208,0.02597,0.03122,0.03884,0.04646,0.05539,0.06795,0.07998,0.0961,0.11059,0.12554,0.14339,0.15751,0.1727,0.18378,0.19477,0.20234,0.20839,0.21412,0.21785,0.22117,0.22329,0.22531,0.22651,0.22736,0.22825,0.22882,0.22925,0.22945,0.2298,0.22999,0.23008,0.2301,0.23026,0.23035,0.23036,0.23034,0.23041,0.23046,0.23046,0.23042,0.23046,0.23049,0.23049,0.23043,0.23047,0.2305,0.2305,0.23045,0.23048,0.23051,0.2305,0.23044,0.23049,0.23051,0.2305,0.23044,0.23049,0.23051,0.2305,0.23045,0.23049,0.23051,0.2305,0.23044,0.23049,0.23051,0.2305,0.23043,0.23049,0.23051,0.2305,0.23043,0.23049,0.23051,0.2305,0.23044,0.23049,0.23051,0.2305,0.23043,0.2305,0.23051,0.2305,0.23042,0.2305,0.23051,0.2305,0.23043,0.23049,0.23051,0.23049,0.23043,0.2305,0.23051,0.2305,0.23042,0.2305,0.23051,0.23049,0.23043,0.2305,0.23051,0.23049,0.23044,0.2305,0.23051,0.23049,0.23043,0.2305,0.23051,0.23049,0.23044,0.2305,0.23051,0.23049,0.23044,0.2305,0.23051,0.23048,0.23045,0.2305,0.23051,0.23049,0.23044,0.23051,0.23051,0.23049,0.23045,0.2305,0.23051,0.23048,0.23046,0.2305,0.23051,0.23048,0.23045,0.23051,0.23051,0.23048,0.23045,0.23051,0.23051,0.23048,0.23046,0.23051,0.23051,0.23047,0.23047,0.23051,0.23051,0.23048,0.23046,0.23051,0.23051,0.23047,0.23046,0.23051,0.23051,0.23047,0.23047,0.23051,0.23051,0.23046,0.23046,0.23051,0.23051,0.23047,0.23047,0.23051,0.23051,0.23046,0.23047,0.23051,0.23051,0.23046,0.23048,0.23051,0.23051,0.23045,0.23047,0.23051,0.23051,0.23046,0.23048,0.23051,0.2305,0.23045,0.23048,0.23051,0.23051,0.23045,0.23049,0.23051,0.2305,0.23046,0.23048,0.23051,0.2305,0.23045,0.23048,0.23051,0.23051,0.23044,0.23049,0.23051,0.2305,0.23043,0.23048,0.23051,0.2305,0.23044,0.23049,0.23051,0.2305,0.23044,0.23049,0.23051,0.2305,0.23043,0.2305,0.23051,0.2305,0.23044,0.23049,0.23051,0.2305,0.23043,0.23049,0.23051,0.2305,0.23042,0.2305,0.19148]},{"rs":3.3,"f":null,"vpp":1.5774108819144317e-7,"env":[0,0,0.00646,0.00612,0.00565,0.00529,0.00495,0.00457,0.00428,0.00395,0.0037,0.00346,0.0032,0.00299,0.00276,0.00258,0.00242,0.00223,0.00209,0.00193,0.00181,0.00169,0.00156,0.00146,0.00135,0.00126,0.00118,0.00109,0.00102,0.00094,0.00088,0.00082,0.00076,0.00071,0.00066,0.00062,0.00057,0.00053,0.0005,0.00046,0.00043,0.0004,0.00037,0.00035,0.00032,0.0003,0.00028,0.00026,0.00024,0.00023,0.00021,0.00019,0.00018,0.00017,0.00016,0.00015,0.00014,0.00013,0.00012,0.00011,0.0001,0.0001,0.00009,0.00008,0.00008,0.00007,0.00007,0.00006,0.00006,0.00005,0.00005,0.00005,0.00004,0.00004,0.00004,0.00004,0.00003,0.00003,0.00003,0.00003,0.00002,0.00002,0.00002,0.00002,0.00002,0.00002,0.00002,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0.00001,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"rs":18,"f":null,"vpp":0,"env":[0,0,0.00419,0.00018,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}];
+const measuredCapSweep = [[680,5.905378707048643],[810,5.429311599061681],[970,4.9759015069507475]];
+const lcGHz = capacitanceFf => 1e-9 / (2 * Math.PI * Math.sqrt(1e-9 * capacitanceFf * 1e-15));
+const samples = (start, end, fn) => Array.from({length:121}, (_, i) => {
+  const x = start + (end - start) * i / 120;
+  return [x, fn(x)];
+});
+const plotLab = spec => plot(lab.querySelector("canvas"), spec);
+const selectedNumber = id => Number(document.getElementById(id).value);
+
+Object.assign(render, {
+  crystal() {
+    const loadPf = value("cl", " pF");
+    const pull = pf => 2500 / (2 + pf);
+    plotLab({xMin:5,xMax:20,yMin:100,yMax:380,xTicks:ticks([5,10,15,20]," pF"),yTicks:ticks([100,200,300]),
+      series:[{color:blue,points:samples(5,20,pull)},{color:rust,points:[[loadPf,pull(loadPf)]],dots:true}]});
+    result("相对串联谐振 +" + pull(loadPf).toFixed(1) + " ppm · 相对标称 10 pF " + signed(pull(loadPf)-pull(10),1) + " ppm");
+  },
+  plan() {
+    const r = value("ref-r"), n = value("plan-n");
+    const pfd = 200 / r;
+    result("PFD " + pfd.toFixed(2) + " MHz · 输出 " + (n*pfd/1000).toFixed(3) + " GHz · 保持 14 GHz 需 N = " + 70*r);
+  },
+  ring() {
+    const n = selectedNumber("stages"), delay = value("stage-delay"," ps");
+    result("半周期 " + n*delay + " ps · 近似频率 " + (1000/(2*n*delay)).toFixed(2) + " GHz");
+  },
+  tank() {
+    const q = value("tank-q");
+    const amplitude = cycles => Math.exp(-Math.PI*cycles/q);
+    plotLab({xMin:0,xMax:40,yMin:0,yMax:1,xTicks:ticks([0,10,20,30,40]," 周期"),yTicks:ticks([0,.25,.5,.75,1]),
+      series:[{color:blue,points:samples(0,40,amplitude)},{color:rust,points:samples(0,40,k=>amplitude(k)**2)}]});
+    result("10 周期后 · 振幅 " + (100*amplitude(10)).toFixed(1) + "% · 能量 " + (100*amplitude(10)**2).toFixed(1) + "%");
+  },
+  startup() {
+    const run = startupRuns.find(x=>x.rs===selectedNumber("series-loss"));
+    const baseline = startupRuns[0];
+    const makeTrace = x => x.env.map((point,i)=>[i/2,point]);
+    const series = [{color:blue,points:makeTrace(run)}];
+    if (run !== baseline) series.unshift({color:rust,points:makeTrace(baseline)});
+    const ceiling = Math.max(.6, ...baseline.env, ...run.env) * 1.05;
+    plotLab({xMin:0,xMax:120,yMin:0,yMax:ceiling,xTicks:ticks([0,30,60,90,120]," ns"),yTicks:ticks([0,.2,.4,.6]," V"),series});
+    result((run.f===null?"蓝线未形成稳态频率":"蓝线稳态 "+run.f.toFixed(3)+" GHz")+
+      " · 后段 Vpp "+run.vpp.toFixed(3)+" V"+(run!==baseline?" · 橙线：2.2 Ω 对照":""));
+  },
+  capSweep() {
+    const capacitance = selectedNumber("vco-cap");
+    const measured = measuredCapSweep.find(([cap])=>cap===capacitance)[1];
+    plotLab({xMin:650,xMax:1000,yMin:4.8,yMax:6.4,xTicks:ticks([650,750,850,950]," fF"),yTicks:ticks([5,5.4,5.8,6.2]," GHz"),
+      series:[{color:blue,points:samples(650,1000,lcGHz)},{color:rust,points:measuredCapSweep,dots:true,selected:capacitance}]});
+    result("理想 LC "+lcGHz(capacitance).toFixed(3)+" GHz · SPICE "+measured.toFixed(3)+" GHz");
+  },
+  bank() {
+    const step=value("cap-step"," fF"),span=value("cap-span"," fF");
+    const upper=lcGHz(800), lower=lcGHz(800+span);
+    const nextUpper=lcGHz(800+step), nextLower=lcGHz(800+step+span);
+    const overlap=1000*(nextUpper-lower);
+    plotLab({xMin:4.95,xMax:5.7,yMin:0,yMax:3,xTicks:ticks([5,5.2,5.4,5.6]," GHz"),yTicks:[[1,"档 1"],[2,"档 0"]],
+      series:[{color:blue,points:[[lower,2],[upper,2]]},{color:rust,points:[[nextLower,1],[nextUpper,1]]}]});
+    result(overlap===0?"相邻频段刚好接触":(overlap>0?"相邻频段重叠 ":"相邻频段空档 ")+Math.abs(overlap).toFixed(1)+" MHz");
+  },
+  margin() {
+    const shift=value("pvt-shift"," MHz");
+    const low=.2, high=1.2, gain=.3, target=5;
+    const freq=v=>target+shift*.001+gain*(v-.7);
+    const voltage=.7-shift*.001/gain;
+    const inside=voltage>=low-1e-12&&voltage<=high+1e-12;
+    plotLab({xMin:low,xMax:high,yMin:4.6,yMax:5.4,xTicks:ticks([.2,.45,.7,.95,1.2]," V"),yTicks:ticks([4.7,5,5.3]," GHz"),
+      series:[{color:blue,points:[[low,freq(low)],[high,freq(high)]]},{color:rust,points:[[low,target],[high,target]]}]});
+    result(inside?"可达 5 GHz · VCTRL "+voltage.toFixed(3)+" V · 最近电压余量 "+Math.max(0,1000*Math.min(voltage-low,high-voltage)).toFixed(0)+" mV":"5 GHz 超出该曲线的可调范围");
+  }
+});
+
 if (lab && render[lab.dataset.lab]) {
   const draw = render[lab.dataset.lab];
   lab.addEventListener("input", draw);
