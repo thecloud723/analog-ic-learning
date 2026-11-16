@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>锁之前与锁之后 · PLL 教程</title><link rel="stylesheet" href="course.css"><script defer src="course.js"></script></head><body><header><div><a href="../../index.html">模拟与混合信号课程</a><span aria-hidden="true">/</span><a href="index.html">PLL 新目录</a></div></header><div class="shell"><aside><nav aria-label="PLL 课程"><strong>A · 认识整机</strong><ul><li><a href="a1-1.html">A1.1 整机由哪些模块组成</a></li><li><a href="a1-2.html" aria-current="page">A1.2 锁之前与锁之后</a></li><li><a href="a1-3.html">A1.3 第一张相噪图怎么读</a></li><li><a href="a2-1.html">A2.1 时间差怎样变成相位差</a></li><li><a href="a2-2.html">A2.2 频差怎样积成相位差</a></li><li><a href="a2-3.html">A2.3 PLL 第一次怎么纠偏</a></li></ul><a href="../chapters/01_PLL用途与系统全景.html">旧版 01–18 章</a></nav></aside><main><h1>锁之前与锁之后</h1><p class="intro">用三条同步波形观察 PLL 如何校正一小段初始频差。</p>
+<p>这组曲线用理想二阶 Type-II 近锁点响应。假设振荡器还差一小段频率，环路会改变 VCTRL，直到输出频率回到目标，参考与反馈的净相位误差也回到零。</p>
+<div class="lab" data-lab="settle"><label class="control" for="offset">反映到输出端的初始频差（kHz）<output for="offset" id="offset-value"></output><input id="offset" type="range" min="-200" max="200" step="10" value="-100"></label>
+<div class="plot"><h3>输出频差（kHz）</h3><canvas width="820" height="170" aria-label="输出频差逐渐回到零" role="img"></canvas></div>
+<div class="plot"><h3>VCTRL 相对锁定值（mV）</h3><canvas width="820" height="170" aria-label="相对锁定点的控制电压" role="img"></canvas></div>
+<div class="plot"><h3>参考减反馈相位（mrad）</h3><canvas width="820" height="170" aria-label="分频反馈相位误差" role="img"></canvas></div>
+<p class="result" data-result></p></div>
+<p>三张图共用时间轴。先找初始频差，再看 VCTRL 往哪里走，最后检查相位误差是否跟着收敛。这是可改参的解析模型。大频差捕获与 cycle slip 将在 C2 用边沿模型观察。</p>
+<p class="source"><a href="https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#charge-pump-pll">JKU §7.2 · Type-II 模型</a></p><footer><a href="a1-1.html">← 整机由哪些模块组成</a><a href="a1-3.html">第一张相噪图怎么读 →</a></footer></main></div></body></html>
