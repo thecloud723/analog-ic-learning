@@ -96,6 +96,8 @@ Slides 目录中的 11 个课件由完整讲义生成；课件适合快速浏览
 
 ### PLL 改造执行方案
 
+把数据手册阅读贯穿 PLL：A 读框图与引脚，B 复算频率链，C 查规格和测试条件，D 读性能图，E/F 定配置并做整机复核。ADF4351 Rev. A 为贯穿案例，LMX2594EVM 继续作为独立实测对照。[数据手册阅读任务与页码](../pll/docs/PLL_PAGE_PLAN.md#贯穿教程的数据手册阅读练习)
+
 PLL 教程已确定按 A–F 重排，保留旧 01–18 章链接和页签映射。JKU 支撑原理推导；TI LMX2594EVM 提供整机建模与实测对照，ADI AN143 提供参考杂散验证，论文提供片内电路案例。自建 SKY130 配置用于可改电路的整机实验，各自使用可追溯的参数和工况。先做共享 Type-II 模型修正、EVM 频响复算，再完成杂散、相噪和整机验收。[PLL 改造计划](../pll/docs/JKU_PLL_REDESIGN.md) · [实验台账](../pll/EXPERIMENT_LEVEL_ROADMAP.md) · [296 处公式标注台账](../pll/docs/PLL_FORMULA_SOURCE_INVENTORY.md)
 
 ### JKU 图表、引用和许可使用规范

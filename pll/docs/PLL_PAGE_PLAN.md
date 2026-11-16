@@ -149,6 +149,20 @@
 - C–F 与仿真附录待迁移。首页直达 A1.1，正文左栏是 A–F 的唯一课程目录，C–F 在导航中标为待发布。
 - 已统一旧第 12 章交互的 Type-II 传递函数及其相噪绘图计算。
 
+## 贯穿教程的数据手册阅读练习
+
+用 ADF4351 Rev. A 作为贯穿案例。每一站在课程正文讲清一类图表，链接直接打开手册页，并给出图号、公式号或表项。综合练习放在 F1，沿用现有页数，并与 LMX2594EVM 整机验收分别记录。
+
+| 课程位置 | 手册定位 | 读完会做什么 |
+|---|---|---|
+| A1.1 框图与接口 | [第 1 页 Fig. 1](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=1)；[第 7–8 页引脚表](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=7) | 从 REFIN 追到 PFD/CP、外部滤波器、VTUNE、VCO 和 RFOUT；定位反馈取样点，区分 SPI、Lock Detect 与 MUXOUT。 |
+| B1.2 频率规划 | [第 21 页式 (3)–(4) 与 Fig. 30](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=21) | 从参考频率、参考链开关和 R 算 PFD；用 INT/FRAC/MOD 与 RF Divider 复算手册的 2112.6 MHz，再判断课内的整数式在哪些条件成立。 |
+| C1/C3 参数与边界 | [第 3–4 页规格表](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=3)；[第 6 页绝对最大额定值](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=6)；[第 11 页 PFD/CP](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=11) | 逐项解释单位、测试条件、最小/典型/最大值和绝对额定值；写出参考输入、PFD、VCO 频段和 CP 电流如何约束一个设计。 |
+| D1–D3 性能图 | [第 9–10 页典型特性](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=9)；[第 10 页 Figs. 10–12](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=10) | 对每张选用图记录横纵轴、载波、PFD、环路带宽、噪声模式和适用条件，解释连续相噪、离散 spur、RMS jitter 与输出功率的读法。用 Figs. 10–12 找出哪些条件变化后才可以比较。 |
+| E1/F1 配置与复核 | [第 14–20 页寄存器与初始化](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=14)；[第 21 页算例](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=21) | 从目标频率反推配置，查对应寄存器，再选一张有匹配工况的性能图。输出一张「需求 → 参数/寄存器 → 计算 → 测量条件 → 手册出处」对照表。 |
+
+B1.2 已加入式 (3)–(4) 的符号对照和直达页链接，其余练习随对应章节实现。
+
 ## 上游资料索引
 
 - [JKU RFIC 完整讲义，重点第 6、7、9、10 章](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html)
