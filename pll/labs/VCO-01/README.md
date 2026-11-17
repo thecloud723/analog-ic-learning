@@ -1,13 +1,13 @@
 # VCO-01 · LC VCO 四级实验工程
 
-对应 [PLL 第 8 章](../../chapters/08_VCO与DCO可控振荡器.html)。[Kaggle · PLL SPICE · VCO-01 · LC VCO 起振与扫参](https://www.kaggle.com/code/ericzhangyin/pll-spice-vco-01-lc-vco)。源码将网表、基准表、运行器和 L2 导出器随 Notebook 提供，从 SkyWater 公开仓库下载固定提交的模型与许可证，无需另附数据集。
+对应新版 [B2.3《差分负阻如何启动 LC》](../../course/b2-3.html)。VCO-01 扫固定 L、C 和串联损耗。整机系列的 [PLL-01](../PLL-SPICE/) 对应 B3，扫控制电压。[Kaggle · PLL SPICE · VCO-01 · LC VCO 起振与扫参](https://www.kaggle.com/code/ericzhangyin/pll-spice-vco-01-lc-vco)。源码将网表、基准表、运行器和 L2 导出器随 Notebook 提供，从 SkyWater 公开仓库下载固定提交的模型与许可证，无需另附数据集。
 
 ## 当前状态（2026-11-15）
 
 | 级别 | 状态 | 证据/入口 |
 |---|---|---|
-| L1 · 公式交互 | 源码已有 | 第 8 章理想 LC 频率、Bank、RO 等教学交互 |
-| L2 · 真实仿真预计算 | 源码已有，待复核 | 第 8 章内嵌的 27 组 SKY130 TT SPICE 结果；原始 [ZIP](../../assets/lc-vco-lab.zip) |
+| L1 · 公式交互 | 源码已有 | B 章理想 LC 频率、Bank、RO 等教学交互 |
+| L2 · 真实仿真预计算 | 源码已有，待复核 | 旧版第 8 章内嵌的 27 组 SKY130 TT SPICE 结果；原始 [ZIP](../../assets/lc-vco-lab.zip) |
 | L3 · 公开详细实验 | **27 组真实 SPICE 已经 CI 重跑、L2 导出已通过** | [Kaggle L3/L4 Notebook 源码](VCO-01_Kaggle_L3_L4.ipynb) |
 | L4 · 读者复现 | **已在 CI 中两次改参并生成完整 CSV；读者在 Kaggle Copy & Edit 仍未验证** | 发布后需要用其他账号/洁净会话 Copy & Edit 实测 |
 
