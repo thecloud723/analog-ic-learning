@@ -65,7 +65,7 @@
 - ADI MT-086：https://www.analog.com/media/en/training-seminars/tutorials/mt-086.pdf
 - ADI AN-1067：https://www.analog.com/en/resources/app-notes/an-1067.html
 - ADI AN143：https://www.analog.com/en/resources/technical-articles/an143-a-simple-method-to-accurately-predict-pll-reference-spur-levels-due-to-leakage-current.html
-- Razavi 图书信息：https://www.cambridge.org/core/books/design-of-cmos-phaselocked-loops/ （正式引用时应再核对具体版本和章节）
+- Razavi：《Design of CMOS Phase-Locked Loops》。作为电路级/架构级进阶参考；正式引用时需核对具体版本、出版社信息和章节页码。
 
 **对标原则：** JKU 作为理论推导和原图的核心参考；TI 作为工程设计深度参考；ADI 作为产品、测试和调试参考；Razavi 作为电路级/架构级进阶参考。不要为了“原创”而重画质量更差的关键原图，也不要把外部教材整章复制进来。每一项引入内容都应说明来源、教学目的和适用边界。
 
