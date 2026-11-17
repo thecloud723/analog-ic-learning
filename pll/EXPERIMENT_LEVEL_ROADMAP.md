@@ -2,6 +2,7 @@
 
 > **阶段 1 · PLL-S1-01**　已做[课程入口与导航源码审计](docs/PLL_S1_01_NAVIGATION_AUDIT.md)。已补齐 18 章迁移映射，可用于 S1-07 关联旧实验。实验成熟度沿用既有证据。逐项合并在 PLL-S1-07 执行。
 > **PLL-S1-02**　[新版 52 页覆盖矩阵](docs/PLL_S1_02_COURSE_COVERAGE.md)已建立，可用于 S1-07 合并台账。
+> **PLL-S1-03**。[外部资料对照与正文引用](docs/PLL_S1_03_EXTERNAL_REFERENCE_MATRIX.md)已归档。公式级核对纳入 S1-04。
 
 > 审核日期：2026-11-15  
 > 范围：`analog-ic-learning/pll/chapters/` 18章 HTML、`course-labs.js`、`course-cp-data.js`、两份实验 ZIP 的**引用与现有课程记录**。  
