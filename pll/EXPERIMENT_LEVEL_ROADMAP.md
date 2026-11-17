@@ -1,5 +1,7 @@
 # PLL 18 章实验四级体系：逐项状态与 L3/L4 建设规划
 
+> **阶段 1 · PLL-S1-01**　已做[课程入口与导航源码审计](docs/PLL_S1_01_NAVIGATION_AUDIT.md)。实验成熟度本次沿用既有证据。逐项合并在 PLL-S1-07 执行。
+
 > 审核日期：2026-11-15  
 > 范围：`analog-ic-learning/pll/chapters/` 18章 HTML、`course-labs.js`、`course-cp-data.js`、两份实验 ZIP 的**引用与现有课程记录**。  
 > 本文只整理实施计划与源码核对状态；**没有发布 Kaggle、没有运行新的仿真、没有修改课程 HTML**。  

@@ -1,5 +1,9 @@
 # PLL 课程制作与技术验收记录（01～18 章）
 
+## 阶段 1 执行记录
+
+- **PLL-S1-01 进行中**。基线 main 为 `64bdee560eeded5380efd6018e17c8b951f46ff1`。[52 页导航源码检查](docs/PLL_S1_01_NAVIGATION_AUDIT.md)通过，浏览器、移动端、旧新迁移验收待完成。
+
 > **VCO-01 仿真复现（2026-11-15）**： [27组实际SPICE复跑](https://github.com/thecloud723/analog-ic-learning/actions/runs/43682286383) PASS；L2 自动导出与原基准 f/Vpp/power 差值均为 0；两套修改 Rs/W 参数的完整 CSV 也已通过。Notebook 源码见 [labs/VCO-01](labs/VCO-01/)。**尚未在 Kaggle 发布、尚未完成读者账号的 L4 验收**。
 
 > **实验级最新状态（2026-11-15）**：查看 [L1～L4 逐实验状态与规划](EXPERIMENT_LEVEL_ROADMAP.md)，已按 18 章、49 项核对源码。当前已有第 07 章 CP 纹波和第 08 章 LC VCO 的 L2 数据原型；L3/L4 尚未发布。下文保留历史阶段日志，不用其旧日期的“待制作”描述判断当前整体状态。
