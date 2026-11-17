@@ -4,9 +4,11 @@
 
 ## 课程入口
 
-**[从第 1 章开始 PLL 交互课程](chapters/01_PLL用途与系统全景.html)**
+- **[PLL 完备度评估与五阶段详细执行计划（2026-11-17）](docs/PLL_COMPLETENESS_AND_EXECUTION_PLAN_2026-11-17.md)**：当前课程对标、交互/实验状态，以及阶段 1～5 的任务、交付物和验收标准。
 
-- **[逐实验四级状态台账与 L3/L4 规划](EXPERIMENT_LEVEL_ROADMAP.md)**（18章、49项；Kaggle发布为下一步）
+**[从新版 A1.1 开始 PLL 交互课程](course/a1-1.html)**
+
+- [旧版 18 章实验四级状态台账](EXPERIMENT_LEVEL_ROADMAP.md)（历史台账；新版 A–F 的统一实验台账按上述执行计划重整）
 - [章节页面模板](PAGE_TEMPLATE.md)
 - [章节进度与验收记录](PROGRESS.md)
 - [参考资料索引](REFERENCES.md)
