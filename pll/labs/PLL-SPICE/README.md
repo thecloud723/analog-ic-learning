@@ -1,6 +1,6 @@
 # PLL SPICE 系列 · 整数-N CP-PLL
 
-从 [Kaggle 的 PLL SPICE 00 主 Notebook](https://www.kaggle.com/code/ericzhangyin/pll-spice-00-integer-n-cp-pll-series) 进入。前置实验 [VCO-01 起振与扫参](https://www.kaggle.com/code/ericzhangyin/pll-vco-01-lc-vco) 使用相同的 SKY130 振荡器核心。
+从 [Kaggle 的 PLL SPICE 00 主 Notebook](https://www.kaggle.com/code/ericzhangyin/pll-spice-00-n-cp-pll) 进入。前置实验 [VCO-01 起振与扫参](https://www.kaggle.com/code/ericzhangyin/pll-spice-vco-01-lc-vco) 使用相同的 SKY130 振荡器核心。
 
 | 实验 | 课程 | 默认工况与结果 |
 | --- | --- | --- |
@@ -9,7 +9,7 @@
 | PLL-03 | C2 / F | 目标 5 GHz、N=125、初始频差 −80 MHz，比较线性 VCO、SPICE 标定 VCO、再加 CP 非理想；SPICE 解平均相位域闭环 |
 | PLL-04 | D | 计划用同一工况做参考杂散及噪声积分，需增补逐边沿模型和有来源的噪声输入 |
 
-`settings.json` 为共同工况，`pll_spice_series.mjs` 为 ngspice 运行脚本。Notebook 内附相同设置、脚本和课程原始 `lc-vco-lab.zip`，含原模型许可。更改共用设置或脚本时同步更新 Notebook 参数和运行单元。
+`settings.json` 为共同工况，`pll_spice_series.mjs` 为 ngspice 运行脚本。Notebook 内含相同设置、脚本和网表，运行时从 SkyWater 公开仓库按固定提交下载所需模型和许可证，并核对 SHA-256。更改共用设置或脚本时同步更新 Notebook 参数和运行单元。
 
 Kaggle 使用 CPU、打开 Internet，运行全部单元。首次需安装锁定的 Node/npm 依赖，无需附加数据集。结果目录 `pll-spice-series/` 保存 `.cir`、原始 CSV、PNG、日志和配置。网页 L2 可从这些结果中抽取代表工况。锁定时间采用连续 4 µs 保持在 ±100 kHz 频差以内的最早入带时刻。
 
