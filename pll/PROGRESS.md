@@ -5,6 +5,7 @@
 - **PLL-S1-01 清单与静态核对完成**。基线 main 为 `64bdee560eeded5380efd6018e17c8b951f46ff1`。[52 页导航源码检查](docs/PLL_S1_01_NAVIGATION_AUDIT.md)通过，18 章迁移映射已补齐。云端 Chrome 31/52 页打开和刷新通过，线上 72 个 HTML 与仓库内容一致。其余页面、移动端和历史深链运行验收列入 S1-06。
 - **PLL-S1-02 逐页覆盖表已建立**。[核对 52 页正文、独立公式和交互控件](docs/PLL_S1_02_COURSE_COVERAGE.md)。
 - **PLL-S1-03**。[外部资料对照与正文引用](docs/PLL_S1_03_EXTERNAL_REFERENCE_MATRIX.md)已归档。公式级核对纳入 S1-04。
+- **B1.2 频率规划器交互规格已归档（设计阶段）**：[详细规格](docs/PLL_B1_2_FREQUENCY_PLANNER_SPEC_2026-11-17.md)。明确改造现有 `course/b1-2.html`，按 TI TICS Pro Fig. 3-1 布局增加动态频率节点、器件合法性提示和 Mode A/B/C。当前未修改 HTML/CSS/JS；待 PLL-S1-09 阶段 1 冻结后再实施。
 
 > **VCO-01 仿真复现（2026-11-15）**： [27组实际SPICE复跑](https://github.com/thecloud723/analog-ic-learning/actions/runs/43682286383) PASS；L2 自动导出与原基准 f/Vpp/power 差值均为 0；两套修改 Rs/W 参数的完整 CSV 也已通过。Notebook 源码见 [labs/VCO-01](labs/VCO-01/)。**尚未在 Kaggle 发布、尚未完成读者账号的 L4 验收**。
 
