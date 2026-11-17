@@ -5,6 +5,7 @@
 ## 课程入口
 
 - **[PLL 完备度评估与五阶段详细执行计划（2026-11-17）](docs/PLL_COMPLETENESS_AND_EXECUTION_PLAN_2026-11-17.md)**：当前课程对标、交互/实验状态，以及阶段 1～5 的任务、交付物和验收标准。
+- **[B1.2 频率规划器交互改造规格（2026-11-17）](docs/PLL_B1_2_FREQUENCY_PLANNER_SPEC_2026-11-17.md)**：按 TI TICS Pro Fig. 3-1 复刻布局，定义动态频率节点、LMX2594 约束、Mode A/B/C 和仿真/估算边界；仅为设计规格，尚未实施。
 
 **[从新版 A1.1 开始 PLL 交互课程](course/a1-1.html)**
 
