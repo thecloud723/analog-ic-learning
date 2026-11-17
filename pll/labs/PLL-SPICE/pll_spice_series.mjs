@@ -165,3 +165,44 @@ writeFileSync(join(out, 'pll-03-loop-config.json'), JSON.stringify({
   cp_offset_a: offsetA, cp_up_gain_a: upGainA, cp_down_gain_a: downGainA,
   linear_initial_v: linearInitial, calibrated_initial_v: piecewiseInitial, settings,
 }, null, 2));
+
+/* Locked-period bench: explicit UP/DN pulses with zero net charge per period. */
+const shunt = settings.loop_cp_pF * 1e-12;
+if (!Number.isFinite(shunt) || shunt <= 0) throw new Error('Set loop_cp_pF > 0');
+const spurCycles = 16;
+const spurStop = spurCycles * period;
+const start = period / 4;
+const spurCases = [];
+for (const [caseName, mismatch, stepPs] of [
+  ['matched', 0, 12.5],
+  ['mismatch', cp_mismatch, 12.5],
+  ['mismatch-fine', cp_mismatch, 6.25],
+]) {
+  // PULSE area includes one rise-time equivalent from the two ramps.
+  // Lower DN current needs a longer DN pulse; its rising edge arrives first.
+  const delta = (overlap + rise) * mismatch / (1 - mismatch);
+  const step = stepPs * 1e-12;
+  if (start + delta + overlap + 2 * rise >= period)
+    throw new Error('PLL-04 pump pulse does not fit inside one PFD cycle');
+  const label = 'pll-04-' + caseName;
+  const deck = [
+    'PLL-04 locked periodic CP ripple with post-resistor and shunt capacitances',
+    'Iup 0 up PULSE(0 ' + pump + ' ' + (start + delta) + ' ' + rise + ' ' + rise + ' ' + overlap + ' ' + period + ')',
+    'Idn dn 0 PULSE(0 ' + pump*(1-mismatch) + ' ' + start + ' ' + rise + ' ' + rise + ' ' + (overlap+delta) + ' ' + period + ')',
+    'Vup up ctrl 0',
+    'Vdn ctrl dn 0',
+    'Rfilter ctrl state ' + loop_r_ohm,
+    'Cfilter state 0 ' + loop_c_pF + 'p IC=' + lockVoltage,
+    'Cshunt ctrl 0 ' + shunt + ' IC=' + lockVoltage,
+    'Bfreq freq 0 V={(' + interpolate + ')/1e9}',
+    '.save v(ctrl) v(state) v(freq) i(vup) i(vdn)',
+    '.tran ' + step + ' ' + spurStop + ' 0 ' + step + ' uic',
+    '.end',
+  ].join('\n');
+  await run(label, deck, ['v(ctrl)', 'v(state)', 'v(freq)', 'i(vup)', 'i(vdn)'], spurStop);
+  spurCases.push({case: caseName, file: label + '.csv', mismatch, edge_skew_s: -delta, step_ps: stepPs});
+}
+writeFileSync(join(out, 'pll-04-config.json'), JSON.stringify({
+  period_s: period, cycles: spurCycles, cases: spurCases, settings, gain_hz_v: gain,
+  target_hz: target,
+}, null, 2));
