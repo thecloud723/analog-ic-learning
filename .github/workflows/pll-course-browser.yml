@@ -89,7 +89,7 @@ jobs:
              const lab=document.querySelector('.lab');
              if(!lab) return [];
              const checks=[];
-             const output=()=>lab.querySelector('[data-result]')?.textContent || '';
+             const output=()=>lab.querySelector('[data-result], #d-result, #e-result')?.textContent || '';
              const change=(id,value)=>{
               const input=document.getElementById(id);
               if(typeof value==='boolean') input.checked=value;
