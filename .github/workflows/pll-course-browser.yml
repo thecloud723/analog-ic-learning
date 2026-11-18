@@ -85,6 +85,54 @@ jobs:
               badImages:[...document.images].filter(i=>!i.naturalWidth && i.loading!=='lazy').map(i=>i.src),
               changed,controls:controls.length};
             });
+            const physical = await evaluate(()=>{
+             const lab=document.querySelector('.lab');
+             if(!lab) return [];
+             const checks=[];
+             const output=()=>lab.querySelector('[data-result]')?.textContent || '';
+             const change=(id,value)=>{
+              const input=document.getElementById(id);
+              if(typeof value==='boolean') input.checked=value;
+              else input.value=String(value);
+              input.dispatchEvent(new Event('input',{bubbles:true}));
+              input.dispatchEvent(new Event('change',{bubbles:true}));
+             };
+             const check=(label,expected)=>checks.push({label,actual:output(),pass:expected.test(output())});
+             switch(lab.dataset.lab){
+              case 'ratio':
+               change('n',100);check('N=100',/4\.00 GHz.*40 MHz/);
+               change('n',150);check('N=150',/6\.00 GHz.*40 MHz/);break;
+              case 'delay':
+               for(const [v,expected] of [[-2500,/-90\.00°/],[0,/ 0\.00°/],[2500,/\+90\.00°/]]){
+                change('delay',v);check('delay='+v,expected);
+               }break;
+              case 'ramp':
+               for(const [v,expected] of [[-5,/-4\.85 圈/],[0,/\+0\.15 圈/],[5,/\+5\.15 圈/]]){
+                change('df',v);check('offset='+v,expected);
+               }break;
+              case 'edge': {
+               check('reference leads',/^UP .*加速/);
+               const feedback=lab.querySelector('input[value="fb"]');
+               feedback.click();check('feedback leads',/^DN .*减速/);break;
+              }
+              case 'divider': {
+               const input=document.getElementById('out-div');
+               for(const option of input.options){
+                change(input.id,option.value);
+                const match=output().match(/降低 ([\d.]+) dB.*前 ([\d.]+) ps.*后 ([\d.]+) ps/);
+                const pass=!!match && Math.abs(Number(match[1])-20*Math.log10(Number(option.value)))<0.006 &&
+                  Number(match[2])>0 && match[2]===match[3];
+                checks.push({label:'divider='+option.value,actual:output(),pass});
+               }break;
+              }
+              case 'fractional':
+               change('frac-num',0);check('NUM=0',/周期 1 拍.*240\.0000.*2\.400000 GHz/);
+               change('frac-num',15);check('NUM=15',/周期 16 拍.*240\.9375.*2\.409375 GHz/);break;
+             }
+             return checks;
+            });
+            if(physical.length) result.physical=physical;
+            if(physical.some(check=>!check.pass)) failed++;
             if(name==='app-2.html'){
              const [download]=await Promise.all([page.waitForEvent('download',{timeout:5000}),page.locator('#f-export').click({timeout:5000})]);
              const csv=await readFile(await download.path(),'utf8');
