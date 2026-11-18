@@ -18,3 +18,6 @@ PLL-03 用平均相位状态反馈。PLL-04 的锁定周期通过净电荷平衡
 ## LOOP-01 逐边沿行为级基准
 
 从仓库根目录运行 `node pll/labs/PLL-SPICE/run_loop01.mjs /tmp/loop01`。可在输出根目录后传入共用配置和模型配置的自定义 JSON 路径。每次运行写出配置、事件、采样和版本记录。边沿模型使用课程的分段 VCO 与串联 RC，模型假设和实测步骤见[阶段 2 验收表](../../docs/PLL_S2_ACCEPTANCE.md)。
+
+- 从 PLL-01 输出的 `pll-01-vco-metrics.json` 建立分段与线性校准配置。执行 `node pll/labs/PLL-SPICE/calibrate_loop01.mjs METRICS_JSON OUTPUT_JSON`，再将生成的 JSON 作为 `run_loop01.mjs` 的第三个参数。设置 `recordVcoEdges: true` 可额外导出 `vco_edges.csv`。
+- 使用 `python pll/labs/PLL-SPICE/compare_loop01_average.py SPICE_OUTPUT_DIR NEW_OUTPUT_DIR` 在相同初始偏压下对照 PLL-03。脉冲 SPICE 与 11 点捕获都可从[验证工作流](https://github.com/thecloud723/analog-ic-learning/actions/runs/44405573563)下载配置、报告和波形。
