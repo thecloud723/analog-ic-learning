@@ -34,7 +34,7 @@
 | E03-02 | [C2-2](course/c2-2.html) | 主题对应 |
 | E04-01 | [C1-1](course/c1-1.html)、[E3-1](course/e3-1.html) | 主题对应，旧交互覆盖需单独核对 |
 | E04-02 | [E1-1](course/e1-1.html) | 主题对应 |
-| E05-01 | [B1-2](course/b1-2.html)、[B1-3](course/b1-3.html) | B1-2 对照完整频率链，B1-3 可调 R/N。输出分频与 Prescaler 的组合交互保留在[旧第 05 章](chapters/05_参考源与时钟输出链.html)。 |
+| E05-01 | [B1-2](course/b1-2.html)、[B1-3](course/b1-3.html) | B1-2 对照完整频率链，B1-3 可调 R/N。输出分频与 Prescaler 的组合交互保留在[旧第 05 章分频链实验](chapters/05_参考源与时钟输出链.html#p7)。 |
 | E06-01 | [C1-1](course/c1-1.html) | 主题对应 |
 | E06-02 | [C1-1](course/c1-1.html) | 主题对应，旧交互覆盖需单独核对 |
 | E07-01 | [C1-2](course/c1-2.html)、[C1-3](course/c1-3.html) | 主题对应 |
@@ -71,7 +71,7 @@
 | E17-02 | [E4-2](course/e4-2.html) | 主题对应 |
 | E17-03 | [B3-2](course/b3-2.html) | 主题对应 |
 | E17-04 | [E4-3](course/e4-3.html) | 主题对应 |
-| E18-01 | [B1-2](course/b1-2.html)、[E1-1](course/e1-1.html) | B1-2 追踪参考及输出路径，E1-1 调分数分频分子。联动参考、N+α、输出分频的交互保留在[旧第 18 章](chapters/PLL_第18章_完整系统设计与指标.html)。 |
+| E18-01 | [B1-2](course/b1-2.html)、[E1-1](course/e1-1.html) | B1-2 追踪参考及输出路径，E1-1 调分数分频分子。联动参考、N+α、输出分频的交互保留在[旧第 18 章频率规划实验](chapters/PLL_第18章_完整系统设计与指标.html#p2)。 |
 | E18-02 | [E3-2](course/e3-2.html) | 主题对应 |
 | E18-03 | [F1-1](course/f1-1.html)、[F1-2](course/f1-2.html)、[F1-3](course/f1-3.html) | 主题对应，旧交互覆盖需单独核对 |
 
