@@ -1,5 +1,9 @@
 # PLL 课程制作与技术验收记录（01～18 章）
 
+## 阶段 2 执行记录
+
+- 2026-11-19 已启动 Integer-N LOOP-01。洁净检出复跑 5 GHz、初始 −80 MHz 工况，27.750 µs 入带、31.750 µs 确认。逐边沿事件、采样和仿真条件可重跑。见[阶段 2 验收记录](docs/PLL_S2_ACCEPTANCE.md)。
+
 ## 阶段 1 执行记录
 
 - **阶段 1 结构冻结（2026-11-19）**。冻结基线 [`90de444`](https://github.com/thecloud723/analog-ic-learning/commit/90de44442b92618f42c0b9b66a4e1d8ae86d01db)。浏览器、公式与实验台账均已验收。见[验收报告](docs/PLL_S1_09_ACCEPTANCE.md)与[冻结回归](https://github.com/thecloud723/analog-ic-learning/actions/runs/44395905337)。
