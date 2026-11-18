@@ -9,7 +9,7 @@
 
 **[从新版 A1.1 开始 PLL 交互课程](course/a1-1.html)**
 
-- [旧版 18 章实验四级状态台账](EXPERIMENT_LEVEL_ROADMAP.md)（历史台账；新版 A–F 的统一实验台账按上述执行计划重整）
+- [统一实验台账](EXPERIMENT_LEVEL_ROADMAP.md)（新版实验、49 项旧实验去向、L1–L4 状态与复跑证据）
 - [章节页面模板](PAGE_TEMPLATE.md)
 - [章节进度与验收记录](PROGRESS.md)
 - [参考资料索引](REFERENCES.md)
@@ -20,7 +20,7 @@
 - [第 12 章曲线互动实验改造记录](CH12_CURVE_INTERACTION_AUDIT.md)
 - [第 10、11、13、15 章曲线互动改造记录](CH10_11_13_15_CURVE_INTERACTION_AUDIT.md)
 
-## 章节目录
+## 旧版章节与深链
 
 | 章节 | 标题 | 页面 |
 |---|---|---|
