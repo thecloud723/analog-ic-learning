@@ -27,3 +27,5 @@ PLL-03 用平均相位状态反馈。PLL-04 的锁定周期通过净电荷平衡
 从仓库根目录运行 `bash pll/labs/PLL-SPICE/reproduce_loop01.sh /tmp/loop01-full`，输出目录须尚未创建。运行需要 Node.js 24、npm、Python 3 和 unzip，首次安装使用 npm 网络。输出按脉冲、SPICE、校准、闭环和平均模型对比分目录保存，另有 F1.2 可读的回放文件。
 
 模型 JSON 的 `useShuntCap` 为真时启用共用设置的 `loop_cp_pF`，并产生 `filter_events.csv` 与 `filter_samples.csv`。`upDelayNs` 和 `downDelayNs` 分别设置两路传输延迟，`pumpOutputResistanceOhm` 为正时加入偏置电阻。原有串联 RC 工况继续使用原运行方式。验收条件与模型边界见[阶段 2 验收](../../docs/PLL_S2_ACCEPTANCE.md)。
+
+[LOOP-01 作者已运行 Notebook](https://github.com/thecloud723/analog-ic-learning/blob/51173b79e846137af292501811e8d8f2db3c2edb/pll/labs/PLL-SPICE/LOOP-01_IntegerN_CP_PLL.ipynb)可匿名预览。作者、洁净读者的独立云端结果 ZIP 和日志见[运行记录](https://github.com/thecloud723/analog-ic-learning/actions/runs/44424508831)。GitHub 登录后可下载归档，Notebook 与版本固定的源包可公开下载。
