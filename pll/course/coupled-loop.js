@@ -1,22 +1,29 @@
 (() => {
   "use strict";
-  const referenceNs=25, divider=125, targetMHz=5000;
-  const floor=0.2, ceiling=1.6, resistance=4700, capacitance=100e-12;
-  const clip=v=>Math.max(floor,Math.min(v,ceiling));
-  const linear=[[floor,-70],[.9,0],[ceiling,70]];
-  const curved=[[floor,-41],[.55,-25],[.9,0],[1.25,43],[ceiling,110]];
+  const defaults={
+    referenceHz:40e6, divider:125, resistanceOhm:4700, capacitanceF:100e-12,
+    pumpA:100e-6, voltageMin:.2, voltageMax:1.6, initialVoltage:.9,
+    linear:[[.2,-70],[.9,0],[1.6,70]],
+    curved:[[.2,-41],[.55,-25],[.9,0],[1.25,43],[1.6,110]],
+  };
   function tuning(v,knots){
     const i=knots.findIndex(([x])=>v<=x+1e-12);
     if(i<=0)return knots[i===0?0:knots.length-1][1];
     const [x0,y0]=knots[i-1], [x1,y1]=knots[i];
     return y0+(y1-y0)*(v-x0)/(x1-x0);
   }
-  function simulate({offset,mismatch,resetDelay,curve,duration=45}){
+  function simulate({offset,mismatch,resetDelay,curve,duration=45,config,onEvent}){
+    const {
+      referenceHz,divider,resistanceOhm:resistance,capacitanceF:capacitance,pumpA,
+      voltageMin:floor,voltageMax:ceiling,initialVoltage,linear,curved,
+    }={...defaults,...config};
+    const referenceNs=1e9/referenceHz, targetMHz=referenceHz*divider/1e6;
+    const clip=v=>Math.max(floor,Math.min(v,ceiling));
     const knots=curve==="curved"?curved:linear;
-    let capacitor=.9,t=0,phase=0,nextFb=1,nextRef=0,nextSample=0,reset=Infinity,up=false,dn=false;
+    let capacitor=initialVoltage,t=0,phase=0,nextFb=1,nextRef=0,nextSample=0,reset=Infinity,up=false,dn=false;
     const data=[];
     while(nextSample<=duration*1000){
-      const current=100e-6*(Number(up)-(1-mismatch/100)*Number(dn));
+      const current=pumpA*(Number(up)-(1-mismatch/100)*Number(dn));
       const dv=current/capacitance*1e-9;
       const vAt=dt=>clip(clip(capacitor+dv*dt)+resistance*current);
       const rate=dt=>(targetMHz+offset+tuning(vAt(dt),knots))/(1000*divider);
@@ -49,12 +56,20 @@
       phase+=advance(dt);
       capacitor=clip(capacitor+dv*dt);
       t=end;
+      const resetEdge=t===reset, referenceEdge=t===nextRef;
       if(t===reset){up=false;dn=false;reset=Infinity;}
       if(t===nextRef){up=true;nextRef+=referenceNs;}
       if(feedback){phase=nextFb++;dn=true;}
+      let immediateReset=false;
       if(up&&dn&&reset===Infinity){
         if(resetDelay>0)reset=t+resetDelay;
-        else {up=false;dn=false;}
+        else {up=false;dn=false;immediateReset=true;}
+      }
+      if(onEvent && (referenceEdge || feedback || resetEdge)){
+        onEvent({
+          ns:t, referenceEdge, feedbackEdge:feedback, resetEdge:resetEdge||immediateReset,
+          up, down:dn, cap:capacitor, phase,
+        });
       }
       if(t===nextSample){
         const prev=data.at(-1);
