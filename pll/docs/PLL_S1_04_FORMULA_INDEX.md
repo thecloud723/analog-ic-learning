@@ -58,3 +58,7 @@
 | [E4-2](../course/e4-2.html) | `t_{\mathrm{need}}[k]=r[k]T_{\mathrm{VCO}},\qquad d[k]=\operatorname{clip}_{[0,31]}\!\left(\operatorname{round}\frac{t_{\mathrm{need}}[k]}{\Delta_{\mathrm{DTC}}}\right)` | 课程推导／教学模型 · [公开论文 §3.1 式 (10) · 从残差产生控制码](https://www.mdpi.com/2079-9292/12/4/841) | 课程 5 bit DTC 编码，按正向延迟约定 |
 | [E4-3](../course/e4-3.html) | `\widehat K_{\mathrm{DCO}}=\frac{f(b)-f(a)}{b-a},\qquad c_{\mathrm{new}}=\operatorname{clip}_{[0,63]}\!\left(a+\operatorname{round}\frac{\Delta f}{\widehat K_{\mathrm{DCO}}}\right)` | 课程推导／教学模型 · [JKU ADPLL 框图 · 两点差分估计为教学模型](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-adpll-block-diagram) | 课程两点标定，差分增益非零且局部单调 |
 | [F1-3](../course/f1-3.html) | `\sigma_t=\frac{\sigma_\phi}{2\pi f_0},\qquad \mathcal L_{\mathrm{out}}=\mathcal L_{\mathrm{in}}-20\log_{10}M` | 页面引文 · [Jo 等 · PDF 第 10 页 · §5 的 ÷2 换算](https://mdpi-res.com/d_attachment/electronics/electronics-11-01118/article_deploy/electronics-11-01118.pdf#page=10) | 相位抖动用 rad，分频式假设理想无附加噪声 |
+
+## 行内公式覆盖范围
+
+正文没有独立的行内 MathML 节点。以纯文本和上下标标记呈现的行内关系仍需人工索引。

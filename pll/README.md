@@ -60,3 +60,7 @@
 - 预测题先于滑块实验；完成预测后观察参数变化，再解释物理原因。
 - 指标要区分系统规格、设计参数和测试结果，并说明测量条件。
 - 教学近似模型与真实芯片测试数据明确区分。
+
+## 阶段 1 审计
+
+[导航与 18 章迁移](docs/PLL_S1_01_NAVIGATION_AUDIT.md) · [逐页覆盖](docs/PLL_S1_02_COURSE_COVERAGE.md) · [教材对照](docs/PLL_S1_03_EXTERNAL_REFERENCE_MATRIX.md) · [公式](docs/PLL_S1_04_FORMULA_INDEX.md) · [图片](docs/PLL_S1_05_FIGURE_MANIFEST.md) · [回归](docs/PLL_S1_06_REGRESSION.md) · [实验台账](EXPERIMENT_LEVEL_ROADMAP.md) · [阶段验收](docs/PLL_S1_09_ACCEPTANCE.md)

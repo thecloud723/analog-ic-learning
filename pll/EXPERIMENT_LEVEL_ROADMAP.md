@@ -1,6 +1,6 @@
 # PLL 18 章实验四级体系：逐项状态与 L3/L4 建设规划
 
-> **阶段 1 · PLL-S1-01**　已做[课程入口与导航源码审计](docs/PLL_S1_01_NAVIGATION_AUDIT.md)。已补齐 18 章迁移映射，可用于 S1-07 关联旧实验。实验成熟度沿用既有证据。逐项合并在 PLL-S1-07 执行。
+> **阶段 1 · PLL-S1-01**　已做[课程入口与导航源码审计](docs/PLL_S1_01_NAVIGATION_AUDIT.md)。已补齐 18 章迁移映射，可用于 S1-07 关联旧实验。实验成熟度沿用既有证据。旧实验保留原 ID，章级新版去向已补在各章标题下。
 > **PLL-S1-02**　[新版 52 页覆盖矩阵](docs/PLL_S1_02_COURSE_COVERAGE.md)已建立，可用于 S1-07 合并台账。
 > **PLL-S1-03**。[外部资料对照与正文引用](docs/PLL_S1_03_EXTERNAL_REFERENCE_MATRIX.md)已归档。公式级核对纳入 S1-04。
 > **PLL-S1-04**。[新版公式索引](docs/PLL_S1_04_FORMULA_INDEX.md)已收录 54 个独立公式块及适用条件，行内公式和原文等式逐条对应待复核。
@@ -9,6 +9,17 @@
 > 范围：`analog-ic-learning/pll/chapters/` 18章 HTML、`course-labs.js`、`course-cp-data.js`、两份实验 ZIP 的**引用与现有课程记录**。  
 > 本文只整理实施计划与源码核对状态；**没有发布 Kaggle、没有运行新的仿真、没有修改课程 HTML**。  
 > 状态口径：“已”=在仓库源码中发现相关实现/数据，**不代表** Edge/手机真实浏览器验收、独立复现或电路物理准确性已验收。
+
+## 新版实验索引
+
+| ID | 课程去向 | 现有证据 |
+|---|---|---|
+| PLL-01 | [B3.1](course/b3-1.html) | VCO 调谐 9 点及 5 GHz 工作点 |
+| PLL-02 | [C1.2](course/c1-2.html) | 等效 CP 净电荷 5 点 |
+| PLL-03 | [C2.1](course/c2-1.html) | 平均相位闭环的 SPICE 求解 |
+| PLL-04 | [D3.2](course/d3-2.html) | 周期纹波、参考杂散及示例输入谱的抖动预算 |
+
+[Notebook 源码与实验边界](labs/PLL-SPICE/README.md)。原 49 项保留在下文。章级去向供定位，同章各实验的新版实现仍需逐项核实。作者运行记录与独立访客 L3/L4 验收分别取证。
 
 ## 1. 四级定义（长期统一规范）
 
@@ -44,6 +55,8 @@
 
 ### 第 01 章｜[PLL 用途与全景](chapters/01_PLL用途与系统全景.html)
 
+新版去向 [A1.1](course/a1-1.html)、[A1.2](course/a1-2.html)、[A1.3](course/a1-3.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E01-01 相位差/时间差换算 | 已：频率与 Δt 滑块计算 | 无 | 不单建，保留解析教学模型 | 不单建 | P3 |
@@ -52,12 +65,16 @@
 
 ### 第 02 章｜[频率、相位、时间差](chapters/02_频率相位时间差与锁定.html)
 
+新版去向 [A2.1](course/a2-1.html)、[A2.2](course/a2-2.html)、[C2.4](course/c2-4.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E02-01 边沿偏移与相位关系 | 已：JS 时序/公式实验 | 无 | 不单建 | 不单建 | P3 |
 | E02-02 反馈频偏累积成相位漂移 | 已：data-study=phase 与局部 lab | 无 | 不单建；可对比 LOOP-01 | 不单建 | P3 |
 
 ### 第 03 章｜[从开环到闭环](chapters/03_从开环到闭环.html)
+
+新版去向 [A2.3](course/a2-3.html)、[C2.1](course/c2-1.html)、[C3.4](course/c3-4.html)。
 
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
@@ -66,6 +83,8 @@
 
 ### 第 04 章｜[PLL 架构地图](chapters/04_PLL架构地图.html)
 
+新版去向 [A1.1](course/a1-1.html)、[E1.1](course/e1-1.html)、[E3.1](course/e3-1.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E04-01 XOR/CP/ADPLL 路径切换 | 已：data-study=arch | 无 | 不单建：结构识图 | 不单建 | P3 |
@@ -73,11 +92,15 @@
 
 ### 第 05 章｜[参考源与时钟输出链](chapters/05_参考源与时钟输出链.html)
 
+新版去向 [B1.1](course/b1-1.html)、[B1.2](course/b1-2.html)、[B1.3](course/b1-3.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E05-01 R、N、D、Prescaler 频率规划 | 已：data-study=frequency 与计算实验 | 无 | 不单建；复用 LOOP-01 频率规划 | 不单建 | P3 |
 
 ### 第 06 章｜[PD/PFD](chapters/06_PD_PFD相位与频率比较.html)
+
+新版去向 [C1.1](course/c1-1.html)、[A2.3](course/a2-3.html)。
 
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
@@ -86,12 +109,16 @@
 
 ### 第 07 章｜[Charge Pump 与 Loop Filter](chapters/07_Charge_Pump与Loop_Filter.html)
 
+新版去向 [C1.2](course/c1-2.html)、[C1.3](course/c1-3.html)、[C1.4](course/c1-4.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E07-01 ΔQ、ΔV、RC 零极点与滤波 | 已：公式/预测/滑块 | 无 | CP-01：加入滤波器 RC、瞬态及扫频 | 改 I、脉宽、R/C、偏置 | P1 |
 | E07-02 CP 匹配/失配与 VCTRL 纹波 | 已：data-study=cp | 已：9 组局部 SPICE 预跑曲线，course-cp-data.js | CP-01：整理完整原始波形、网表、日志和参数扫表 | 复制 Notebook，改失配/C/偏置/脉冲 | P0 |
 
 ### 第 08 章｜[VCO 与 DCO](chapters/08_VCO与DCO可控振荡器.html)
+
+新版去向 [B2.1](course/b2-1.html)、[B2.2](course/b2-2.html)、[B2.3](course/b2-3.html)、[B3.1](course/b3-1.html)、[B3.2](course/b3-2.html)、[E4.3](course/e4-3.html)。
 
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
@@ -102,12 +129,16 @@
 
 ### 第 09 章｜[完整 CP-PLL 动态](chapters/09_完整CP_PLL动态.html)
 
+新版去向 [C2.1](course/c2-1.html)、[C2.2](course/c2-2.html)、[C2.3](course/c2-3.html)、[C2.4](course/c2-4.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E09-01 PFD→CP→VCTRL→VCO 逐周期过程 | 已：逐周期/平均控制教学模型 | 无 | LOOP-01：真实行为/电路联合仿真 | 改 ICP、R/C、初始频偏 | P1 |
 | E09-02 实验 9-A：CP、R、C、锁定过程 | 已：实验 9-A 和 data-study=loop9 | 无 | LOOP-01：频偏/控制电压/锁定轨迹全量 | 改带宽、初始条件、锁定判据 | P1 |
 
 ### 第 10 章｜[相位域与 Type-I/II](chapters/10_相位域模型与Type_I_II.html)
+
+新版去向 [C3.1](course/c3-1.html)、[C3.2](course/c3-2.html)、[C3.3](course/c3-3.html)、[C3.4](course/c3-4.html)。
 
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
@@ -116,12 +147,16 @@
 
 ### 第 11 章｜[瞬态响应与锁定](chapters/11_瞬态响应稳定性与锁定时间.html)
 
+新版去向 [C2.2](course/c2-2.html)、[C2.3](course/c2-3.html)、[C2.4](course/c2-4.html)、[C3.3](course/c3-3.html)、[C3.4](course/c3-4.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E11-01 误差带、锁定时间、相位阶跃 | 已：data-study=loop11 | 无 | 复用 LOOP-01：从实际仿真轨迹提取 lock time | 改误差带、保持时间、判据 | P2 |
 | E11-02 频率阶跃/超调/振铃/Cycle Slip | 已：lab11 含零点的二阶模型 | 无 | LOOP-01：加入非线性饱和/大信号/离散 PFD | 改步进幅度、初始偏置、环路参数 | P1 |
 
 ### 第 12 章｜[Phase Noise 与 Jitter](chapters/12_Phase_Noise与Jitter.html)
+
+新版去向 [D1.1](course/d1-1.html)、[D1.2](course/d1-2.html)、[D1.3](course/d1-3.html)、[D2.1](course/d2-1.html)、[D2.2](course/d2-2.html)、[D2.3](course/d2-3.html)。
 
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
@@ -137,6 +172,8 @@
 
 ### 第 13 章｜[Spur、非线性与 PVT](chapters/13_Spur非线性与PVT.html)
 
+新版去向 [B3.3](course/b3-3.html)、[D3.1](course/d3-1.html)、[D3.2](course/d3-2.html)、[D3.3](course/d3-3.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E13-01 第7章 VCTRL 纹波→第一对边带 | 已：data-study=spur13，后段为 JS/小调制估算 | 部分：输入复用 CP 的 SPICE 波形，不是 SPICE 频谱 | SPUR-01：真实波形的 FFT 与边带分析，和估算比较 | 改失配、R/C、KVCO、分析长度 | P1 |
@@ -144,12 +181,16 @@
 
 ### 第 14 章｜[Integer-N/Fractional-N](chapters/PLL_第14章_Integer-N与Fractional-N.html)
 
+新版去向 [B1.2](course/b1-2.html)、[E1.1](course/e1-1.html)、[E1.2](course/e1-2.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E14-01 N+α 逐拍整数分频与长期平均 | 已：data-study=fractional | 无 | 复用 DSM-01 | 在第15章改 NUM/DEN、分频序列 | P2 |
 | E14-02 NUM/DEN、频率步进和序列周期 | 已：课程参数交互/例题 | 无 | 复用 DSM-01 | 改固定字长、溢出、时长 | P2 |
 
 ### 第 15 章｜[ΣΔ、MASH 与 Dither](chapters/PLL_第15章_Sigma-Delta_MASH与Dither.html)
+
+新版去向 [E2.1](course/e2-1.html)、[E2.2](course/e2-2.html)、[E2.3](course/e2-3.html)。
 
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
@@ -159,12 +200,16 @@
 
 ### 第 16 章｜[ADPLL 与数字 PI](chapters/PLL_第16章_ADPLL结构与数字PI.html)
 
+新版去向 [E3.1](course/e3-1.html)、[E3.2](course/e3-2.html)。
+
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
 | E16-01 FCW、目标相位、TDC 量化和 PI 逐拍 | 已：data-study=digital | 无 | ADPLL-01：Python/可选 Verilator 定点时序闭环 | 改 FCW、Kp/Ki、TDC LSB、流水线延时 | P1 |
 | E16-02 DCO 控制状态、频偏与锁定 | 已：逐拍归一化行为模型 | 无 | ADPLL-01：量化、饱和、限幅和 DCO 增益偏差 | 改 DCO gain、码宽、初始偏差 | P1 |
 
 ### 第 17 章｜[TDC/DTC、DCO 校准](chapters/PLL_第17章_TDC_DTC与DCO校准.html)
+
+新版去向 [E4.1](course/e4-1.html)、[E4.2](course/e4-2.html)、[E4.3](course/e4-3.html)。
 
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
@@ -174,6 +219,8 @@
 | E17-04 两点法测量、回写 DCO 增益 | 已：data-study=cal | 无 | CAL-01：有噪声的多点拟合/回环验证 | 改测量次数、拟合方法、增益漂移 | P2 |
 
 ### 第 18 章｜[完整系统与指标](chapters/PLL_第18章_完整系统设计与指标.html)
+
+新版去向 [F1.1](course/f1-1.html)、[F1.2](course/f1-2.html)、[F1.3](course/f1-3.html)、[D2.3](course/d2-3.html)、[APP.1](course/app-1.html)、[APP.2](course/app-2.html)。
 
 | ID / 实验 | L1 当前 | L2 当前 | L3 拟建 | L4 拟建 | 优先级 |
 |---|---|---|---|---|---|
