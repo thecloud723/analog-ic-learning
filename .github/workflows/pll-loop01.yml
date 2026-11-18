@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Verify aligned, leading and lagging PFD input edges
+        run: node pll/labs/PLL-SPICE/check_loop01_pfd.mjs
       - name: Install the locked SPICE WASM engine
         run: |
           unzip -q pll/assets/lc-vco-lab.zip -d "$RUNNER_TEMP"
