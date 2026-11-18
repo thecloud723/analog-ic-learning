@@ -1,0 +1,85 @@
+name: LOOP-01 author and clean-reader notebook
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/pll-loop01-notebook.yml'
+permissions:
+  contents: read
+jobs:
+  run-notebook:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        role: [author, reader]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch public notebook without checkout or credentials
+        run: |
+          mkdir -p "$RUNNER_TEMP/loop01"
+          curl --fail --silent --show-error --location --retry 3 \
+            'https://raw.githubusercontent.com/thecloud723/analog-ic-learning/a3ad06653caf95175a8e1edb5be7a028ea05aff3/pll/labs/PLL-SPICE/LOOP-01_IntegerN_CP_PLL.ipynb' \
+            -o "$RUNNER_TEMP/loop01/published.ipynb"
+          python -m pip install nbclient==0.10.2 ipykernel==6.30.1 matplotlib==3.10.6
+      - name: Copy, edit, execute and save from clean kernel
+        env:
+          LAB_ROLE: ${{ matrix.role }}
+        run: |
+          cd "$RUNNER_TEMP/loop01"
+          env -u GH_TOKEN -u GITHUB_TOKEN python - <<'PY'
+          import base64
+          import json
+          import os
+          from pathlib import Path
+          import shutil
+          from zipfile import ZipFile
+          import nbformat
+          from nbclient import NotebookClient
+
+          author = os.environ['LAB_ROLE'] == 'author'
+          source = nbformat.read('published.ipynb', as_version=4)
+          notebook = nbformat.from_dict(json.loads(nbformat.writes(source)))
+          for cell in notebook.cells:
+              if cell.cell_type == 'code':
+                  cell.outputs = []
+                  cell.execution_count = None
+              if not author and 'reader-parameters' in cell.metadata.get('tags', []):
+                  cell.source = 'ICP_UA = 110\nR_OHM = 3900'
+          NotebookClient(notebook, timeout=360, kernel_name='python3').execute()
+          nbformat.write(notebook, 'executed.ipynb')
+
+          result_dir, = Path.cwd().glob('loop01-notebook-*/notebook-summary.json')
+          summary = json.loads(result_dir.read_text())
+          assert [summary['ICP_UA'], summary['R_OHM']] == ([100, 4700] if author else [110, 3900])
+          expected = 22.675 if author else 24.55
+          assert abs(summary['lock']['entryUs'] - expected) <= 0.05, summary
+          bundle, = Path.cwd().glob('loop01-notebook-*-results.zip')
+          with ZipFile(bundle) as z:
+              names = z.namelist()
+              assert any(name.endswith('/filter_events.csv') for name in names)
+              assert any(name.endswith('/pll-01-vco-01.cir') for name in names)
+              assert 'lock-waveform.png' in names
+              assert 'baseline/loop01-replay-data.js' in names
+          shutil.copyfile(result_dir, 'summary.json')
+          shutil.copyfile(result_dir.with_name('lock-waveform.png'), 'lock-waveform.png')
+          bundle.rename('loop01-results.zip')
+          print(json.dumps(summary, indent=2))
+          if author:
+              print('SAVED_AUTHOR_NOTEBOOK=' + base64.b64encode(Path('executed.ipynb').read_bytes()).decode())
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: loop01-${{ matrix.role }}-notebook
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/loop01/executed.ipynb
+            ${{ runner.temp }}/loop01/summary.json
+            ${{ runner.temp }}/loop01/lock-waveform.png
+            ${{ runner.temp }}/loop01/loop01-results.zip
