@@ -369,7 +369,7 @@ jobs:
            const legacyCases=[
             ['04_','p1','E04-01','[data-study="arch"] select','[data-study="arch"] .study-result','2'],
             ['06_','p3','E06-02','#c6r','#pfdWave','150'],
-            ['12_','p1','E12-01','[data-study="noise12"] select','[data-study="noise12"] .study-result',null],
+            ['12_','p1','E12-01','[data-study="noise12"] input[type="checkbox"]','[data-study="noise12"] .study-result',null],
             ['12_','p2','E12-03','#whiteNoise12','#plotNoiseShape12','-80'],
             ['12_','p6','E12-08','#rj6','#plotHist6','5'],
             ['12_','p8','E12-09','#lo12','#plot12','100'],
@@ -383,6 +383,12 @@ jobs:
             await load('Page.navigate',{url:url.split('#')[0]+'#'+tab});
             await load('Page.reload',{ignoreCache:true});
             const result=await page.evaluate(({tab,id,control,target,value})=>{
+             const prediction={
+              'E06-02':'input[name="c6predict"][value="A"]',
+              'E12-09':'input[name="q12lab"][value="A"]',
+              'E13-02':'input[name="q13lab"][value="B"]',
+             }[id];
+             if(prediction) document.querySelector(prediction).click();
              if(id==='E15-02'){
               document.querySelector('input[name="pred15"][value="b"]').click();
               document.querySelector('#check15').click();
@@ -394,9 +400,12 @@ jobs:
              if(!input || !result || input.disabled || !document.getElementById(tab).getClientRects().length ||
                 !input.getClientRects().length || !result.getClientRects().length) return {pass:false,reason:'control or result unavailable'};
              const before=result.innerHTML;
-             input.value=value ?? [...input.options].find(option=>option.value!==input.value).value;
-             input.dispatchEvent(new Event('input',{bubbles:true}));
-             input.dispatchEvent(new Event('change',{bubbles:true}));
+             if(input.type==='checkbox') input.click();
+             else {
+              input.value=value ?? [...input.options].find(option=>option.value!==input.value).value;
+              input.dispatchEvent(new Event('input',{bubbles:true}));
+              input.dispatchEvent(new Event('change',{bubbles:true}));
+             }
              return {pass:before!==result.innerHTML && !/\b(?:NaN|Infinity|undefined)\b/.test(result.innerHTML),value:input.value};
             },{tab,id,control,target,value});
             console.log(JSON.stringify({legacyReplay:id,tab,...result,errors}));
