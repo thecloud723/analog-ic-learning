@@ -18,25 +18,21 @@ jobs:
       - name: Check offline desktop and mobile course reloads
         run: |
           set -o pipefail
-          google-chrome --headless --no-sandbox --disable-dev-shm-usage --remote-debugging-port=9222 --user-data-dir="$RUNNER_TEMP/pll-browser" about:blank > "$RUNNER_TEMP/pll-browser.log" 2>&1 &
-          browser_pid=$!
-          trap 'kill "$browser_pid" 2>/dev/null || true' EXIT
-          curl --retry 15 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:9222/json/list >/dev/null
+          npm install --prefix "$RUNNER_TEMP" --no-audit --no-fund playwright@1.56.1
           cat > "$RUNNER_TEMP/pll-browser.mjs" <<'EOF'
           import {readdir,readFile} from 'node:fs/promises';
           import {pathToFileURL} from 'node:url';
-          const target=await (await fetch('http://127.0.0.1:9222/json/list')).json();
-          const socket=new WebSocket(target[0].webSocketDebuggerUrl);
-          await new Promise(r=>socket.onopen=r);
-          const pending=new Map(); let id=0, loaded, errors=[], failed=0;
-          socket.onmessage=({data})=>{
-            const m=JSON.parse(data);
-            if(m.id) {const [ok,fail]=pending.get(m.id);pending.delete(m.id);m.error?fail(m.error):ok(m.result);}
-            if(m.method==='Page.loadEventFired') loaded?.();
-            if(m.method==='Runtime.exceptionThrown') errors.push(m.params.exceptionDetails.exception?.description);
-            if(m.method==='Network.responseReceived' && m.params.response.status>=400 && !m.params.response.url.endsWith('/favicon.ico')) errors.push(m.params.response.url);
-          };
-          const send=(method,params={})=>new Promise((ok,fail)=>{pending.set(++id,[ok,fail]);socket.send(JSON.stringify({id,method,params}));});
+          import {chromium} from 'playwright';
+          const browser=await chromium.launch({channel:'chrome',headless:true,timeout:20000});
+          const page=await browser.newPage();
+          const client=await page.context().newCDPSession(page);
+          const send=(method,params={})=>client.send(method,params);
+          let loaded, errors=[], failed=0;
+          client.on('Page.loadEventFired',()=>loaded?.());
+          client.on('Runtime.exceptionThrown',event=>errors.push(event.exceptionDetails.exception?.description));
+          client.on('Network.responseReceived',event=>{
+            if(event.response.status>=400 && !event.response.url.endsWith('/favicon.ico')) errors.push(event.response.url);
+          });
           const evaluate=async fn=>(await send('Runtime.evaluate',{expression:'('+fn+')()',awaitPromise:true,returnByValue:true})).result.value;
           async function load(method,params){
             let timer;
@@ -88,7 +84,7 @@ jobs:
            const visible=await evaluate(()=>!!document.getElementById('p8')?.getClientRects().length);
            console.log(JSON.stringify({legacy:name,visible,errors}));
           }
-          socket.close();
+          await browser.close();
           if(failed) process.exitCode=1;
           EOF
           node "$RUNNER_TEMP/pll-browser.mjs" | tee "$RUNNER_TEMP/pll-browser-results.jsonl"
@@ -97,5 +93,4 @@ jobs:
         with:
           name: pll-browser-regression
           path: |
-            ${{ runner.temp }}/pll-browser.log
             ${{ runner.temp }}/pll-browser-results.jsonl
