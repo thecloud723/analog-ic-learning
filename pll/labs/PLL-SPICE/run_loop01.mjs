@@ -19,6 +19,10 @@ const config = {
   pumpA: common.cp_uA * 1e-6,
   resistanceOhm: common.loop_r_ohm,
   capacitanceF: common.loop_c_pF * 1e-12,
+  shuntF: (model.useShuntCap ? common.loop_cp_pF : 0) * 1e-12,
+  upDelayNs: model.upDelayNs ?? 0,
+  downDelayNs: model.downDelayNs ?? 0,
+  pumpOutputResistanceOhm: model.pumpOutputResistanceOhm ?? 0,
   voltageMin: model.voltageMin,
   voltageMax: model.voltageMax,
   initialVoltage: model.initialVoltage,
@@ -37,6 +41,9 @@ requireSetting(
     Number.isSafeInteger(config.divider) && config.divider > 0,
   'reference, divider, charge-pump current, and loop RC',
 );
+requireSetting(Number.isFinite(config.shuntF) && config.shuntF >= 0, 'parallel capacitance');
+requireSetting(Number.isFinite(config.pumpOutputResistanceOhm) && config.pumpOutputResistanceOhm >= 0 &&
+  (!config.pumpOutputResistanceOhm || config.shuntF > 0), 'pump output resistance requires a parallel capacitor');
 requireSetting(
   [config.voltageMin, config.initialVoltage, config.voltageMax].every(Number.isFinite) &&
     config.voltageMin < config.initialVoltage && config.initialVoltage < config.voltageMax,
@@ -53,6 +60,8 @@ for (const name of ['linear', 'curved']) {
     knots[0][0] === config.voltageMin && knots.at(-1)[0] === config.voltageMax, name + ' tuning knots');
 }
 const periodNs = 1e9 / config.referenceHz;
+requireSetting([config.upDelayNs, config.downDelayNs].every(x => Number.isFinite(x) && x >= 0 && x < periodNs),
+  'charge-pump path delays must be less than a reference period');
 requireSetting(Number.isFinite(mismatch) && mismatch >= 0 && mismatch < 100 &&
   Number.isFinite(common.reset_ns) && common.reset_ns >= 0 && common.reset_ns < periodNs,
   'charge-pump mismatch and reset delay');
@@ -73,12 +82,13 @@ const phaseError = sample => {
   const error = phaseErrorUnwrapped(sample);
   return error - Math.round(error);
 };
+const controlVoltage = sample => sample.vctrl ?? sample.cap;
 let start = null;
 let confirmed = null;
 for (const sample of samples.slice(1)) {
   const inBand = Math.abs(sample.mhz * 1e6) <= lock.frequencyToleranceHz &&
     Math.abs(phaseError(sample)) <= lock.maxPhaseErrorCycles &&
-    sample.cap > config.voltageMin && sample.cap < config.voltageMax;
+    controlVoltage(sample) > config.voltageMin && controlVoltage(sample) < config.voltageMax;
   if (!inBand) {
     start = null;
     continue;
@@ -106,16 +116,17 @@ for (const sample of samples) {
   const wholeCycles = Math.trunc(phaseErrorUnwrapped(sample) - phaseAnchor);
   phaseAnchor += wholeCycles;
   cycleSlips += Math.abs(wholeCycles);
-  if (sample.cap <= config.voltageMin || sample.cap >= config.voltageMax) saturatedSamples++;
+  if (controlVoltage(sample) <= config.voltageMin || controlVoltage(sample) >= config.voltageMax) saturatedSamples++;
 }
 const runId = randomUUID();
 const directory = join(resolve(outputRoot), runId);
 const summary = {
-  runId, sourceCommit, sourceModified, modelSha256, engine: 'piecewise-linear event model',
+  runId, sourceCommit, sourceModified, modelSha256, engine: config.shuntF ? 'two-capacitor event model' : 'piecewise-linear event model',
   node: process.version, createdAt: new Date().toISOString(), targetHz: targetMHz * 1e6,
   samples: samples.length, events: events.length, vcoEdges: vcoEdges.length, cycleSlips, saturatedSamples, lock: confirmed,
   finalFrequencyErrorHz: samples.at(-1).mhz * 1e6,
   finalPhaseErrorCycles: phaseError(samples.at(-1)), finalCapacitorVoltageV: samples.at(-1).cap,
+  finalVctrlV: samples.at(-1).vctrl ?? null,
 };
 mkdirSync(directory, { recursive: true });
 const json = (filename, value) => writeFileSync(join(directory, filename), JSON.stringify(value, null, 2) + '\n');
@@ -127,6 +138,12 @@ csv('samples.csv', ['time_ns', 'capacitor_v', 'feedback_cycles', 'frequency_erro
   samples.map(s => [s.ns, s.cap, s.phase, s.mhz * 1e6, phaseErrorUnwrapped(s), phaseError(s)]));
 csv('events.csv', ['time_ns', 'reference_edge', 'feedback_edge', 'reset_edge', 'up_after', 'down_after', 'capacitor_v', 'feedback_cycles'],
   events.map(e => [e.ns, +e.referenceEdge, +e.feedbackEdge, +e.resetEdge, +e.up, +e.down, e.cap, e.phase]));
+if (config.shuntF) {
+  csv('filter_events.csv', ['time_ns', 'up_after', 'down_after', 'pump_up_after', 'pump_down_after', 'pump_current_a', 'vctrl_v', 'capacitor_v'],
+    events.map(e => [e.ns, +e.up, +e.down, +e.pumpUp, +e.pumpDown, e.currentA, e.vctrl, e.cap]));
+  csv('filter_samples.csv', ['time_ns', 'vctrl_v', 'capacitor_v'],
+    samples.map(s => [s.ns, s.vctrl, s.cap]));
+}
 if (model.recordVcoEdges) csv('vco_edges.csv', ['time_ns', 'vco_edge_index'], vcoEdges.map(e => [e.ns, e.edge]));
 json('manifest.json', summary);
 console.log(JSON.stringify({ directory, ...summary }, null, 2));
