@@ -123,3 +123,5 @@
 - [ ] Edge/Chromium 桌面和手机端真实浏览器回归待做。
 - 详细模型、公式、限制和验收项见 [CH10_11_13_15_CURVE_INTERACTION_AUDIT.md](CH10_11_13_15_CURVE_INTERACTION_AUDIT.md)。
 
+
+- S1-07 已补齐 49 个旧实验 ID 的新版主题去向，核对链接目标存在。独立复现记录仍在验收范围。

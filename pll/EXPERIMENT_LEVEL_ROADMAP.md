@@ -19,7 +19,61 @@
 | PLL-03 | [C2.1](course/c2-1.html) | 平均相位闭环的 SPICE 求解 |
 | PLL-04 | [D3.2](course/d3-2.html) | 周期纹波、参考杂散及示例输入谱的抖动预算 |
 
-[Notebook 源码与实验边界](labs/PLL-SPICE/README.md)。原 49 项保留在下文。章级去向供定位，同章各实验的新版实现仍需逐项核实。作者运行记录与独立访客 L3/L4 验收分别取证。
+[Notebook 源码与实验边界](labs/PLL-SPICE/README.md)。原 49 项保留在下文。逐实验去向见下表。映射按教学主题确定，复现记录沿用各实验原有证据。作者运行记录与独立访客 L3/L4 验收分别取证。
+
+## 49 项旧实验到新版的对应页面
+
+| 旧实验 ID | 对应课程页 | 对应范围 |
+|---|---|---|
+| E01-01 | [A2-1](course/a2-1.html) | 主题对应 |
+| E01-02 | [A1-1](course/a1-1.html) | 主题对应 |
+| E01-03 | [A1-3](course/a1-3.html) | 主题对应 |
+| E02-01 | [A2-1](course/a2-1.html) | 主题对应 |
+| E02-02 | [A2-2](course/a2-2.html) | 主题对应 |
+| E03-01 | [C1-2](course/c1-2.html) | 主题对应 |
+| E03-02 | [C2-2](course/c2-2.html) | 主题对应 |
+| E04-01 | [C1-1](course/c1-1.html)、[E3-1](course/e3-1.html) | 主题对应，旧交互覆盖需单独核对 |
+| E04-02 | [E1-1](course/e1-1.html) | 主题对应 |
+| E05-01 | [B1-2](course/b1-2.html) | 主题对应 |
+| E06-01 | [C1-1](course/c1-1.html) | 主题对应 |
+| E06-02 | [C1-1](course/c1-1.html) | 主题对应，旧交互覆盖需单独核对 |
+| E07-01 | [C1-2](course/c1-2.html)、[C1-3](course/c1-3.html) | 主题对应 |
+| E07-02 | [C1-4](course/c1-4.html) | 主题对应 |
+| E08-01 | [B2-2](course/b2-2.html)、[B2-3](course/b2-3.html) | 主题对应 |
+| E08-02 | [B2-3](course/b2-3.html) | 主题对应 |
+| E08-03 | [B2-1](course/b2-1.html) | 主题对应 |
+| E08-04 | [B3-2](course/b3-2.html) | 主题对应 |
+| E09-01 | [C2-1](course/c2-1.html) | 主题对应 |
+| E09-02 | [C2-2](course/c2-2.html) | 主题对应 |
+| E10-01 | [C3-1](course/c3-1.html)、[C3-2](course/c3-2.html) | 主题对应 |
+| E10-02 | [C3-3](course/c3-3.html) | 主题对应 |
+| E11-01 | [C2-4](course/c2-4.html)、[C3-4](course/c3-4.html) | 主题对应 |
+| E11-02 | [C2-3](course/c2-3.html)、[C3-4](course/c3-4.html) | 主题对应 |
+| E12-01 | [D1-1](course/d1-1.html) | 主题对应，旧交互覆盖需单独核对 |
+| E12-02 | [A2-1](course/a2-1.html) | 主题对应 |
+| E12-03 | [D1-2](course/d1-2.html) | 主题对应，旧交互覆盖需单独核对 |
+| E12-04 | [D1-1](course/d1-1.html) | 主题对应 |
+| E12-05 | [D1-2](course/d1-2.html) | 主题对应 |
+| E12-06 | [D2-1](course/d2-1.html) | 主题对应 |
+| E12-07 | [D1-3](course/d1-3.html) | 主题对应 |
+| E12-08 | [D1-3](course/d1-3.html) | 主题对应，旧交互覆盖需单独核对 |
+| E12-09 | [D2-1](course/d2-1.html)、[D1-3](course/d1-3.html) | 主题对应，旧交互覆盖需单独核对 |
+| E13-01 | [D3-2](course/d3-2.html) | 主题对应 |
+| E13-02 | [D3-3](course/d3-3.html) | 主题对应，旧交互覆盖需单独核对 |
+| E14-01 | [E1-1](course/e1-1.html) | 主题对应 |
+| E14-02 | [E1-1](course/e1-1.html)、[E1-2](course/e1-2.html) | 主题对应 |
+| E15-01 | [E2-1](course/e2-1.html)、[E2-2](course/e2-2.html) | 主题对应 |
+| E15-02 | [E2-2](course/e2-2.html)、[E2-3](course/e2-3.html) | 主题对应，旧交互覆盖需单独核对 |
+| E15-03 | [E2-3](course/e2-3.html) | 主题对应 |
+| E16-01 | [E3-1](course/e3-1.html) | 主题对应 |
+| E16-02 | [E3-2](course/e3-2.html) | 主题对应 |
+| E17-01 | [E4-1](course/e4-1.html) | 主题对应 |
+| E17-02 | [E4-2](course/e4-2.html) | 主题对应 |
+| E17-03 | [B3-2](course/b3-2.html) | 主题对应 |
+| E17-04 | [E4-3](course/e4-3.html) | 主题对应 |
+| E18-01 | [B1-2](course/b1-2.html) | 主题对应 |
+| E18-02 | [E3-2](course/e3-2.html) | 主题对应 |
+| E18-03 | [F1-1](course/f1-1.html)、[F1-2](course/f1-2.html)、[F1-3](course/f1-3.html) | 主题对应，旧交互覆盖需单独核对 |
 
 ## 1. 四级定义（长期统一规范）
 
