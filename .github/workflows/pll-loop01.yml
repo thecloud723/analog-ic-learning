@@ -7,6 +7,7 @@ on:
       - 'pll/course/coupled-loop.js'
       - 'pll/labs/PLL-SPICE/*.mjs'
       - 'pll/labs/PLL-SPICE/*.json'
+      - 'pll/labs/PLL-SPICE/compare_loop01_average.py'
 permissions:
   contents: read
 jobs:
@@ -71,6 +72,8 @@ jobs:
           (tmp / 'loop01-evidence.json').write_text(json.dumps(evidence, indent=2))
           print(json.dumps(evidence, indent=2))
           PY
+      - name: Cross-check matched averaged and event-driven loops
+        run: python pll/labs/PLL-SPICE/compare_loop01_average.py "$RUNNER_TEMP/spice" "$RUNNER_TEMP/average"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -82,3 +85,4 @@ jobs:
             ${{ runner.temp }}/calibrated.json
             ${{ runner.temp }}/loop01-evidence.json
             ${{ runner.temp }}/loop01/
+            ${{ runner.temp }}/average/
