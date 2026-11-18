@@ -71,3 +71,7 @@
 | A2-3 | [JKU §6.6 调谐灵敏度定义](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-frequency-tuning-of-oscillators) | 原文以频率对控制电压的导数定义 VCO 增益。课程式为工作点附近一阶近似，增益单位 Hz/V。 |
 | B1-1 | [JKU 式 (60)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-crystal-series-resonance) | 串联谐振式一致。 |
 | B1-1 | [JKU 式 (61)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-crystal-pulling) | 负载拉频近似式一致，课程用 C_L 表示原文 C_load。 |
+| C1-2 | [JKU 式 (65)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-voltage-change) | 原文给出单个导通脉冲的电容电压增量。课程用 UP 减 DN 的净电流将同一关系扩展到两脉冲可重叠的情况。 |
+| C1-3 | [JKU 式 (66) 与图 83](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-pfd-cp) | 式 (66) 括号内为串联 RC 阻抗。完整阻抗由图 83 中并到地的 C3 与串联 RC 合成。 |
+| C3-1 | [JKU 式 (66)–(67)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-transfer-function) | CP 增益、滤波器、VCO 积分和反馈分频按相同相位域模型组合。课程的 VCO 增益用 Hz/V，乘 2π 后与原文角频率增益一致。 |
+| C3-2 | [JKU 式 (67)–(69)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-pll-transfer-function) | 原文式 (67) 除以 N 得归一化 T，S 由 1−T 得到。两式都沿用忽略 C3 的二阶近似。 |
