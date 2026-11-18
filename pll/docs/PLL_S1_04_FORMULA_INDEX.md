@@ -75,3 +75,8 @@
 | C1-3 | [JKU 式 (66) 与图 83](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-pfd-cp) | 式 (66) 括号内为串联 RC 阻抗。完整阻抗由图 83 中并到地的 C3 与串联 RC 合成。 |
 | C3-1 | [JKU 式 (66)–(67)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-transfer-function) | CP 增益、滤波器、VCO 积分和反馈分频按相同相位域模型组合。课程的 VCO 增益用 Hz/V，乘 2π 后与原文角频率增益一致。 |
 | C3-2 | [JKU 式 (67)–(69)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-pll-transfer-function) | 原文式 (67) 除以 N 得归一化 T，S 由 1−T 得到。两式都沿用忽略 C3 的二阶近似。 |
+| B2-2 | [JKU 图 61 后的谐振关系](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-lc-oscillator) | 原文用角频率，除以 2π 得课程的 Hz 表达式。 |
+| B2-2 | [JKU 式 (55) 和 §6.1 前的环降说明](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-definition-q) | 原文按每周期约损失 2π/Q 的能量写出指数包络。用周期数等于 f₀t 得课程的连续时间近似。 |
+| B2-2 | [JKU §6 环降说明](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator) | 原文给出储能与峰值电压平方的关系。幅度包络取能量包络的平方根，指数减半。 |
+| D1-2 | [JKU 式 (56)–(57)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-leeson-equation) | 角频率比改用 Hz 比值后保持不变。并联电阻由原文的 Q=ω₀CRₚ 反解，使用正弦峰值振幅。 |
+| D1-4 | [JKU 式 (59)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-reciprocal-mixing-noise) | 互易混频功率式一致，课程显式用 1 Hz 归一化积分带宽，并沿用窄带内相噪近似为常数的假设。 |
