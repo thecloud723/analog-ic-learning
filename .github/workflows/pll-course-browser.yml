@@ -325,6 +325,17 @@ jobs:
                change('frac-num',0);check('NUM=0',/周期 1 拍.*240\.0000.*2\.400000 GHz/);
                change('frac-num',15);check('NUM=15',/周期 16 拍.*240\.9375.*2\.409375 GHz/);break;
              }
+             const coupled=document.querySelector('[data-lab="fCoupled"]');
+             if(coupled){
+              change('coupled-offset',0);change('coupled-mismatch',0);change('coupled-reset',0);
+              const read=()=>coupled.querySelector('#f-coupled-result').textContent;
+              const ideal=read();
+              change('coupled-mismatch',10);change('coupled-reset',1);
+              const actual=read();
+              checks.push({label:'coupled CP mismatch and reset overlap',actual,pass:
+                /分段 VCO \/ 理想 CP 36\.025 µs.*非理想后 36\.025 µs/.test(ideal) &&
+                /分段 VCO \/ 理想 CP 36\.025 µs.*非理想后 24\.325 µs.*0\.8984 V/.test(actual)});
+             }
              return checks;
             });
             if(physical.length) result.physical=physical;
@@ -355,6 +366,42 @@ jobs:
            const visible=await evaluate(()=>!!document.getElementById(location.hash.slice(1))?.getClientRects().length);
            console.log(JSON.stringify({legacy:name,fragment,visible,errors}));
            if(!visible || errors.length) failed++;
+           const legacyCases=[
+            ['04_','p1','E04-01','[data-study="arch"] select','[data-study="arch"] .study-result','2'],
+            ['06_','p3','E06-02','#c6r','#pfdWave','150'],
+            ['12_','p1','E12-01','[data-study="noise12"] select','[data-study="noise12"] .study-result',null],
+            ['12_','p2','E12-03','#whiteNoise12','#plotNoiseShape12','-80'],
+            ['12_','p6','E12-08','#rj6','#plotHist6','5'],
+            ['12_','p8','E12-09','#lo12','#plot12','100'],
+            ['13_','p8','E13-02','#leak13','#plotSpur13','100'],
+            ['PLL_第15','p7','E15-02','#alpha15','#spec15','0.75'],
+            ['PLL_第18','p8','E18-03','[data-study="accept"] select:last-of-type','[data-study="accept"] .study-result',null],
+           ];
+           for(const [prefix,tab,id,control,target,value] of legacyCases.filter(([prefix])=>name.startsWith(prefix))){
+            errors=[];
+            await load('Page.navigate',{url:'about:blank'});
+            await load('Page.navigate',{url:url.split('#')[0]+'#'+tab});
+            await load('Page.reload',{ignoreCache:true});
+            const result=await page.evaluate(({tab,id,control,target,value})=>{
+             if(id==='E15-02'){
+              document.querySelector('input[name="pred15"][value="b"]').click();
+              document.querySelector('#check15').click();
+             }
+             const input=id==='E18-03'
+              ? [...document.querySelectorAll('[data-study="accept"] select')].at(-1)
+              : document.querySelector(control);
+             const result=document.querySelector(target);
+             if(!input || !result || input.disabled || !document.getElementById(tab).getClientRects().length ||
+                !input.getClientRects().length || !result.getClientRects().length) return {pass:false,reason:'control or result unavailable'};
+             const before=result.innerHTML;
+             input.value=value ?? [...input.options].find(option=>option.value!==input.value).value;
+             input.dispatchEvent(new Event('input',{bubbles:true}));
+             input.dispatchEvent(new Event('change',{bubbles:true}));
+             return {pass:before!==result.innerHTML && !/\b(?:NaN|Infinity|undefined)\b/.test(result.innerHTML),value:input.value};
+            },{tab,id,control,target,value});
+            console.log(JSON.stringify({legacyReplay:id,tab,...result,errors}));
+            if(!result.pass || errors.length) failed++;
+           }
            const frequencyLink=name.startsWith('05_')?'p7':name.startsWith('PLL_第18')?'p2':null;
            if(frequencyLink){
             await load('Page.navigate',{url:'about:blank'});
