@@ -6,6 +6,8 @@
 
 - 2026-11-19，LOOP-01 通过 20 组 PFD 边沿/复位专项、4 组串联 RC 脉冲 SPICE 对照及 11 点捕获扫描。同口径对比 PLL-03 的入带时刻相差 0.170 µs。当前继续验证环路额外极点、CP 其他非理想与网页/云端复现。见[复跑记录](https://github.com/thecloud723/analog-ic-learning/actions/runs/44405573563)。
 
+- 2026-11-19，LOOP-01 接入 5 pF 并联电容、上下拉独立延迟和有限输出电阻。12 个 SPICE 脉冲和 12 个闭环工况通过，新版 F1.2 已接入三组离线回放。见[阶段 2 验收](docs/PLL_S2_ACCEPTANCE.md)。
+
 ## 阶段 1 执行记录
 
 - **阶段 1 结构冻结（2026-11-19）**。冻结基线 [`90de444`](https://github.com/thecloud723/analog-ic-learning/commit/90de44442b92618f42c0b9b66a4e1d8ae86d01db)。浏览器、公式与实验台账均已验收。见[验收报告](docs/PLL_S1_09_ACCEPTANCE.md)与[冻结回归](https://github.com/thecloud723/analog-ic-learning/actions/runs/44395905337)。
