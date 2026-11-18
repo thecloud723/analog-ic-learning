@@ -7,7 +7,7 @@ on:
       - 'pll/course/coupled-loop.js'
       - 'pll/labs/PLL-SPICE/*.mjs'
       - 'pll/labs/PLL-SPICE/*.json'
-      - 'pll/labs/PLL-SPICE/compare_loop01_average.py'
+      - 'pll/labs/PLL-SPICE/*.py'
 permissions:
   contents: read
 jobs:
@@ -29,7 +29,7 @@ jobs:
       - name: Reproduce pulse comparison and PLL-01 calibration sweep
         run: |
           set -o pipefail
-          node "$RUNNER_TEMP/lc-vco-lab/compare_loop01_cp.mjs" "$RUNNER_TEMP/pulse" pll/labs/PLL-SPICE/settings.json
+          node "$RUNNER_TEMP/lc-vco-lab/compare_loop01_cp.mjs" "$RUNNER_TEMP/pulse" pll/labs/PLL-SPICE/settings.json pll/course/coupled-loop.js
           node "$RUNNER_TEMP/lc-vco-lab/pll_spice_series.mjs" "$RUNNER_TEMP/lc-vco-lab" "$RUNNER_TEMP/spice" pll/labs/PLL-SPICE/settings.json | tee "$RUNNER_TEMP/spice.log"
       - name: Verify linear and calibrated capture and scan initial offsets
         run: |
@@ -76,6 +76,8 @@ jobs:
           PY
       - name: Cross-check matched averaged and event-driven loops
         run: python pll/labs/PLL-SPICE/compare_loop01_average.py "$RUNNER_TEMP/spice" "$RUNNER_TEMP/average"
+      - name: Verify shunt filter and nonideal pump capture matrix
+        run: python pll/labs/PLL-SPICE/check_loop01_nonideal.py pll/labs/PLL-SPICE/settings.json "$RUNNER_TEMP/calibrated.json" "$RUNNER_TEMP/nonideal"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -88,3 +90,4 @@ jobs:
             ${{ runner.temp }}/loop01-evidence.json
             ${{ runner.temp }}/loop01/
             ${{ runner.temp }}/average/
+            ${{ runner.temp }}/nonideal/
