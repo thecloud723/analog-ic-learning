@@ -40,3 +40,5 @@ CP-01 九组预跑波形与网页数据逐点一致，VCO-01 改参单组重新�
 [新增物理响应回归](https://github.com/thecloud723/analog-ic-learning/actions/runs/44374517555)通过。旧实验表与新版迁移表的 49 个 ID 已逐项确认一致，历史已有 L2 数据的两项均有独立 SPICE 复跑。
 
 [第二批物理响应回归](https://github.com/thecloud723/analog-ic-learning/actions/runs/44383974923)累计覆盖 19 个新版页面。旧实验 E05-01 与 E18-01 已补可运行的新课程页及旧交互入口，49 项均有对应的新版交互，其中部分控制范围需要沿旧页面核对。
+
+[最新复跑](https://github.com/thecloud723/analog-ic-learning/actions/runs/44384500978)补证所有 40 个滑块的上下限，共 320 次。旧频率规划 E05-01、E18-01 已通过原页面的离线深链与数值复跑。仍待核对其他旧 L1 交互的同等工况，以及其余新版页面的物理响应。
