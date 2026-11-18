@@ -31,7 +31,7 @@ jobs:
           client.on('Page.loadEventFired',()=>loaded?.());
           client.on('Runtime.exceptionThrown',event=>errors.push(event.exceptionDetails.exception?.description));
           client.on('Network.responseReceived',event=>{
-            if(event.response.status>=400 && !event.response.url.endsWith('/favicon.ico')) errors.push(event.response.url);
+            if(event.response.status>=400 && !event.response.url.endsWith('/favicon.ico')) errors.push({status:event.response.status,url:event.response.url});
           });
           const evaluate=async fn=>(await send('Runtime.evaluate',{expression:'('+fn+')()',awaitPromise:true,returnByValue:true})).result.value;
           async function load(method,params){
@@ -54,6 +54,7 @@ jobs:
               : pathToFileURL(process.cwd()+'/pll/course/'+name).href;
             await load('Page.navigate',{url});
             await load('Page.reload',{ignoreCache:true});
+            if(mode==='online') await new Promise(resolve=>setTimeout(resolve,200));
             const result=await evaluate(async()=>{
              const controls=[...document.querySelectorAll('.lab input[type=range]:not(:disabled)')];
              const snapshots=lab=>JSON.stringify([lab.innerHTML,...[...lab.querySelectorAll('output')].map(x=>x.value)]);
