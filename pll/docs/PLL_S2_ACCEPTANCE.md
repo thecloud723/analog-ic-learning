@@ -9,7 +9,7 @@
 | S2-03 CP 与滤波器 | 串联 RC、5 pF 并联电容、100 kΩ 有限输出电阻共 12 个脉冲对照通过。上下拉独立延迟通过 12 组闭环扫描。 |
 | S2-04 闭环捕获与锁定 | 串联 RC 下完成实测 SPICE 调谐曲线接入、线性/分段对比、11 点频偏扫描、整圈位移及电压饱和统计。 |
 | S2-05 | 对齐调谐、偏压、时窗及频差判据后与 PLL-03 平均相位模型交叉验证通过。 |
-| S2-06 | 网页回放、证据索引及可复跑的主实验包已提交。L3/L4 平台验收见下文。 |
+| S2-06 | 网页回放、证据索引及可复跑的主实验包已提交。GitHub Actions 云端作者保存与洁净读者复制改参均通过。 |
 
 ## 洁净检出复跑
 
@@ -22,7 +22,7 @@
 - 入带 **27.750 µs**，确认 **31.750 µs**。末值频差 **+864.27 Hz**、模相位误差 **−0.001031 圈**、电容电压 **1.443165 V**。
 - 课程网页覆盖的 90 组模型输入，新旧运行采样值逐项完全相同。非法 N=0 在写出结果前会报错。
 
-阶段 2 当前为执行中。后续章节记录串联 RC、SPICE 校准和交叉验证的实测结果。
+阶段 2 于 2026-11-19 通过验收。后续章节记录串联 RC、SPICE 校准、交叉验证和云端复现。
 
 ## 四组 PFD 复位时序复跑
 
@@ -75,6 +75,17 @@ VCO 明细模式通过 `recordVcoEdges` 开启。在逐边沿模型的校准基�
 
 [F1.2](../course/f1-2.html)包含三组 5 pF 工况的离线回放。导出器将每组采样缩减为 183 点，并保留入带和确认采样、源码提交、校准数据哈希以及原始 CSV 哈希。回放的数据类别为 SPICE 标定的逐边沿行为模型。原始 SPICE 波形和行为级采样分别留存。
 
-主实验包命令 `bash pll/labs/PLL-SPICE/reproduce_loop01.sh NEW_OUTPUT_DIR` 依次运行 PFD 验证、脉冲对照、PLL-01～04 SPICE 扫描、校准、非理想矩阵、平均模型对照及网页导出。依赖复用带锁文件的 VCO-01 ZIP。将 ICP 从 100 改为 110 µA、R 从 4.7 改为 3.9 kΩ 的本地重跑在 **24.550 µs** 入带，**28.550 µs** 确认。从[公开源码压缩包 `08915fd`](https://codeload.github.com/thecloud723/analog-ic-learning/tar.gz/08915fdc9bcc2118d82ccf064b3c857a6ed325ee)匿名下载并在新目录完整复跑主实验包。三组网页数据、行为采样和滤波器采样的 SHA-256，以及校准输入哈希均与发布版一致。更改 110 µA 和 3.9 kΩ 的工况也在同一无凭据目录复跑通过。该证据覆盖公共源码读取、作者侧整包执行和洁净本地改参。云端作者保存与独立读者 Copy & Edit 待验收。
+主实验包命令 `bash pll/labs/PLL-SPICE/reproduce_loop01.sh NEW_OUTPUT_DIR` 依次运行 PFD 验证、脉冲对照、PLL-01～04 SPICE 扫描、校准、非理想矩阵、平均模型对照及网页导出。依赖复用带锁文件的 VCO-01 ZIP。将 ICP 从 100 改为 110 µA、R 从 4.7 改为 3.9 kΩ 的本地重跑在 **24.550 µs** 入带，**28.550 µs** 确认。从[公开源码压缩包 `08915fd`](https://codeload.github.com/thecloud723/analog-ic-learning/tar.gz/08915fdc9bcc2118d82ccf064b3c857a6ed325ee)匿名下载并在新目录完整复跑主实验包。三组网页数据、行为采样和滤波器采样的 SHA-256，以及校准输入哈希均与发布版一致。更改 110 µA 和 3.9 kΩ 的工况也在同一无凭据目录复跑通过。该证据覆盖公共源码读取、作者侧整包执行和洁净本地改参。云端证据见下方发布记录。
 
 [浏览器复跑](https://github.com/thecloud723/analog-ic-learning/actions/runs/44416238482/attempts/2)在桌面、模拟手机视口及线上、离线四种组合中通过，三种工况共 12 次回放数值断言。首轮有一条无关课程页线上请求返回 HTTP 503，重跑未复现。
+
+## 阶段 2 云端发布与洁净会话验收
+
+使用 GitHub Actions + Jupyter 内核完成计划的云端主实验包和洁净会话验收。固定运行器从公开地址复制同一 Notebook，清除旧输出，两组用独立容器执行。公开读取在无登录 Chrome 中实测，作者 Notebook 的预览显示完整保存结果。平台采用 GitHub，Kaggle 版未发布。
+
+| 会话 | ICP / R | 入带 / 确认 | 证据 |
+|---|---:|---:|---|
+| 作者 | 100 µA / 4.7 kΩ | 22.675 / 26.675 µs | [公开运行版](https://github.com/thecloud723/analog-ic-learning/blob/51173b79e846137af292501811e8d8f2db3c2edb/pll/labs/PLL-SPICE/LOOP-01_IntegerN_CP_PLL.ipynb) · [结果 ZIP](https://github.com/thecloud723/analog-ic-learning/actions/runs/44424508831/artifacts/14483771130) |
+| 洁净读者 | 110 µA / 3.9 kΩ | 24.550 / 28.550 µs | [复制及改参执行日志](https://github.com/thecloud723/analog-ic-learning/actions/runs/44424508831/job/135225745650) · [结果 ZIP](https://github.com/thecloud723/analog-ic-learning/actions/runs/44424508831/artifacts/14482469947) |
+
+两个会话均重新下载固定源码、安装锁定引擎、运行全部单元并检查 ZIP 内的网表、CSV、波形图、日志和网页数据。Notebook 和网页匿名可读，Actions 归档下载须 GitHub 登录，归档有保留期限。长期重跑使用 Notebook 中固定版本的源包。阶段 3 从 NOISE-01 与统一谱定义开始。
