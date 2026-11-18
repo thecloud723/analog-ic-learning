@@ -3,11 +3,11 @@
 > **阶段 1 · PLL-S1-01**　已做[课程入口与导航源码审计](docs/PLL_S1_01_NAVIGATION_AUDIT.md)。已补齐 18 章迁移映射，可用于 S1-07 关联旧实验。实验成熟度沿用既有证据。旧实验保留原 ID，章级新版去向已补在各章标题下。
 > **PLL-S1-02**　[新版 52 页覆盖矩阵](docs/PLL_S1_02_COURSE_COVERAGE.md)已建立，可用于 S1-07 合并台账。
 > **PLL-S1-03**。[外部资料对照与正文引用](docs/PLL_S1_03_EXTERNAL_REFERENCE_MATRIX.md)已归档。公式级核对纳入 S1-04。
-> **PLL-S1-04**。[新版公式索引](docs/PLL_S1_04_FORMULA_INDEX.md)已收录 54 个独立公式块及适用条件，行内公式和原文等式逐条对应待复核。
+> **PLL-S1-04**。[新版公式索引](docs/PLL_S1_04_FORMULA_INDEX.md)已收录 54 个独立公式块及适用条件，54 个独立公式均已有原文或推导核对记录，行内关系见公式索引。
 
 > 审核日期：2026-11-15  
 > 范围：`analog-ic-learning/pll/chapters/` 18章 HTML、`course-labs.js`、`course-cp-data.js`、两份实验 ZIP 的**引用与现有课程记录**。  
-> 本文只整理实施计划与源码核对状态；**没有发布 Kaggle、没有运行新的仿真、没有修改课程 HTML**。  
+> 上方日期对应原始源码盘点。后续的独立仿真和浏览器复跑证据见文末，Kaggle 发布状态见各实验记录。  
 > 状态口径：“已”=在仓库源码中发现相关实现/数据，**不代表** Edge/手机真实浏览器验收、独立复现或电路物理准确性已验收。
 
 ## 新版实验索引
@@ -32,11 +32,11 @@
 | E02-02 | [A2-2](course/a2-2.html) | 主题对应 |
 | E03-01 | [C1-2](course/c1-2.html) | 主题对应 |
 | E03-02 | [C2-2](course/c2-2.html) | 主题对应 |
-| E04-01 | [C1-1](course/c1-1.html)、[E3-1](course/e3-1.html) | 主题对应，旧交互覆盖需单独核对 |
+| E04-01 | [C1-1](course/c1-1.html)、[E3-1](course/e3-1.html) | 新版主题入口已关联。[旧版保留 XOR/CP/ADPLL 三路切换](chapters/04_PLL架构地图.html#p1)。 |
 | E04-02 | [E1-1](course/e1-1.html) | 主题对应 |
-| E05-01 | [B1-2](course/b1-2.html)、[B1-3](course/b1-3.html) | B1-2 对照完整频率链，B1-3 可调 R/N。输出分频与 Prescaler 的组合交互保留在[旧第 05 章分频链实验](chapters/05_参考源与时钟输出链.html#p7)。 |
+| E05-01 | [B1-2](course/b1-2.html)、[B1-3](course/b1-3.html) | B1-2 对照完整频率链，B1-3 可调 R/N。可调输出分频的 R/N/D 交互保留在[旧第 05 章分频链实验](chapters/05_参考源与时钟输出链.html#p7)，Prescaler 说明见[旧章 #p4](chapters/05_参考源与时钟输出链.html#p4)。 |
 | E06-01 | [C1-1](course/c1-1.html) | 主题对应 |
-| E06-02 | [C1-1](course/c1-1.html) | 主题对应，旧交互覆盖需单独核对 |
+| E06-02 | [C1-1](course/c1-1.html) | 新版主题入口已关联。[旧版保留独立复位延迟和初始边沿偏移](chapters/06_PD_PFD相位与频率比较.html#p3)。 |
 | E07-01 | [C1-2](course/c1-2.html)、[C1-3](course/c1-3.html) | 主题对应 |
 | E07-02 | [C1-4](course/c1-4.html) | 主题对应 |
 | E08-01 | [B2-2](course/b2-2.html)、[B2-3](course/b2-3.html) | 主题对应 |
@@ -49,21 +49,21 @@
 | E10-02 | [C3-3](course/c3-3.html) | 主题对应 |
 | E11-01 | [C2-4](course/c2-4.html)、[C3-4](course/c3-4.html) | 主题对应 |
 | E11-02 | [C2-3](course/c2-3.html)、[C3-4](course/c3-4.html) | 主题对应 |
-| E12-01 | [D1-1](course/d1-1.html) | 主题对应，旧交互覆盖需单独核对 |
+| E12-01 | [D1-1](course/d1-1.html) | 新版主题入口已关联。[旧版保留调制与时域扰动模型](chapters/12_Phase_Noise与Jitter.html#p1)。 |
 | E12-02 | [A2-1](course/a2-1.html) | 主题对应 |
-| E12-03 | [D1-2](course/d1-2.html) | 主题对应，旧交互覆盖需单独核对 |
+| E12-03 | [D1-2](course/d1-2.html) | 新版主题入口已关联。[旧版保留白噪声、闪烁噪声与噪底独立调节](chapters/12_Phase_Noise与Jitter.html#p2)。 |
 | E12-04 | [D1-1](course/d1-1.html) | 主题对应 |
 | E12-05 | [D1-2](course/d1-2.html) | 主题对应 |
 | E12-06 | [D2-1](course/d2-1.html) | 主题对应 |
 | E12-07 | [D1-3](course/d1-3.html) | 主题对应 |
-| E12-08 | [D1-3](course/d1-3.html) | 主题对应，旧交互覆盖需单独核对 |
-| E12-09 | [D2-1](course/d2-1.html)、[D1-3](course/d1-3.html) | 主题对应，旧交互覆盖需单独核对 |
+| E12-08 | [D1-3](course/d1-3.html) | 新版主题入口已关联。[旧版保留 RJ/DJ 和 TIE 直方图](chapters/12_Phase_Noise与Jitter.html#p6)。 |
+| E12-09 | [D2-1](course/d2-1.html)、[D1-3](course/d1-3.html) | 新版主题入口已关联。[旧版保留多源曲线与同屏积分窗口](chapters/12_Phase_Noise与Jitter.html#p8)。 |
 | E13-01 | [D3-2](course/d3-2.html) | 主题对应 |
-| E13-02 | [D3-3](course/d3-3.html) | 主题对应，旧交互覆盖需单独核对 |
+| E13-02 | [D3-3](course/d3-3.html) | 新版主题入口已关联。[旧版保留失配和漏电的高次谐波估算](chapters/13_Spur非线性与PVT.html#p8)。 |
 | E14-01 | [E1-1](course/e1-1.html) | 主题对应 |
 | E14-02 | [E1-1](course/e1-1.html)、[E1-2](course/e1-2.html) | 主题对应 |
 | E15-01 | [E2-1](course/e2-1.html)、[E2-2](course/e2-2.html) | 主题对应 |
-| E15-02 | [E2-2](course/e2-2.html)、[E2-3](course/e2-3.html) | 主题对应，旧交互覆盖需单独核对 |
+| E15-02 | [E2-2](course/e2-2.html)、[E2-3](course/e2-3.html) | 新版主题入口已关联。[旧版保留可调采样长度与频谱](chapters/PLL_第15章_Sigma-Delta_MASH与Dither.html#p7)。 |
 | E15-03 | [E2-3](course/e2-3.html) | 主题对应 |
 | E16-01 | [E3-1](course/e3-1.html) | 主题对应 |
 | E16-02 | [E3-2](course/e3-2.html) | 主题对应 |
@@ -73,7 +73,7 @@
 | E17-04 | [E4-3](course/e4-3.html) | 主题对应 |
 | E18-01 | [B1-2](course/b1-2.html)、[E1-1](course/e1-1.html) | B1-2 追踪参考及输出路径，E1-1 调分数分频分子。联动参考、N+α、输出分频的交互保留在[旧第 18 章频率规划实验](chapters/PLL_第18章_完整系统设计与指标.html#p2)。 |
 | E18-02 | [E3-2](course/e3-2.html) | 主题对应 |
-| E18-03 | [F1-1](course/f1-1.html)、[F1-2](course/f1-2.html)、[F1-3](course/f1-3.html) | 主题对应，旧交互覆盖需单独核对 |
+| E18-03 | [F1-1](course/f1-1.html)、[F1-2](course/f1-2.html)、[F1-3](course/f1-3.html) | 新版主题入口已关联。[旧版保留教学规格判定清单](chapters/PLL_第18章_完整系统设计与指标.html#p8)。 |
 
 ## 1. 四级定义（长期统一规范）
 
@@ -101,7 +101,7 @@
 - 第 13 章 Spur：`data-study=spur13` 可复用第 07 章 SPICE 纹波或导入 `vctrl.csv`，之后通过 **JS 傅里叶基波 + 频率调制公式估算**边带；`lab13` 是简化谐波估算。**不能把输出 Spur 图说成实际 SPICE 频谱**。
 - 第 18 章验收：`data-study=accept` 调用第 7 章的 CP 数据作局部输入，其余锁定/噪声预算是 JS 教学模型；不是完整芯片或整机测量结果。
 - 第 12 章 8组新曲线，及 10/11/13/15 章的高级曲线，已在 JS 源码中有实现；**不因为使用数值积分、DFT、随机序列就自动成为 L2**。
-- 本次未对两个 ZIP 的内部文件逐字节重新验收，也未用洁净环境重跑；以仓库中存在 ZIP、HTML 对其引用和已有实现记录为依据。L3 发版前须补复现测试。
+- 原始盘点基于 ZIP 与页面引用，随后已在独立输出目录重跑 CP-01 与 VCO-01，证据见文末。
 
 ## 3. 逐实验状态（共 49 条）
 
