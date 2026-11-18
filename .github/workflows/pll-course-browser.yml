@@ -56,23 +56,45 @@ jobs:
             await load('Page.reload',{ignoreCache:true});
             if(mode==='online') await new Promise(resolve=>setTimeout(resolve,200));
             const result=await evaluate(async()=>{
-             const controls=[...document.querySelectorAll('.lab input[type=range]:not(:disabled)')];
-             const snapshots=lab=>JSON.stringify([lab.innerHTML,...[...lab.querySelectorAll('output')].map(x=>x.value)]);
+             const controls=[...document.querySelectorAll('.lab :is(input[type=range],select,input[type=checkbox],input[type=radio]:not(:checked)):not(:disabled)')];
+             const snapshots=lab=>JSON.stringify([lab.innerHTML,...[...lab.querySelectorAll('output')].map(x=>x.value),...[...lab.querySelectorAll('canvas')].map(x=>x.toDataURL())]);
              let changed=0;
              for(const input of controls){
               const lab=input.closest('.lab'), before=snapshots(lab), original=input.value;
-              input.value=input.value===input.max?input.min:input.max;
+              const originalChecked=input.checked;
+              const previousRadio=input.type==='radio'
+                ? lab.querySelector('input[name="'+CSS.escape(input.name)+'"]:checked') : null;
+              if(input.type==='select-one') {
+               const alternative=[...input.options].find(option=>!option.disabled && option.value!==original);
+               if(alternative) input.value=alternative.value;
+              } else if(input.type==='checkbox' || input.type==='radio') input.checked=!originalChecked;
+              else input.value=input.value===input.max?input.min:input.max;
               input.dispatchEvent(new Event('input',{bubbles:true}));
+              input.dispatchEvent(new Event('change',{bubbles:true}));
               await new Promise(requestAnimationFrame);
               changed+=Number(snapshots(lab)!==before);
-              input.value=original;
-              input.dispatchEvent(new Event('input',{bubbles:true}));
+              if(input.type==='radio' && previousRadio) previousRadio.checked=true;
+              else if(input.type==='checkbox' || input.type==='radio') input.checked=originalChecked;
+              else input.value=original;
+              const restored=previousRadio || input;
+              restored.dispatchEvent(new Event('input',{bubbles:true}));
+              restored.dispatchEvent(new Event('change',{bubbles:true}));
              }
              return {heading:!!document.querySelector('main h1'),nav:document.querySelectorAll('nav a[aria-current=page]').length,
               overflow:document.documentElement.scrollWidth-innerWidth,
               badImages:[...document.images].filter(i=>!i.naturalWidth && i.loading!=='lazy').map(i=>i.src),
               changed,controls:controls.length};
             });
+            if(name==='app-2.html'){
+             const [download]=await Promise.all([page.waitForEvent('download',{timeout:5000}),page.locator('#f-export').click({timeout:5000})]);
+             const csv=await readFile(await download.path(),'utf8');
+             const [header,...lines]=csv.trimEnd().split('\n');
+             result.csvValid=header==='time_s,vctrl_v' && lines.length===500 &&
+               lines.every((line,i)=>{const fields=line.split(','); return fields.length===2 &&
+                 fields.every(x=>x!=='' && Number.isFinite(Number(x))) &&
+                 Math.abs(Number(fields[0])-i*2e-9)<1e-15;});
+             if(!result.csvValid) failed++;
+            }
             console.log(JSON.stringify({width,name,...result,errors}));
             if(!result.heading || result.nav!==1 || result.overflow>1 || result.badImages.length || result.changed!==result.controls || errors.length) failed++;
            }
