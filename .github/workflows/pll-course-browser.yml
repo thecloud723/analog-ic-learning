@@ -103,6 +103,19 @@ jobs:
               badImages:[...document.images].filter(i=>!i.naturalWidth && i.loading!=='lazy').map(i=>i.src),
               changed,controls:controls.length};
             });
+            if(mode==='offline'){
+             const images=await evaluate(async()=>{
+              const images=[...document.images];
+              const results=await Promise.all(images.map(async image=>{
+               image.loading='eager';
+               try {await image.decode();return image.naturalWidth>0 ? null : image.src;}
+               catch {return image.src;}
+              }));
+              return {count:images.length,failed:results.filter(Boolean)};
+             });
+             result.imagesDecoded=images.count-images.failed.length;
+             result.badImages=images.failed;
+            }
             const physical = await evaluate(()=>{
              const lab=document.querySelector('.lab');
              if(!lab) return [];
