@@ -366,6 +366,21 @@ jobs:
            const visible=await evaluate(()=>!!document.getElementById(location.hash.slice(1))?.getClientRects().length);
            console.log(JSON.stringify({legacy:name,fragment,visible,errors}));
            if(!visible || errors.length) failed++;
+           const extraFragments=name.startsWith('01_')
+            ? ['why','overview','cppll','equations','example','spec','lab']
+            : ['p1','p2','p3','p4','p5','p6','p7'];
+           for(const tab of extraFragments){
+            errors=[];
+            await load('Page.navigate',{url:'about:blank'});
+            await load('Page.navigate',{url:url.split('#')[0]+'#'+tab});
+            await load('Page.reload',{ignoreCache:true});
+            const shown=await evaluate(()=>{
+             const requested=document.getElementById(location.hash.slice(1));
+             return !!requested?.getClientRects().length;
+            });
+            console.log(JSON.stringify({legacyTab:name,fragment:tab,shown,errors}));
+            if(!shown || errors.length) failed++;
+           }
            const legacyCases=[
             ['04_','p1','E04-01','[data-study="arch"] select','[data-study="arch"] .study-result','2'],
             ['06_','p3','E06-02','#c6r','#pfdWave','150'],
