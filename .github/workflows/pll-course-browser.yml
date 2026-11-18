@@ -80,7 +80,25 @@ jobs:
               restored.dispatchEvent(new Event('input',{bubbles:true}));
               restored.dispatchEvent(new Event('change',{bubbles:true}));
              }
-             return {heading:!!document.querySelector('main h1'),nav:document.querySelectorAll('nav a[aria-current=page]').length,
+             const boundaryErrors=[];
+             let boundaryChecks=0;
+             for(const input of controls.filter(control=>control.type==='range')){
+              const original=input.value;
+              const lab=input.closest('.lab');
+              for(const value of [input.min,input.max]){
+               input.value=value;
+               input.dispatchEvent(new Event('input',{bubbles:true}));
+               input.dispatchEvent(new Event('change',{bubbles:true}));
+               boundaryChecks++;
+               const outputs=[...lab.querySelectorAll('output, [data-result], #c-lab-result, #d-result, #e-result, [role=status]')];
+               const invalid=outputs.some(node=>/\b(?:NaN|Infinity|undefined)\b/.test(node.textContent));
+               if(input.value!==value || invalid) boundaryErrors.push(input.id+'='+value);
+              }
+              input.value=original;
+              input.dispatchEvent(new Event('input',{bubbles:true}));
+              input.dispatchEvent(new Event('change',{bubbles:true}));
+             }
+             return {boundaryChecks,boundaryErrors,heading:!!document.querySelector('main h1'),nav:document.querySelectorAll('nav a[aria-current=page]').length,
               overflow:document.documentElement.scrollWidth-innerWidth,
               badImages:[...document.images].filter(i=>!i.naturalWidth && i.loading!=='lazy').map(i=>i.src),
               changed,controls:controls.length};
@@ -197,7 +215,7 @@ jobs:
              if(!result.csvValid) failed++;
             }
             console.log(JSON.stringify({width,name,...result,errors}));
-            if(!result.heading || result.nav!==1 || result.overflow>1 || result.badImages.length || result.changed!==result.controls || errors.length) failed++;
+            if(!result.heading || result.nav!==1 || result.overflow>1 || result.badImages.length || result.changed!==result.controls || result.boundaryErrors.length || errors.length) failed++;
            }
           }
           if(mode==='offline') for(const name of (await readdir('pll/chapters')).filter(x=>x.endsWith('.html'))){
