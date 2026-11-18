@@ -92,7 +92,7 @@ jobs:
                boundaryChecks++;
                const outputs=[...lab.querySelectorAll('output, [data-result], #c-lab-result, #d-result, #e-result, [role=status]')];
                const invalid=outputs.some(node=>/\b(?:NaN|Infinity|undefined)\b/.test(node.textContent));
-               if(input.value!==value || invalid) boundaryErrors.push(input.id+'='+value);
+               if(Number(input.value)!==Number(value) || invalid) boundaryErrors.push(input.id+'='+value);
               }
               input.value=original;
               input.dispatchEvent(new Event('input',{bubbles:true}));
@@ -230,6 +230,30 @@ jobs:
            const visible=await evaluate(()=>!!document.getElementById(location.hash.slice(1))?.getClientRects().length);
            console.log(JSON.stringify({legacy:name,fragment,visible,errors}));
            if(!visible || errors.length) failed++;
+           const frequencyLink=name.startsWith('05_')?'p7':name.startsWith('PLL_第18')?'p2':null;
+           if(frequencyLink){
+            await load('Page.navigate',{url:'about:blank'});
+            await load('Page.navigate',{url:url.split('#')[0]+'#'+frequencyLink});
+            await load('Page.reload',{ignoreCache:true});
+            const result=await evaluate(()=>{
+             const get=id=>document.getElementById(id);
+             const change=(id,value)=>{
+              get(id).value=value;
+              get(id).dispatchEvent(new Event('input',{bubbles:true}));
+              get(id).dispatchEvent(new Event('change',{bubbles:true}));
+             };
+             if(location.hash==='#p7'){
+              change('r5',2);change('n5',32);change('d5',4);
+              return {visible:!!get('p7').getClientRects().length,values:['f5pd','f5vco','f5clk'].map(id=>get(id).textContent)};
+             }
+             change('ref18',100);change('ratio18',40.25);change('post18',2);
+             return {visible:!!get('p2').getClientRects().length,values:['vco18','out18','alpha18'].map(id=>get(id).textContent)};
+            });
+            const expected=frequencyLink==='p7'?['50.00 MHz','1.6000 GHz','400.00 MHz']:['4.0250 GHz','2.0125 GHz','0.25'];
+            const pass=result.visible && result.values.every((value,i)=>value===expected[i]) && !errors.length;
+            console.log(JSON.stringify({legacyFrequency:name,fragment:frequencyLink,...result,pass}));
+            if(!pass) failed++;
+           }
           }
           await browser.close();
           if(failed) process.exitCode=1;
