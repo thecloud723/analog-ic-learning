@@ -1,12 +1,12 @@
 # PLL-S1-05 新版图片清单
 
-43 个不同图片路径，49 处引用。新增 JKU 7 图与 MDPI 6 图的上游许可出处。TI 3 图及 ADI 1 图的公开嵌图授权待确认。
+本清单记录改造前的 43 个不同图片路径，49 处引用。新增 JKU 7 图与 MDPI 6 图的上游许可出处。TI 3 图及 ADI 1 图在 7 页改用原文链接，当前本地嵌图为 39 个不同路径。
 
 | 图片路径 | 使用页面 | 来源 | 许可证据 |
 |---|---|---|---|
 | pll/assets/originals/adi/adf4351-fig1.png | [A1-1](../course/a1-1.html) | [来源 1](https://www.analog.com/en/products/ADF4351.html)、[来源 2](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf) | © Analog Devices（沿用原清单记录） |
 | pll/assets/originals/adi/an143-fig3.png | [D3-1](../course/d3-1.html) | [来源 1](https://www.analog.com/en/resources/technical-articles/an143-a-simple-method-to-accurately-predict-pll-reference-spur-levels-due-to-leakage-current.html)、[来源 2](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=2) | © Analog Devices（沿用原清单记录） |
-| pll/assets/originals/adi/an143-fig8.png | [D3-3](../course/d3-3.html) | [来源 1](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=6) | AN143 原文已定位，公开教程嵌图许可待确认。 |
+| pll/assets/originals/adi/an143-fig8.png | [D3-3](../course/d3-3.html) | [来源 1](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=6) | AN143 原文已定位，改用原文链接。 |
 | pll/assets/originals/adi/mt008-fig1.png | [A1-3](../course/a1-3.html) | [来源 1](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf)、[来源 2](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=2) | © Analog Devices（沿用原清单记录） |
 | pll/assets/originals/adi/mt008-fig3.png | [D1-1](../course/d1-1.html) | [来源 1](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf)、[来源 2](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=3) | © Analog Devices（沿用原清单记录） |
 | pll/assets/originals/adi/mt008-fig4.png | [D1-3](../course/d1-3.html) | [来源 1](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf)、[来源 2](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=3) | © Analog Devices（沿用原清单记录） |
@@ -39,9 +39,9 @@
 | pll/assets/originals/jku/fig_097.png | [B1-2](../course/b1-2.html) | [来源 1](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-ref-doubler)、[来源 2](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) | Apache-2.0 (repository license; preserve LICENSE)（沿用原清单记录） |
 | pll/assets/originals/jku/fig_105.svg | [D3-1](../course/d3-1.html) | [来源 1](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-trx-coupling) | 课程标明 Apache-2.0，逐图保留署名及许可文本。 [JKU Reuse](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#reuse) |
 | pll/assets/originals/mdpi/dtc-fig3.jpg | [E4-2](../course/e4-2.html) | [来源 1](https://www.mdpi.com/2079-9292/12/4/841) | 论文标明 CC BY 4.0，保留作者、原图号及裁剪说明。 [许可](https://creativecommons.org/licenses/by/4.0/) |
-| pll/assets/originals/ti/lmx2594-fig3-1.jpg | [B1-2](../course/b1-2.html) | [来源 1](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=5) | TI 公开条款限制其他复制和展示。公开教程嵌图授权待确认。 [TI 条款](https://www.ti.com/legal/important-notice-and-disclaimer.html) |
-| pll/assets/originals/ti/lmx2594-fig4-1.png | [C1-3](../course/c1-3.html)、[C3-3](../course/c3-3.html)、[F1-1](../course/f1-1.html) | [来源 1](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6) | TI 公开条款限制其他复制和展示。公开教程嵌图授权待确认。 [TI 条款](https://www.ti.com/legal/important-notice-and-disclaimer.html) |
-| pll/assets/originals/ti/lmx2594-fig5-1.png | [A1-3](../course/a1-3.html)、[D2-3](../course/d2-3.html)、[F1-1](../course/f1-1.html) | [来源 1](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6) | TI 公开条款限制其他复制和展示。公开教程嵌图授权待确认。 [TI 条款](https://www.ti.com/legal/important-notice-and-disclaimer.html) |
+| pll/assets/originals/ti/lmx2594-fig3-1.jpg | [B1-2](../course/b1-2.html) | [来源 1](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=5) | TI 公开条款限制其他复制和展示。改用原文链接。 [TI 条款](https://www.ti.com/legal/important-notice-and-disclaimer.html) |
+| pll/assets/originals/ti/lmx2594-fig4-1.png | [C1-3](../course/c1-3.html)、[C3-3](../course/c3-3.html)、[F1-1](../course/f1-1.html) | [来源 1](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6) | TI 公开条款限制其他复制和展示。改用原文链接。 [TI 条款](https://www.ti.com/legal/important-notice-and-disclaimer.html) |
+| pll/assets/originals/ti/lmx2594-fig5-1.png | [A1-3](../course/a1-3.html)、[D2-3](../course/d2-3.html)、[F1-1](../course/f1-1.html) | [来源 1](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6) | TI 公开条款限制其他复制和展示。改用原文链接。 [TI 条款](https://www.ti.com/legal/important-notice-and-disclaimer.html) |
 | pll/course/assets/jo2022-fig11.webp | [F1-3](../course/f1-3.html) | [来源 1](https://mdpi-res.com/d_attachment/electronics/electronics-11-01118/article_deploy/electronics-11-01118.pdf#page=9) | 论文标明 CC BY 4.0，保留作者、原图号及裁剪说明。 [许可](https://creativecommons.org/licenses/by/4.0/) |
 | pll/course/assets/jo2022-fig12.webp | [F1-3](../course/f1-3.html) | [来源 1](https://mdpi-res.com/d_attachment/electronics/electronics-11-01118/article_deploy/electronics-11-01118.pdf#page=9) | 论文标明 CC BY 4.0，保留作者、原图号及裁剪说明。 [许可](https://creativecommons.org/licenses/by/4.0/) |
 | pll/course/assets/jo2022-fig3.webp | [F1-3](../course/f1-3.html) | [来源 1](https://mdpi-res.com/d_attachment/electronics/electronics-11-01118/article_deploy/electronics-11-01118.pdf#page=4) | 论文标明 CC BY 4.0，保留作者、原图号及裁剪说明。 [许可](https://creativecommons.org/licenses/by/4.0/) |

@@ -6,7 +6,7 @@
 - **PLL-S1-02 逐页覆盖表已建立**。[核对 52 页正文、独立公式和交互控件](docs/PLL_S1_02_COURSE_COVERAGE.md)。
 - **PLL-S1-03**。[外部资料对照与正文引用](docs/PLL_S1_03_EXTERNAL_REFERENCE_MATRIX.md)已归档。公式级核对纳入 S1-04。
 - **PLL-S1-04**。[新版公式索引](docs/PLL_S1_04_FORMULA_INDEX.md)已收录 54 个独立公式块及适用条件，行内公式和原文等式逐条对应待复核。
-- **PLL-S1-05 至 S1-09**。图片清单、静态回归、实验台账和 README 入口已更新。新增 13 图上游许可出处。逐项结论见[阶段验收记录](docs/PLL_S1_09_ACCEPTANCE.md)。
+- **PLL-S1-05 至 S1-09**。图片清单、静态回归、实验台账和 README 入口已更新。新增 13 图上游许可出处，TI 与 ADI 四图已在七页改用原文链接。逐项结论见[阶段验收记录](docs/PLL_S1_09_ACCEPTANCE.md)。
 
 > **VCO-01 仿真复现（2026-11-15）**： [27组实际SPICE复跑](https://github.com/thecloud723/analog-ic-learning/actions/runs/43682286383) PASS；L2 自动导出与原基准 f/Vpp/power 差值均为 0；两套修改 Rs/W 参数的完整 CSV 也已通过。Notebook 源码见 [labs/VCO-01](labs/VCO-01/)。**尚未在 Kaggle 发布、尚未完成读者账号的 L4 验收**。
 
