@@ -2,6 +2,8 @@
 
 ## 阶段 1 执行记录
 
+- **2026-11-19**。PLL-01～04 从净目录重新生成 SPICE 波形并复跑后处理，4 个独立公式已对照 JKU 原文。浏览器和其余公式、旧实验复现仍待核验。见[阶段验收表](docs/PLL_S1_09_ACCEPTANCE.md)。
+
 - **PLL-S1-01 清单与静态核对完成**。基线 main 为 `64bdee560eeded5380efd6018e17c8b951f46ff1`。[52 页导航源码检查](docs/PLL_S1_01_NAVIGATION_AUDIT.md)通过，18 章迁移映射已补齐。云端 Chrome 31/52 页打开和刷新通过，线上 72 个 HTML 与仓库内容一致。其余页面、移动端和历史深链运行验收列入 S1-06。
 - **PLL-S1-02 逐页覆盖表已建立**。[核对 52 页正文、独立公式和交互控件](docs/PLL_S1_02_COURSE_COVERAGE.md)。
 - **PLL-S1-03**。[外部资料对照与正文引用](docs/PLL_S1_03_EXTERNAL_REFERENCE_MATRIX.md)已归档。公式级核对纳入 S1-04。
