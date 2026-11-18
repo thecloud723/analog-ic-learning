@@ -62,3 +62,12 @@
 ## 行内公式覆盖范围
 
 正文没有独立的行内 MathML 节点。以纯文本和上下标标记呈现的行内关系仍需人工索引。
+
+## 2026-11-19 原文逐式核对
+
+| 新版页面 | 原文定位 | 核对结果 |
+|---|---|---|
+| A1-1 | [JKU §7.4 首段](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-pll-frac-n) | 原文直接给出整数倍频关系。将原文的比较参考频率记为课程的 PFD 频率。 |
+| A2-3 | [JKU §6.6 调谐灵敏度定义](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-frequency-tuning-of-oscillators) | 原文以频率对控制电压的导数定义 VCO 增益。课程式为工作点附近一阶近似，增益单位 Hz/V。 |
+| B1-1 | [JKU 式 (60)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-crystal-series-resonance) | 串联谐振式一致。 |
+| B1-1 | [JKU 式 (61)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-crystal-pulling) | 负载拉频近似式一致，课程用 C_L 表示原文 C_load。 |
