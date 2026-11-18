@@ -45,14 +45,19 @@ jobs:
 
           author = os.environ['LAB_ROLE'] == 'author'
           source = nbformat.read('published.ipynb', as_version=4)
-          notebook = nbformat.from_dict(json.loads(nbformat.writes(source)))
+          notebook = nbformat.reads(nbformat.writes(source), as_version=4)
           for cell in notebook.cells:
               if cell.cell_type == 'code':
                   cell.outputs = []
                   cell.execution_count = None
               if not author and 'reader-parameters' in cell.metadata.get('tags', []):
                   cell.source = 'ICP_UA = 110\nR_OHM = 3900'
-          NotebookClient(notebook, timeout=360, kernel_name='python3').execute()
+          try:
+              NotebookClient(notebook, timeout=360, kernel_name='python3').execute()
+          except Exception:
+              for log in Path.cwd().glob('loop01-notebook-*/reproduce.log'):
+                  print(log.read_text()[-5000:])
+              raise
           nbformat.write(notebook, 'executed.ipynb')
 
           result_dir, = Path.cwd().glob('loop01-notebook-*/notebook-summary.json')
