@@ -21,3 +21,9 @@ PLL-03 用平均相位状态反馈。PLL-04 的锁定周期通过净电荷平衡
 
 - 从 PLL-01 输出的 `pll-01-vco-metrics.json` 建立分段与线性校准配置。执行 `node pll/labs/PLL-SPICE/calibrate_loop01.mjs METRICS_JSON OUTPUT_JSON`，再将生成的 JSON 作为 `run_loop01.mjs` 的第三个参数。设置 `recordVcoEdges: true` 可额外导出 `vco_edges.csv`。
 - 使用 `python pll/labs/PLL-SPICE/compare_loop01_average.py SPICE_OUTPUT_DIR NEW_OUTPUT_DIR` 在相同初始偏压下对照 PLL-03。脉冲 SPICE 与 11 点捕获都可从[验证工作流](https://github.com/thecloud723/analog-ic-learning/actions/runs/44405573563)下载配置、报告和波形。
+
+## LOOP-01 主实验包与离线回放
+
+从仓库根目录运行 `bash pll/labs/PLL-SPICE/reproduce_loop01.sh /tmp/loop01-full`，输出目录须尚未创建。运行需要 Node.js 24、npm、Python 3 和 unzip，首次安装使用 npm 网络。输出按脉冲、SPICE、校准、闭环和平均模型对比分目录保存，另有 F1.2 可读的回放文件。
+
+模型 JSON 的 `useShuntCap` 为真时启用共用设置的 `loop_cp_pF`，并产生 `filter_events.csv` 与 `filter_samples.csv`。`upDelayNs` 和 `downDelayNs` 分别设置两路传输延迟，`pumpOutputResistanceOhm` 为正时加入偏置电阻。原有串联 RC 工况继续使用原运行方式。验收条件与模型边界见[阶段 2 验收](../../docs/PLL_S2_ACCEPTANCE.md)。
