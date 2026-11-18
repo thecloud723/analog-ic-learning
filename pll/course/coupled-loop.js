@@ -12,7 +12,7 @@
     const [x0,y0]=knots[i-1], [x1,y1]=knots[i];
     return y0+(y1-y0)*(v-x0)/(x1-x0);
   }
-  function simulate({offset,mismatch,resetDelay,curve,duration=45,config,onEvent}){
+  function simulate({offset,mismatch,resetDelay,curve,duration=45,config,onEvent,onVcoEdge}){
     const {
       referenceHz,divider,resistanceOhm:resistance,capacitanceF:capacitance,pumpA,
       voltageMin:floor,voltageMax:ceiling,initialVoltage,firstReferenceNs,initialFeedbackCycles,linear,curved,
@@ -22,6 +22,7 @@
     const knots=curve==="curved"?curved:linear;
     let capacitor=initialVoltage,t=0,phase=initialFeedbackCycles,nextFb=1,nextRef=firstReferenceNs,nextSample=0,reset=Infinity,up=false,dn=false;
     const data=[];
+    let nextVcoEdge=Math.floor(phase*divider)+1;
     while(nextSample<=duration*1000){
       const current=pumpA*(Number(up)-(1-mismatch/100)*Number(dn));
       const dv=current/capacitance*1e-9;
@@ -53,7 +54,24 @@
         feedback=true;
       }
       const dt=end-t;
-      phase+=advance(dt);
+      const endPhase=phase+advance(dt);
+      if(onVcoEdge){
+        const reached=(feedback?nextFb:endPhase)*divider+1e-9;
+        while(nextVcoEdge<=reached){
+          const edge=nextVcoEdge++;
+          if(feedback && edge===nextFb*divider){
+            onVcoEdge({ns:end,edge});
+            continue;
+          }
+          let lo=0,hi=dt;
+          for(let k=0;k<28;k++){
+            const mid=(lo+hi)/2;
+            if((phase+advance(mid))*divider<edge)lo=mid;else hi=mid;
+          }
+          onVcoEdge({ns:t+hi,edge});
+        }
+      }
+      phase=endPhase;
       capacitor=clip(capacitor+dv*dt);
       t=end;
       const resetEdge=t===reset, referenceEdge=t===nextRef;
