@@ -1,0 +1,23 @@
+{
+  "reference_hz": 40000000,
+  "divide": 125,
+  "pump_a": 0.0001,
+  "kvco_hz_per_v": 236323258.0420877,
+  "resistance_ohm": 4700,
+  "capacitance_f": 1e-10,
+  "shunt_f": 5e-12,
+  "temperature_k": 300,
+  "supply_pushing_hz_per_v": 1000000,
+  "integration_hz": [12000, 20000000],
+  "points": 8193,
+  "sources": {
+    "reference": {"ssb_dbc_per_hz_at_100khz": -150, "ssb_floor_dbc_per_hz": -165},
+    "vco": {"ssb_dbc_per_hz_at_100khz": -105, "ssb_floor_dbc_per_hz": -155},
+    "divider_pfd": {"ssb_floor_dbc_per_hz": -160},
+    "charge_pump": {"one_sided_a2_per_hz": 1e-23},
+    "loop_resistor": {},
+    "supply": {"one_sided_v2_per_hz": 1e-15},
+    "buffer": {"ssb_floor_dbc_per_hz": -165}
+  },
+  "pm_spurs": [{"offset_hz": 1000000, "single_sideband_dbc": -70}]
+}
