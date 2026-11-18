@@ -41,14 +41,17 @@ jobs:
           }
           await send('Page.enable');await send('Runtime.enable');await send('Network.enable');
           await send('Network.setCacheDisabled',{cacheDisabled:true});
-          await send('Network.setBlockedURLs',{urls:['https://*','http://*','ws://*','wss://*']});
+          const mode=process.env.PLL_BROWSER_MODE || 'offline';
+          if(mode==='offline') await send('Network.setBlockedURLs',{urls:['https://*','http://*','ws://*','wss://*']});
           const course=(await readdir('pll/course')).filter(x=>/^(?:[a-f]\d|app)-\d+\.html$/.test(x));
           if(course.length!==52) throw new Error('Expected 52 course pages, got '+course.length);
           for(const [width,height] of [[1440,900],[390,844]]){
            await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width===390});
            for(const name of course){
             errors=[];
-            const url=pathToFileURL(process.cwd()+'/pll/course/'+name).href;
+            const url=mode==='online'
+              ? 'https://thecloud723.github.io/analog-ic-learning/pll/course/'+name
+              : pathToFileURL(process.cwd()+'/pll/course/'+name).href;
             await load('Page.navigate',{url});
             await load('Page.reload',{ignoreCache:true});
             const result=await evaluate(async()=>{
@@ -73,24 +76,32 @@ jobs:
             if(!result.heading || result.nav!==1 || result.overflow>1 || result.badImages.length || result.changed!==result.controls || errors.length) failed++;
            }
           }
-          for(const name of (await readdir('pll/chapters')).filter(x=>x.endsWith('.html'))){
+          if(mode==='offline') for(const name of (await readdir('pll/chapters')).filter(x=>x.endsWith('.html'))){
            const html=await readFile('pll/chapters/'+name,'utf8');
            const ids=[...html.matchAll(/<(?:section|article|div)\b[^>]*\bid="(p[1-8])"/g)].map(m=>m[1]);
-           if(!ids.includes('p8')){console.log(JSON.stringify({legacy:name,skip:true}));continue;}
+           const fragment=name.startsWith('01_')?'quiz':'p8';
+           if(fragment==='p8' && !ids.includes(fragment)) throw new Error('Missing legacy fragment: '+name);
            errors=[];
-           const url=pathToFileURL(process.cwd()+'/pll/chapters/'+name).href+'#p8';
+           const url=pathToFileURL(process.cwd()+'/pll/chapters/'+name).href+'#'+fragment;
            await load('Page.navigate',{url});
            await load('Page.reload',{ignoreCache:true});
-           const visible=await evaluate(()=>!!document.getElementById('p8')?.getClientRects().length);
-           console.log(JSON.stringify({legacy:name,visible,errors}));
+           const visible=await evaluate(()=>!!document.getElementById(location.hash.slice(1))?.getClientRects().length);
+           console.log(JSON.stringify({legacy:name,fragment,visible,errors}));
+           if(!visible || errors.length) failed++;
           }
           await browser.close();
           if(failed) process.exitCode=1;
           EOF
           node "$RUNNER_TEMP/pll-browser.mjs" | tee "$RUNNER_TEMP/pll-browser-results.jsonl"
+      - name: Check published course reloads
+        if: always()
+        run: |
+          set -o pipefail
+          PLL_BROWSER_MODE=online node "$RUNNER_TEMP/pll-browser.mjs" | tee "$RUNNER_TEMP/pll-browser-online.jsonl"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: pll-browser-regression
           path: |
             ${{ runner.temp }}/pll-browser-results.jsonl
+            ${{ runner.temp }}/pll-browser-online.jsonl
