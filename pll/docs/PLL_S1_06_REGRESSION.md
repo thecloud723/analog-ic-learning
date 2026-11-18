@@ -62,3 +62,5 @@
 | [F1-3](../course/f1-3.html) | 0 |  |
 | [APP-1](../course/app-1.html) | 2 | fFft |
 | [APP-2](../course/app-2.html) | 3 | fInspect |
+
+[第二次浏览器运行](https://github.com/thecloud723/analog-ic-learning/actions/runs/44352270772)补证第 01 章 #quiz，18/18 条旧章代表深链通过。线上共 104 次页面检查，103 次通过。桌面 C1.3 的请求记录有 HTTP 错误，页面最终渲染通过，需复跑确认状态码和稳定性。
