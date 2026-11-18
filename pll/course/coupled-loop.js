@@ -2,7 +2,7 @@
   "use strict";
   const defaults={
     referenceHz:40e6, divider:125, resistanceOhm:4700, capacitanceF:100e-12,
-    pumpA:100e-6, voltageMin:.2, voltageMax:1.6, initialVoltage:.9,
+    pumpA:100e-6, firstReferenceNs:0, initialFeedbackCycles:0, voltageMin:.2, voltageMax:1.6, initialVoltage:.9,
     linear:[[.2,-70],[.9,0],[1.6,70]],
     curved:[[.2,-41],[.55,-25],[.9,0],[1.25,43],[1.6,110]],
   };
@@ -15,12 +15,12 @@
   function simulate({offset,mismatch,resetDelay,curve,duration=45,config,onEvent}){
     const {
       referenceHz,divider,resistanceOhm:resistance,capacitanceF:capacitance,pumpA,
-      voltageMin:floor,voltageMax:ceiling,initialVoltage,linear,curved,
+      voltageMin:floor,voltageMax:ceiling,initialVoltage,firstReferenceNs,initialFeedbackCycles,linear,curved,
     }={...defaults,...config};
     const referenceNs=1e9/referenceHz, targetMHz=referenceHz*divider/1e6;
     const clip=v=>Math.max(floor,Math.min(v,ceiling));
     const knots=curve==="curved"?curved:linear;
-    let capacitor=initialVoltage,t=0,phase=0,nextFb=1,nextRef=0,nextSample=0,reset=Infinity,up=false,dn=false;
+    let capacitor=initialVoltage,t=0,phase=initialFeedbackCycles,nextFb=1,nextRef=firstReferenceNs,nextSample=0,reset=Infinity,up=false,dn=false;
     const data=[];
     while(nextSample<=duration*1000){
       const current=pumpA*(Number(up)-(1-mismatch/100)*Number(dn));
