@@ -75,4 +75,4 @@ VCO 明细模式通过 `recordVcoEdges` 开启。在逐边沿模型的校准基�
 
 [F1.2](../course/f1-2.html)包含三组 5 pF 工况的离线回放。导出器将每组采样缩减为 183 点，并保留入带和确认采样、源码提交、校准数据哈希以及原始 CSV 哈希。回放的数据类别为 SPICE 标定的逐边沿行为模型。原始 SPICE 波形和行为级采样分别留存。
 
-主实验包命令 `bash pll/labs/PLL-SPICE/reproduce_loop01.sh NEW_OUTPUT_DIR` 依次运行 PFD 验证、脉冲对照、PLL-01～04 SPICE 扫描、校准、非理想矩阵、平均模型对照及网页导出。依赖复用带锁文件的 VCO-01 ZIP。将 ICP 从 100 改为 110 µA、R 从 4.7 改为 3.9 kΩ 的本地重跑在 **24.550 µs** 入带，**28.550 µs** 确认。云端作者保存与独立读者 Copy & Edit 仍待验收。
+主实验包命令 `bash pll/labs/PLL-SPICE/reproduce_loop01.sh NEW_OUTPUT_DIR` 依次运行 PFD 验证、脉冲对照、PLL-01～04 SPICE 扫描、校准、非理想矩阵、平均模型对照及网页导出。依赖复用带锁文件的 VCO-01 ZIP。将 ICP 从 100 改为 110 µA、R 从 4.7 改为 3.9 kΩ 的本地重跑在 **24.550 µs** 入带，**28.550 µs** 确认。从[公开源码压缩包 `08915fd`](https://codeload.github.com/thecloud723/analog-ic-learning/tar.gz/08915fdc9bcc2118d82ccf064b3c857a6ed325ee)匿名下载并在新目录完整复跑主实验包。三组网页数据、行为采样和滤波器采样的 SHA-256，以及校准输入哈希均与发布版一致。更改 110 µA 和 3.9 kΩ 的工况也在同一无凭据目录复跑通过。该证据覆盖公共源码读取、作者侧整包执行和洁净本地改参。云端作者保存与独立读者 Copy & Edit 待验收。
