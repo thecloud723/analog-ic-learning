@@ -20,6 +20,10 @@ jobs:
         run: python pll/labs/NOISE-01/check_noise01.py
       - name: Generate explicit PSD and jitter budget
         run: python pll/labs/NOISE-01/noise01.py pll/labs/NOISE-01/noise01-settings.json "$RUNNER_TEMP/noise01"
+      - name: Compare time variance, rectangular FFT, and Hann FFT
+        run: |
+          python -m pip install numpy==2.3.5
+          python pll/labs/NOISE-01/verify_noise01_fft.py pll/labs/NOISE-01/noise01-settings.json "$RUNNER_TEMP/noise01/fft-check.json"
       - uses: actions/upload-artifact@v4
         with:
           name: noise01-budget
