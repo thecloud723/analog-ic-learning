@@ -89,7 +89,7 @@ jobs:
              const lab=document.querySelector('.lab');
              if(!lab) return [];
              const checks=[];
-             const output=()=>lab.querySelector('[data-result], #d-result, #e-result')?.textContent || '';
+             const output=()=>lab.querySelector('[data-result], #c-result, #d-result, #e-result')?.textContent || '';
              const change=(id,value)=>{
               const input=document.getElementById(id);
               if(typeof value==='boolean') input.checked=value;
@@ -125,6 +125,42 @@ jobs:
                 checks.push({label:'divider='+option.value,actual:output(),pass});
                }break;
               }
+              case 'rc': {
+               for(const [p,z,v] of [[0,'1000.8','20.02'],[20,'193.7','3.87']]){
+                change('parallel-cap',p);
+                checks.push({label:'Cp='+p,actual:output(),pass:output().includes(z+' Ω') && output().includes(v+' mVpp')});
+               }break;
+              }
+              case 'ts':
+               for(const v of [0.3,0.7,0.9]){
+                change('ts-damping',v);check('damping='+v,/1\.0000 \+ j-?0\.0000/);
+               }break;
+              case 'ssb': {
+               const noise=()=>Number(output().match(/噪声约 (-?[\d.]+) dBc/)[1]);
+               change('rbw',10);const small=noise();
+               change('rbw',1000);
+               checks.push({label:'100× RBW',actual:output(),pass:Math.abs(noise()-small-20)<0.11 && output().includes('−88 dBc')});
+               change('random',false);check('noise off',/随机噪声关闭.*单音 −88 dBc/);
+               change('tone',false);check('tone off',/随机噪声关闭.*单音关闭/);break;
+              }
+              case 'spurLoc':
+               change('pfd-spur',0.5);check('PFD .5 MHz',/2099\.50 \/ 2100\.50 MHz/);
+               change('pfd-spur',1.25);check('PFD 1.25 MHz',/2098\.75 \/ 2101\.25 MHz/);break;
+              case 'cpSpur':
+               change('d-cp-m',0);check('matched CP',/无可辨纹波边带/);
+               change('d-cp-m',5);check('5% mismatch',/基波峰值 [\d.]+ mV.*数值投影 -[\d.]+ dBc/);break;
+              case 'pattern':
+               change('pattern-num',4);check('NUM=4',/4 拍.*2\.500 MHz/);
+               change('pattern-num',5);check('NUM=5',/16 拍.*0\.625 MHz/);
+               change('pattern-num',0);check('NUM=0',/1 拍.*10\.000 MHz/);break;
+              case 'tdc':
+               change('tdc-lsb',5);
+               change('tdc-in',0);check('zero',/码 0.*回读 0 ps.*误差 0 ps/);
+               change('tdc-in',37);check('quantized',/码 7.*回读 35 ps.*误差 -2 ps/);
+               change('tdc-in',100);check('overflow',/码 15.*回读 75 ps.*已超量程/);break;
+              case 'calibrate':
+               change('dco-target',-70);check('low clip',/选码 0（限幅）/);
+               change('dco-target',200);check('high clip',/选码 63（限幅）/);break;
               case 'fractional':
                change('frac-num',0);check('NUM=0',/周期 1 拍.*240\.0000.*2\.400000 GHz/);
                change('frac-num',15);check('NUM=15',/周期 16 拍.*240\.9375.*2\.409375 GHz/);break;
