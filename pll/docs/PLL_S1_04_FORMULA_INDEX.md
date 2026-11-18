@@ -91,3 +91,16 @@
 | C2-1 | [JKU §6.7 图 73 与图 74](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator-modeling) | 相位积分微分还原角频率。除以 N 是理想分频器的相位状态模型，固定初始相位约定。 |
 | C3-4 | [JKU 式 (67)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-pll-transfer-function) | 课程将原文闭环函数除以 N，再乘单位阶跃的拉普拉斯变换 1/s。 |
 | E1-1 | [JKU §7.4 与 TI SNAS696C 式 (2)](https://www.ti.com/lit/ds/symlink/lmx2594.pdf#page=22) | 锁定关系与 TI 式 (2) 一致。固定 DEN、NUM 增加 1 得到 VCO 频点步进。 |
+| B2-1 | [JKU 图 60](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-ring-oscillator) | 原文说明频率取决于门延迟。对等延迟的奇数级环，边沿两次绕行构成一个完整周期，得到 2Nt_d。 |
+| C1-4 | [JKU 式 (65)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-voltage-change) 与 CP-01 | 周期稳态下电容首尾电压相等，因此整周期的电容净电荷为零。峰峰值采用所选稳态周期的最大值减最小值。 |
+| C2-2 | [JKU §6.7](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator-modeling) | 原文给出线性化压控振荡器。课程采用 Hz/V，并把 0.9 V 定为局部模型参考点，将初始频差并入截距。 |
+| E1-2 | [JKU §7.4 的整数分频序列](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-pll-frac-n) | 课程的一阶余量循环由最小正整数 P 满足 P·NUM ≡ 0 (mod DEN) 得到。周期序列的谱线间隔为 f_PFD/P。 |
+
+### 纯文本行内公式复核（首批）
+
+| 页面 | 行内关系 | 方式和验算 |
+|---|---|---|
+| A2-1 | 100 MHz 对应 10 ns，40 ps 对应 0.004 圈和 1.44° | 用周期倒数和本页的时间差到相位差公式验算。 |
+| B1-2 | 100 MHz 经 ×2 得 200 MHz，N=70 对应 14 GHz，输出 ÷2 得 7 GHz | 代入本页已核对的 TI 式 (1)–(2) 与通道分频表，默认配置见 TI SNAU210B 图 3-1。 |
+| B1-3 | 输出直通时 N 加 1，载波步进一个 f_PFD | 由锁定整数分频关系取相邻频点之差，保持 f_PFD 不变。 |
+| B2-1 | 三个反相器贡献 540°；每级额外滞后 60° 后总相位净移 360° | 从相位闭合条件验算 3×180°−3×60°。该小信号相位条件与传播延迟频率估算的假设分别保留。 |
