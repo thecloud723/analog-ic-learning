@@ -61,9 +61,11 @@ requireSetting(positive(lock.frequencyToleranceHz) && positive(lock.maxPhaseErro
   'lock criteria');
 
 const events = [];
+const vcoEdges = [];
 const samples = loop.simulate({
   offset, mismatch, resetDelay: common.reset_ns, curve: model.model, duration: model.durationUs,
   config, onEvent: event => events.push(event),
+  onVcoEdge: model.recordVcoEdges ? edge => vcoEdges.push(edge) : undefined,
 });
 
 const phaseErrorUnwrapped = sample => sample.ns / periodNs - sample.phase;
@@ -111,7 +113,7 @@ const directory = join(resolve(outputRoot), runId);
 const summary = {
   runId, sourceCommit, sourceModified, modelSha256, engine: 'piecewise-linear event model',
   node: process.version, createdAt: new Date().toISOString(), targetHz: targetMHz * 1e6,
-  samples: samples.length, events: events.length, cycleSlips, saturatedSamples, lock: confirmed,
+  samples: samples.length, events: events.length, vcoEdges: vcoEdges.length, cycleSlips, saturatedSamples, lock: confirmed,
   finalFrequencyErrorHz: samples.at(-1).mhz * 1e6,
   finalPhaseErrorCycles: phaseError(samples.at(-1)), finalCapacitorVoltageV: samples.at(-1).cap,
 };
@@ -125,5 +127,6 @@ csv('samples.csv', ['time_ns', 'capacitor_v', 'feedback_cycles', 'frequency_erro
   samples.map(s => [s.ns, s.cap, s.phase, s.mhz * 1e6, phaseErrorUnwrapped(s), phaseError(s)]));
 csv('events.csv', ['time_ns', 'reference_edge', 'feedback_edge', 'reset_edge', 'up_after', 'down_after', 'capacitor_v', 'feedback_cycles'],
   events.map(e => [e.ns, +e.referenceEdge, +e.feedbackEdge, +e.resetEdge, +e.up, +e.down, e.cap, e.phase]));
+if (model.recordVcoEdges) csv('vco_edges.csv', ['time_ns', 'vco_edge_index'], vcoEdges.map(e => [e.ns, e.edge]));
 json('manifest.json', summary);
 console.log(JSON.stringify({ directory, ...summary }, null, 2));
