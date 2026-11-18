@@ -5,8 +5,8 @@
 | 新版页面 | 公式 | 来源或类型 | 适用条件 |
 |---|---|---|---|
 | [A1-1](../course/a1-1.html) | `f_{\mathrm{VCO}}=N f_{\mathrm{PFD}}` | 页面引文 · [JKU §7.4 · 整数分频关系](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-pll-frac-n) | 整数 N、已锁定、输出节点取 VCO |
-| [A2-1](../course/a2-1.html) | `\Delta\phi=360^\circ\frac{\Delta t}{T}` | 页面引文 · [ADI AN-1067 · 相位与时间抖动](https://www.analog.com/media/en/technical-documentation/application-notes/an-1067.pdf) | 同周期比较，角度以度表示 |
-| [A2-2](../course/a2-2.html) | `\phi_{\mathrm e}(t)=\phi_{\mathrm e}(0)+2\pi\int_0^t\Delta f(\tau)\,\mathrm d\tau` | 页面引文 · [ADI AN-1067 · 相位与频率关系](https://www.analog.com/media/en/technical-documentation/application-notes/an-1067.pdf) | 未折叠相位，频差用 Hz、相位用 rad |
+| [A2-1](../course/a2-1.html) | `\Delta\phi=360^\circ\frac{\Delta t}{T}` | 页面引文 · [ADI AN-1067 · 相位与时间抖动](https://www.analog.com/en/resources/app-notes/an-1067.html) | 同周期比较，角度以度表示 |
+| [A2-2](../course/a2-2.html) | `\phi_{\mathrm e}(t)=\phi_{\mathrm e}(0)+2\pi\int_0^t\Delta f(\tau)\,\mathrm d\tau` | 页面引文 · [JKU §6.7 · 瞬时角频率积分为相位](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator-modeling) | 未折叠相位，频差用 Hz、相位用 rad |
 | [A2-3](../course/a2-3.html) | `\Delta f_{\mathrm{VCO}}\approx K_{\mathrm{VCO}}\Delta V_{\mathrm{CTRL}}` | 页面引文 · [JKU §6.6 · VCO 调谐增益](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-frequency-tuning-of-oscillators) | 工作点附近的小信号斜率 |
 | [APP-1](../course/app-1.html) | `\Delta f=\frac{1}{T_\mathrm{obs}}` | 课程推导／教学模型 | 均匀采样 DFT 的频点间距，窗函数影响实际分辨能力 |
 | [B1-1](../course/b1-1.html) | `f_{\mathrm s}=\frac{1}{2\pi\sqrt{L_{\mathrm m}C_{\mathrm m}}}` | 页面引文 · [JKU §6.4 · 式 60–61](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-single-ended-oscillators) | 晶体等效模型，负载近似要求动态电容远小于总并联电容 |
@@ -45,7 +45,7 @@
 | [D2-2](../course/d2-2.html) | `\mathcal L_{\mathrm{out}}=\mathcal L_{\mathrm{in}}-20\log_{10}M,\qquad \frac{\phi/M}{2\pi(f_0/M)}=\frac{\phi}{2\pi f_0}` | 页面引文 · [ADI MT-008 第 3 页相位到时间换算；理想分频关系由相位比例推导](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=3) | 理想无附加噪声分频，比较相同频偏 |
 | [D2-3](../course/d2-3.html) | `\varepsilon_{\mathrm{dB}}=\mathcal L_{\mathrm{interp}}(f)-\mathcal L_{\mathrm{marker}}(f)` | 课程推导／教学模型 · [TI SNAU210B 第 6 页实测标记；误差定义用于本页插值练习](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6) | 插值与 marker 使用同一频偏和实测工况 |
 | [D3-1](../course/d3-1.html) | `f_{\mathrm{spur}}=f_{\mathrm c}\pm k f_{\mathrm{PFD}},\qquad \mathrm{Spur}_{\mathrm{dBc}}=10\log_{10}\frac{P_{\mathrm{spur}}}{P_{\mathrm c}}` | 页面引文 · [ADI AN143 第 2 页 Fig. 3 · 参考杂散](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=2) | 周期扰动稳态，k 为正整数 |
-| [D3-2](../course/d3-2.html) | `\beta_1=\frac{K_{\mathrm{VCO}}V_{\mathrm{1,pk}}}{f_{\mathrm{PFD}}},\qquad \mathrm{Spur}_{1,\mathrm{dBc}}\approx 20\log_{10}\!\left(\frac{\beta_1}{2}\right)\quad(\beta_1\ll1)` | 页面引文 · [ADI AN143 第 7 页 · 窄带 FM 推导](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=7) | 正弦频率调制的小指数近似，纹波为基波峰值 |
+| [D3-2](../course/d3-2.html) | `\beta_1=\frac{K_{\mathrm{VCO}}V_{\mathrm{1,pk}}}{f_{\mathrm{PFD}}},\qquad \mathrm{Spur}_{1,\mathrm{dBc}}\approx 20\log_{10}\!\left(\frac{\beta_1}{2}\right)\quad(\beta_1\ll1)` | 页面引文 · [ADI AN143 第 8 页 · 窄带 FM 推导](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=8) | 正弦频率调制的小指数近似，纹波为基波峰值 |
 | [D3-3](../course/d3-3.html) | `\mathrm{Spur}_{1,\mathrm{dBc}}\approx20\log_{10}\!\left(\frac{K_{\mathrm{VCO}}I_{\mathrm{leak}}&#124;H_{\mathrm{post}}&#124;}{2\pi C_{\mathrm P}f_{\mathrm{PFD}}^2}\right),\quad &#124;H_{\mathrm{post}}&#124;=\frac{1}{\sqrt{1+(2\pi f_{\mathrm{PFD}}R_{\mathrm{P2}}C_{\mathrm{P2}})^2}}` | 页面引文 · [ADI AN143 第 7 页 Table 2 · 无源情形取后级增益为 1](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=7) | 漏电锯齿近似及小调制指数，后级按给定滤波器近似 |
 | [E1-1](../course/e1-1.html) | `f_{\mathrm{VCO}}=f_{\mathrm{PFD}}\left(N+\frac{\mathrm{NUM}}{\mathrm{DEN}}\right),\qquad \Delta f_{\mathrm{VCO}}=\frac{f_{\mathrm{PFD}}}{\mathrm{DEN}}` | 页面引文 · [JKU §7.4 · 分数分频；步进按固定 DEN、改变 1 个 NUM](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-frac-n-block) | 固定 PFD 和分母，使用平均分频比 |
 | [E1-2](../course/e1-2.html) | `P=\frac{\mathrm{DEN}}{\gcd(\mathrm{NUM},\mathrm{DEN})},\qquad f_k=k\frac{f_{\mathrm{PFD}}}{P}` | 页面引文 · [JKU §7.4 · 本页为零初态一阶累加器周期](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-pll-frac-n) | 一阶确定性累加器，无 dither |
@@ -133,3 +133,19 @@
 | E3-2 | [JKU 图 85](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-adpll-block-diagram) 与 e-labs.js | 代码更新积分后计算当拍命令，并取延迟队列最旧值。作用于一个参考周期的 DCO 频率乘周期后为相位增量。 |
 | E4-1 | [JKU 图 86](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-tdc) 与 e-labs.js | 教学码按步长向下取整并限制在 0–15，量化误差在未饱和且余量均匀时标准差为步长除 √12。向下取整产生半步长均值偏差，标准差与未去均值 RMS 有别。 |
 | E4-3 | 课程推导与 e-labs.js | 两个频率测量点作割线估计局部增益，再用目标频差除该斜率估计码差，最近整数舍入并按 6 bit 范围限幅。 |
+
+| E4-2 | [Electronics 12(4), 841，式 (10)](https://mdpi-res.com/d_attachment/electronics/electronics-12-00841/article_deploy/electronics-12-00841.pdf#page=5) | 原文用累加器输出形成输入周期的 256 级相位调整字。课程保留先从分数余量换算时间、再量化的结构，采用独立的 5 bit 正向延时教学编码。 |
+| F1-3 | [Jo 等 §5](https://mdpi-res.com/d_attachment/electronics/electronics-11-01118/article_deploy/electronics-11-01118.pdf#page=10) 与 [ADI MT-008 式 (3)](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=4) | 理想 ÷2 使相噪下降 20log₁₀2≈6.02 dB。论文报告 −112.5 到 −118.5 dBc/Hz 的读数，课程沿用理想换算的符号。弧度抖动除以载波角频率换算为时间。 |
+
+### 纯文本行内公式复核（第二批）
+
+| 页面 | 行内关系 | 方式和验算 |
+|---|---|---|
+| B1-2 | 100 MHz、R=2、N=80、D=4，输出 1 GHz | 逐级得到 PFD 50 MHz、VCO 4 GHz、输出 1 GHz。 |
+| C2-1 | 40 MHz 参考、N=125 对应 5 GHz | 40 MHz × 125 = 5 GHz。 |
+| C3-3 | 15 GHz、200 MHz PFD 对应整数 N=75 | 15 GHz / 200 MHz = 75。SNAU210B 表 3 提供设计工况。 |
+| D3-1 | 2.1 GHz 载波、10 MHz 参考经 R=10，第一对参考杂散在 2099/2101 MHz | 比较频率为 1 MHz，载波两侧各偏移 1 MHz，与 AN143 图 3 的读图口径一致。 |
+| E1-1 | 240、240、240、241 的平均分频为 240.25 | 求和为 961，除以 4 得 240.25。 |
+| E1-2 | DEN=16 时，NUM=4、5、0 的余量周期分别为 4、16、1 拍 | 分别除以 gcd(4,16)、gcd(5,16)、gcd(0,16) 得到。零输入虽有单拍周期，常值波形没有该序列的非直流音调。 |
+| F1-2 | 40 MHz、N=125 给 5 GHz，4 µs 保持窗约含 160 个参考周期 | 目标由锁定比得到，时窗换算用 25 ns 比较周期。入带边界仍按样点时刻与频差门限共同判定。 |
+| F1-3 | 5.8 GHz 的公布 FoM 约 −202.8 dB | 1 MHz 偏移的载波比项 20log₁₀(1 MHz / 5.8 GHz)≈−75.27 dB，8 mW 归一项约 +9.03 dB。加上 −116.6 dBc/Hz 得 −202.84 dB。 |
