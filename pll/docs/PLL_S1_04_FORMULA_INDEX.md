@@ -104,3 +104,32 @@
 | B1-2 | 100 MHz 经 ×2 得 200 MHz，N=70 对应 14 GHz，输出 ÷2 得 7 GHz | 代入本页已核对的 TI 式 (1)–(2) 与通道分频表，默认配置见 TI SNAU210B 图 3-1。 |
 | B1-3 | 输出直通时 N 加 1，载波步进一个 f_PFD | 由锁定整数分频关系取相邻频点之差，保持 f_PFD 不变。 |
 | B2-1 | 三个反相器贡献 540°；每级额外滞后 60° 后总相位滞后 720° | 从相位闭合条件验算 3×(180°+60°)。该小信号相位条件与传播延迟频率估算的假设分别保留。 |
+
+### 2026-11-19 来源与推导复核（续）
+
+| 新版页面 | 原文定位或推导类型 | 核对结果 |
+|---|---|---|
+| A2-1 | [ADI AN-1067，Definitions 与 Jitter](https://www.analog.com/en/resources/app-notes/an-1067.html) | 原文角频率为 2πf，时间差乘角频率得 rad，再换成度。课程以反馈迟到为正。 |
+| A2-2 | [JKU §6.7](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator-modeling) | 两路频率积分后相减，参考减反馈的频差应与相位差使用同一符号约定，再加入初始误差。JKU 给出显式积分，ADI AN-1067 提供相位定义。 |
+| APP-1 | 课程推导 | L 点等间隔采样的 DFT 基函数相邻频率差为 fₛ/L。此处有效观测窗为 L/fₛ，首末样点时间差为 (L−1)/fₛ。 |
+| B1-2 | [ADI MT-086 图 7(A)](https://www.analog.com/media/en/training-seminars/tutorials/MT-086.pdf#page=8) 与 [ADF4351 图 30](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=21) | 第一个来源给参考与反馈的 R/N，第二个来源补输出端分频位置。D 是实际分频比。 |
+| B1-3 | [TI LMX2594 式 (2)](https://www.ti.com/lit/ds/symlink/lmx2594.pdf#page=21) | 令 NUM 为 0、目标节点为 VCO 后反解 N，若比值非整数，该目标不可由此整数配置达到。 |
+| B2-3 | [JKU §6.5](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-differential-oscillators) | 对称交叉耦合对的小信号差分输入阻抗为 −2/gm。与同口径的差分槽路电阻并联，净电导小于零为小信号起振条件。 |
+| B3-3 | 课程定义 | 余量取锁定电压到两个边界的更短距离，恰在边界为零，落在范围外时为负。网页对范围外另行显示不可达。 |
+| C1-1 | [JKU 图 75](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pd-xor-diagram) | 同频、50% 占空比时，每周期两段异或高电平各长一个边沿偏差。归一化占空比乘理想高电平得到平均电压。 |
+| C2-3 | 课程推导 | 加半圈、取下整、再移回半圈得到 [−0.5, 0.5) 内唯一同余值。+0.5 映到 −0.5；包裹跳变本身不能判定真实 cycle slip。 |
+| C2-4 | 课程定义与 c-labs.js | 进入频差容限后记录起点，任何超限样点清除起点，连续保持时间到达阈值才报告。阈值含等号，时间由离散样点证实。 |
+| C3-3 | [TI SNAU210B 表 3、图 4-1](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6) | C3 开路、R3 短路后，对 CP 节点和 C4 节点写 KCL。由 Vcp=(1+sR4C4)Vout 与 Icp=Ycp·Vcp+sC4·Vout 得课程跨阻。 |
+| D2-1 | [JKU 图 84](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-phase-noise) | 原文给参考低通、VCO 高通和带内 N²。课程扩展到输入折算的 CP 与分频路径，假设各源不相关并在线性 PSD 域相加。 |
+| D2-2 | [ADI MT-008 式 (3)](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=4) | 相位缩小 M 倍，线性相位 PSD 缩小 M² 倍。载波频率同步除 M，所以同频偏范围内的等效时间抖动保持。 |
+| D2-3 | [TI SNAU210B 图 5-1](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6) | 原图提供测量读数，带符号插值残差按本页定义为插值减标记值，两值使用同一个频偏和纵轴单位。 |
+| D3-1 | [ADI AN143 图 3 与附录](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=2) | 周期性 PFD 扰动的整数谐波调制载波，产生两侧偏移。杂散 dBc 由单根杂散功率对载波功率转换。 |
+| D3-2 | [ADI AN143 窄带 FM 附录](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=8) | 原文 Em 是调谐电压基波峰值，β=KVCO·Em/fm，单侧边带幅度比约 β/2。20 倍对数来自幅比平方转成功率比。 |
+| D3-3 | [ADI AN143 表 2](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=7) | 原文基波式与课程一致。无源情形后级增益为 1，指定有源滤波器的后级是单极点幅频响应。 |
+| E2-1 | [JKU 图 90](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-dsm-digital-first-order) | 余量守恒 r[n]=x[n]+r[n−1]−y[n]。对余量使用负号定义量化误差即得正号形式的 NTF。 |
+| E2-2 | [JKU 图 94](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-mash-third-order) 与 e-labs.js | 同拍余量实现满足 c1=x−Δr1、c2=r1−Δr2、c3=r2−Δr3。代入数字组合后前两级余量逐项消去。 |
+| E2-3 | [JKU 图 93](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-mash-dither) 与 e-labs.js | 原图为带抖动频谱示例。课程按 Parseval 和窗均方值归一化每个频点功率。非 DC/Nyquist 点对折叠成单边频谱时乘 2。 |
+| E3-1 | [JKU 图 85–86](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-adpll-block-diagram) | 课程把目标频率字累加成圈数，再减去整数反馈计数与 TDC 时间差归一化得到的反馈相位。原图提供拓扑，递推按本页索引推导。 |
+| E3-2 | [JKU 图 85](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-adpll-block-diagram) 与 e-labs.js | 代码更新积分后计算当拍命令，并取延迟队列最旧值。作用于一个参考周期的 DCO 频率乘周期后为相位增量。 |
+| E4-1 | [JKU 图 86](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-tdc) 与 e-labs.js | 教学码按步长向下取整并限制在 0–15，量化误差在未饱和且余量均匀时标准差为步长除 √12。向下取整产生半步长均值偏差，标准差与未去均值 RMS 有别。 |
+| E4-3 | 课程推导与 e-labs.js | 两个频率测量点作割线估计局部增益，再用目标频差除该斜率估计码差，最近整数舍入并按 6 bit 范围限幅。 |
