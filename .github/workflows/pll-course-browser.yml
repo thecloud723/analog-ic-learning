@@ -349,6 +349,17 @@ jobs:
                 /分段 VCO \/ 理想 CP 36\.025 µs.*非理想后 36\.025 µs/.test(ideal) &&
                 /分段 VCO \/ 理想 CP 36\.025 µs.*非理想后 24\.325 µs.*0\.8984 V/.test(actual)});
              }
+             const replay=document.querySelector('[data-lab="fReplay"]');
+             if(replay){
+              const read=()=>replay.querySelector('[data-result]').textContent;
+              for(const [index,time] of [[0,'20.325'],[1,'22.675'],[2,'22.700']]){
+               change('loop01-replay-case',index);
+               const actual=read();
+               checks.push({label:'SPICE-calibrated replay '+index,actual,
+                pass:actual.includes('Cp 5 pF') && actual.includes(time+' µs 入带') &&
+                  (index!==2 || actual.includes('100 kΩ'))});
+              }
+             }
              return checks;
             });
             if(physical.length) result.physical=physical;
