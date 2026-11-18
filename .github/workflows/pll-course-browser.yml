@@ -1,0 +1,101 @@
+name: PLL course Chromium regression
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/pll-course-browser.yml'
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check offline desktop and mobile course reloads
+        run: |
+          set -o pipefail
+          google-chrome --headless --no-sandbox --disable-dev-shm-usage --remote-debugging-port=9222 --user-data-dir="$RUNNER_TEMP/pll-browser" about:blank > "$RUNNER_TEMP/pll-browser.log" 2>&1 &
+          browser_pid=$!
+          trap 'kill "$browser_pid" 2>/dev/null || true' EXIT
+          curl --retry 15 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:9222/json/list >/dev/null
+          cat > "$RUNNER_TEMP/pll-browser.mjs" <<'EOF'
+          import {readdir,readFile} from 'node:fs/promises';
+          import {pathToFileURL} from 'node:url';
+          const target=await (await fetch('http://127.0.0.1:9222/json/list')).json();
+          const socket=new WebSocket(target[0].webSocketDebuggerUrl);
+          await new Promise(r=>socket.onopen=r);
+          const pending=new Map(); let id=0, loaded, errors=[], failed=0;
+          socket.onmessage=({data})=>{
+            const m=JSON.parse(data);
+            if(m.id) {const [ok,fail]=pending.get(m.id);pending.delete(m.id);m.error?fail(m.error):ok(m.result);}
+            if(m.method==='Page.loadEventFired') loaded?.();
+            if(m.method==='Runtime.exceptionThrown') errors.push(m.params.exceptionDetails.exception?.description);
+            if(m.method==='Network.responseReceived' && m.params.response.status>=400 && !m.params.response.url.endsWith('/favicon.ico')) errors.push(m.params.response.url);
+          };
+          const send=(method,params={})=>new Promise((ok,fail)=>{pending.set(++id,[ok,fail]);socket.send(JSON.stringify({id,method,params}));});
+          const evaluate=async fn=>(await send('Runtime.evaluate',{expression:'('+fn+')()',awaitPromise:true,returnByValue:true})).result.value;
+          async function load(method,params){
+            let timer;
+            const done=new Promise((ok,fail)=>{loaded=ok;timer=setTimeout(()=>fail(new Error('load timeout')),7000);});
+            try {await send(method,params);await done;} finally {clearTimeout(timer);loaded=null;}
+          }
+          await send('Page.enable');await send('Runtime.enable');await send('Network.enable');
+          await send('Network.setCacheDisabled',{cacheDisabled:true});
+          await send('Network.setBlockedURLs',{urls:['https://*','http://*','ws://*','wss://*']});
+          const course=(await readdir('pll/course')).filter(x=>/^(?:[a-f]\d|app)-\d+\.html$/.test(x));
+          if(course.length!==52) throw new Error('Expected 52 course pages, got '+course.length);
+          for(const [width,height] of [[1440,900],[390,844]]){
+           await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width===390});
+           for(const name of course){
+            errors=[];
+            const url=pathToFileURL(process.cwd()+'/pll/course/'+name).href;
+            await load('Page.navigate',{url});
+            await load('Page.reload',{ignoreCache:true});
+            const result=await evaluate(async()=>{
+             const controls=[...document.querySelectorAll('.lab input[type=range]:not(:disabled)')];
+             const snapshots=lab=>JSON.stringify([lab.innerHTML,...[...lab.querySelectorAll('output')].map(x=>x.value)]);
+             let changed=0;
+             for(const input of controls){
+              const lab=input.closest('.lab'), before=snapshots(lab), original=input.value;
+              input.value=input.value===input.max?input.min:input.max;
+              input.dispatchEvent(new Event('input',{bubbles:true}));
+              await new Promise(requestAnimationFrame);
+              changed+=Number(snapshots(lab)!==before);
+              input.value=original;
+              input.dispatchEvent(new Event('input',{bubbles:true}));
+             }
+             return {heading:!!document.querySelector('main h1'),nav:document.querySelectorAll('nav a[aria-current=page]').length,
+              overflow:document.documentElement.scrollWidth-innerWidth,
+              badImages:[...document.images].filter(i=>!i.naturalWidth && i.loading!=='lazy').map(i=>i.src),
+              changed,controls:controls.length};
+            });
+            console.log(JSON.stringify({width,name,...result,errors}));
+            if(!result.heading || result.nav!==1 || result.overflow>1 || result.badImages.length || result.changed!==result.controls || errors.length) failed++;
+           }
+          }
+          for(const name of (await readdir('pll/chapters')).filter(x=>x.endsWith('.html'))){
+           const html=await readFile('pll/chapters/'+name,'utf8');
+           const ids=[...html.matchAll(/<(?:section|article|div)\b[^>]*\bid="(p[1-8])"/g)].map(m=>m[1]);
+           if(!ids.includes('p8')){console.log(JSON.stringify({legacy:name,skip:true}));continue;}
+           errors=[];
+           const url=pathToFileURL(process.cwd()+'/pll/chapters/'+name).href+'#p8';
+           await load('Page.navigate',{url});
+           await load('Page.reload',{ignoreCache:true});
+           const visible=await evaluate(()=>!!document.getElementById('p8')?.getClientRects().length);
+           console.log(JSON.stringify({legacy:name,visible,errors}));
+          }
+          socket.close();
+          if(failed) process.exitCode=1;
+          EOF
+          node "$RUNNER_TEMP/pll-browser.mjs" | tee "$RUNNER_TEMP/pll-browser-results.jsonl"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pll-browser-regression
+          path: |
+            ${{ runner.temp }}/pll-browser.log
+            ${{ runner.temp }}/pll-browser-results.jsonl
