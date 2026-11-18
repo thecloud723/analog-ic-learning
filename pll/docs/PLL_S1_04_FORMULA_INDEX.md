@@ -12,9 +12,9 @@
 | [B1-1](../course/b1-1.html) | `f_{\mathrm s}=\frac{1}{2\pi\sqrt{L_{\mathrm m}C_{\mathrm m}}}` | 页面引文 · [JKU §6.4 · 式 60–61](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-single-ended-oscillators) | 晶体等效模型，负载近似要求动态电容远小于总并联电容 |
 | [B1-1](../course/b1-1.html) | `f_0\approx f_{\mathrm s}\left[1+\frac{C_{\mathrm m}}{2(C_0+C_{\mathrm L})}\right]` | 页面引文 · [JKU §6.4 · 式 60–61](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-single-ended-oscillators) | 晶体等效模型，负载近似要求动态电容远小于总并联电容 |
 | [B1-2](../course/b1-2.html) | `f_{\mathrm{PD}}=\frac{f_{\mathrm{REF}}}{R},\qquad f_{\mathrm{VCO}}=N f_{\mathrm{PD}},\qquad f_{\mathrm{CLK}}=\frac{f_{\mathrm{VCO}}}{D}` | 页面引文 · [ADI MT-086 · 第 8 页 Fig. 7(A)，整数-N 参考链与反馈链](https://www.analog.com/media/en/training-seminars/tutorials/MT-086.pdf#page=8)、[ADI ADF4351 Rev. A · 第 21 页「RF Synthesizer—A Worked Example」，式 (3)–(4)、Fig. 30](https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf#page=21) | 已锁定。简化链使用理想分频。LMX2594 链使用有效倍频系数和已选输出路径 |
-| [B1-2](../course/b1-2.html) | `f_{\mathrm{PD}}=\frac{f_{\mathrm{OSC}}\times\mathrm{OSC\_2X}\times\mathrm{MULT}}{\mathrm{PLL\_R\_PRE}\times\mathrm{PLL\_R}}` | 页面引文 · [TI LMX2594 数据手册 · 式 (1)、式 (2) 与输出通道分频](https://www.ti.com/lit/ds/symlink/lmx2594.pdf) | 已锁定。简化链使用理想分频。LMX2594 链使用有效倍频系数和已选输出路径 |
-| [B1-2](../course/b1-2.html) | `f_{\mathrm{VCO}}=f_{\mathrm{PD}}\left(N+\frac{\mathrm{NUM}}{\mathrm{DEN}}\right)` | 页面引文 · [TI LMX2594 数据手册 · 式 (1)、式 (2) 与输出通道分频](https://www.ti.com/lit/ds/symlink/lmx2594.pdf) | 已锁定。简化链使用理想分频。LMX2594 链使用有效倍频系数和已选输出路径 |
-| [B1-2](../course/b1-2.html) | `f_{\mathrm{RFoutA}}=\frac{f_{\mathrm{VCO}}}{\mathrm{CHDIV}}\quad(\mathrm{OUTA\_MUX}=\text{Channel Divider})` | 页面引文 · [TI LMX2594 数据手册 · 式 (1)、式 (2) 与输出通道分频](https://www.ti.com/lit/ds/symlink/lmx2594.pdf) | 已锁定。简化链使用理想分频。LMX2594 链使用有效倍频系数和已选输出路径 |
+| [B1-2](../course/b1-2.html) | `f_{\mathrm{PD}}=\frac{f_{\mathrm{OSC}}\times\mathrm{OSC\_2X}\times\mathrm{MULT}}{\mathrm{PLL\_R\_PRE}\times\mathrm{PLL\_R}}` | 页面引文 · [TI LMX2594 数据手册 · 式 (1)](https://www.ti.com/lit/ds/symlink/lmx2594.pdf) | 已锁定。简化链使用理想分频。LMX2594 链使用有效倍频系数和已选输出路径 |
+| [B1-2](../course/b1-2.html) | `f_{\mathrm{VCO}}=f_{\mathrm{PD}}\left(N+\frac{\mathrm{NUM}}{\mathrm{DEN}}\right)` | 页面引文 · [TI LMX2594 数据手册 · §7.3.4 式 (2)](https://www.ti.com/lit/ds/symlink/lmx2594.pdf) | 已锁定。简化链使用理想分频。LMX2594 链使用有效倍频系数和已选输出路径 |
+| [B1-2](../course/b1-2.html) | `f_{\mathrm{RFoutA}}=\frac{f_{\mathrm{VCO}}}{\mathrm{CHDIV}}\quad(\mathrm{OUTA\_MUX}=\text{Channel Divider})` | 页面引文 · [TI LMX2594 数据手册 · 图 24、表 8 与 R45](https://www.ti.com/lit/ds/symlink/lmx2594.pdf) | 已锁定。简化链使用理想分频。LMX2594 链使用有效倍频系数和已选输出路径 |
 | [B1-3](../course/b1-3.html) | `N=\frac{f_{\mathrm{target}}}{f_{\mathrm{PFD}}}\in\mathbb Z` | 页面引文 · [TI LMX2594EVM §3 · 参考与反馈分频配置](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=5) | 整数模式且目标是 VCO 频率，满足整除仍须检查器件范围 |
 | [B2-1](../course/b2-1.html) | `f\approx\frac{1}{2Nt_{\mathrm d}}` | 页面引文 · [JKU §6 · 环形振荡器](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator) | 奇数级反相环，相近的平均传播延时 |
 | [B2-2](../course/b2-2.html) | `f_0=\frac{1}{2\pi\sqrt{LC}}` | 页面引文 · [JKU §6 · 谐振频率、Q 与环降](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator) | 理想 LC 谐振及高 Q、弱阻尼包络 |
@@ -80,3 +80,14 @@
 | B2-2 | [JKU §6 环降说明](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator) | 原文给出储能与峰值电压平方的关系。幅度包络取能量包络的平方根，指数减半。 |
 | D1-2 | [JKU 式 (56)–(57)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-leeson-equation) | 角频率比改用 Hz 比值后保持不变。并联电阻由原文的 Q=ω₀CRₚ 反解，使用正弦峰值振幅。 |
 | D1-4 | [JKU 式 (59)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-reciprocal-mixing-noise) | 互易混频功率式一致，课程显式用 1 Hz 归一化积分带宽，并沿用窄带内相噪近似为常数的假设。 |
+| B1-2 | [TI SNAS696C 式 (1)](https://www.ti.com/lit/ds/symlink/lmx2594.pdf#page=20) | 参考路径乘除关系一致。OSC_2X 和 MULT 使用实际倍频因子。 |
+| B1-2 | [TI SNAS696C §7.3.4 式 (2)](https://www.ti.com/lit/ds/symlink/lmx2594.pdf#page=22) | 常规反馈路径的分数频率关系一致。SYNC 模式额外分频在课程正文中注明。 |
+| B1-2 | [TI SNAS696C 图 24、表 8 和 R45 字段](https://www.ti.com/lit/ds/symlink/lmx2594.pdf#page=25) | OUTA_MUX 选通道分频时，分母取实际分频比。寄存器编码 0 映射为 ÷2。 |
+| D1-1 | [ADI MT-008 图 3–4](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=3) | 图 3 的 SSB 谱密度以载波功率归一化。平坦噪声在等效带宽内积分得到十倍对数带宽修正。 |
+| D1-3 | [ADI MT-008 图 4、式 (2)–(3)](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=4) | 原文 A 为单边谱积分后的 dBc。转为线性功率后乘 2，再开方并除以 2πf₀，得到秒。 |
+| B3-1 | [JKU 图 61 后与 §6.6](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-lc-oscillator) | 固定 L 对理想谐振频率按 C 求导得 −f/(2C)，C 为总等效电容。 |
+| B3-1 | [JKU §6.6 调谐灵敏度](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-frequency-tuning-of-oscillators) | 原文定义 df/dV。课程按固定 L 的单一电容调谐路径应用链式法则。 |
+| B3-2 | [JKU 图 61 与 §6.6 的电容调谐背景](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-frequency-tuning-of-oscillators) | 课程对理想谐振式作一阶差分近似，要求电容步进相对总电容足够小。 |
+| C2-1 | [JKU §6.7 图 73 与图 74](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator-modeling) | 相位积分微分还原角频率。除以 N 是理想分频器的相位状态模型，固定初始相位约定。 |
+| C3-4 | [JKU 式 (67)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-pll-transfer-function) | 课程将原文闭环函数除以 N，再乘单位阶跃的拉普拉斯变换 1/s。 |
+| E1-1 | [JKU §7.4 与 TI SNAS696C 式 (2)](https://www.ti.com/lit/ds/symlink/lmx2594.pdf#page=22) | 锁定关系与 TI 式 (2) 一致。固定 DEN、NUM 增加 1 得到 VCO 频点步进。 |
