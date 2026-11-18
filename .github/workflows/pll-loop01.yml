@@ -1,0 +1,84 @@
+name: LOOP-01 SPICE correlation
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/pll-loop01.yml'
+      - 'pll/course/coupled-loop.js'
+      - 'pll/labs/PLL-SPICE/*.mjs'
+      - 'pll/labs/PLL-SPICE/*.json'
+permissions:
+  contents: read
+jobs:
+  reproduce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install the locked SPICE WASM engine
+        run: |
+          unzip -q pll/assets/lc-vco-lab.zip -d "$RUNNER_TEMP"
+          cp pll/labs/PLL-SPICE/{compare_loop01_cp,pll_spice_series}.mjs "$RUNNER_TEMP/lc-vco-lab/"
+          npm ci --prefix "$RUNNER_TEMP/lc-vco-lab" --no-audit --no-fund
+      - name: Reproduce pulse comparison and PLL-01 calibration sweep
+        run: |
+          set -o pipefail
+          node "$RUNNER_TEMP/lc-vco-lab/compare_loop01_cp.mjs" "$RUNNER_TEMP/pulse" pll/labs/PLL-SPICE/settings.json
+          node "$RUNNER_TEMP/lc-vco-lab/pll_spice_series.mjs" "$RUNNER_TEMP/lc-vco-lab" "$RUNNER_TEMP/spice" pll/labs/PLL-SPICE/settings.json | tee "$RUNNER_TEMP/spice.log"
+      - name: Verify linear and calibrated capture and scan initial offsets
+        run: |
+          node pll/labs/PLL-SPICE/calibrate_loop01.mjs "$RUNNER_TEMP/spice/pll-01-vco-metrics.json" "$RUNNER_TEMP/calibrated.json"
+          python - <<'PY'
+          import csv
+          import json
+          import math
+          import os
+          from pathlib import Path
+          import subprocess
+          tmp = Path(os.environ['RUNNER_TEMP'])
+          common = Path('pll/labs/PLL-SPICE/settings.json')
+          calibr = tmp / 'calibrated.json'
+          settings = json.loads(common.read_text())
+          output = tmp / 'loop01'
+          runner = 'pll/labs/PLL-SPICE/run_loop01.mjs'
+
+          def run(common_path, model_path):
+              result = json.loads(subprocess.check_output(['node', runner, output, common_path, model_path]))
+              with (Path(result['directory']) / 'events.csv').open() as f:
+                  events = list(csv.DictReader(f))
+              ref = [float(r['time_ns']) for r in events if r['reference_edge'] == '1']
+              feedback = [float(r['feedback_cycles']) for r in events if r['feedback_edge'] == '1']
+              assert all(math.isclose(b - a, 25, abs_tol=1e-7) for a, b in zip(ref, ref[1:]))
+              assert feedback == list(range(1, len(feedback) + 1))
+              return result
+
+          linear = tmp / 'linear.json'
+          linear.write_text(json.dumps(json.loads(calibr.read_text()) | {'model': 'linear'}))
+          pair = {name: run(common, path) for name, path in [('calibrated', calibr), ('linear', linear)]}
+          for mode, expected in [('calibrated', 22.75), ('linear', 17.275)]:
+              assert abs(pair[mode]['lock']['entryUs'] - expected) <= 0.05, (mode, pair[mode])
+          scan = []
+          for offset in range(-200, 201, 40):
+              case = tmp / f'offset-{offset}.json'
+              case.write_text(json.dumps(settings | {'initial_offset_hz': offset * 1_000_000}))
+              summary = run(case, calibr)
+              scan.append({'offsetMHz': offset, **summary})
+          assert [r['offsetMHz'] for r in scan if r['lock']] == [-80, -40, 0, 40, 80, 120]
+          evidence = {'captureComparison': pair, 'captureScan': scan}
+          (tmp / 'loop01-evidence.json').write_text(json.dumps(evidence, indent=2))
+          print(json.dumps(evidence, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: loop01-correlation
+          path: |
+            ${{ runner.temp }}/pulse/
+            ${{ runner.temp }}/spice/pll-01-vco-metrics.json
+            ${{ runner.temp }}/spice.log
+            ${{ runner.temp }}/calibrated.json
+            ${{ runner.temp }}/loop01-evidence.json
+            ${{ runner.temp }}/loop01/
