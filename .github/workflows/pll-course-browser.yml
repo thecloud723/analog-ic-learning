@@ -89,7 +89,7 @@ jobs:
              const lab=document.querySelector('.lab');
              if(!lab) return [];
              const checks=[];
-             const output=()=>lab.querySelector('[data-result], #c-result, #d-result, #e-result')?.textContent || '';
+             const output=()=>lab.querySelector('[data-result], #c-lab-result, #d-result, #e-result')?.textContent || '';
              const change=(id,value)=>{
               const input=document.getElementById(id);
               if(typeof value==='boolean') input.checked=value;
@@ -125,6 +125,23 @@ jobs:
                 checks.push({label:'divider='+option.value,actual:output(),pass});
                }break;
               }
+              case 'settle':
+               change('offset',-200);check('negative initial offset',/-2\.00 mV/);
+               change('offset',0);check('zero initial offset',/ 0\.00 mV/);
+               change('offset',200);check('positive initial offset',/\+2\.00 mV/);break;
+              case 'crystal':
+               change('cl',5);check('5 pF',/\+357\.1 ppm/);
+               change('cl',20);check('20 pF',/\+113\.6 ppm/);break;
+              case 'plan':
+               change('ref-r',1);change('plan-n',70);check('R=1 N=70',/200\.00 MHz.*14\.000 GHz/);
+               change('ref-r',2);check('R=2 N=70',/100\.00 MHz.*7\.000 GHz.*140/);
+               change('plan-n',140);check('R=2 N=140',/100\.00 MHz.*14\.000 GHz/);break;
+              case 'startup':
+               change('series-loss',2.2);check('low loss',/稳态 5\.429 GHz.*0\.461 V/);
+               change('series-loss',18);check('high loss',/未形成稳态频率.*0\.000 V/);break;
+              case 'capSweep':
+               change('vco-cap',680);check('680 fF',/SPICE 5\.905 GHz/);
+               change('vco-cap',970);check('970 fF',/SPICE 4\.976 GHz/);break;
               case 'rc': {
                for(const [p,z,v] of [[0,'1000.8','20.02'],[20,'193.7','3.87']]){
                 change('parallel-cap',p);
