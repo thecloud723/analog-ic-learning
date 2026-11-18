@@ -1,0 +1,14 @@
+{
+  "model": "curved",
+  "durationUs": 45,
+  "voltageMin": 0.2,
+  "voltageMax": 1.6,
+  "initialVoltage": 0.9,
+  "linear": [[0.2, -70], [0.9, 0], [1.6, 70]],
+  "curved": [[0.2, -41], [0.55, -25], [0.9, 0], [1.25, 43], [1.6, 110]],
+  "lock": {
+    "frequencyToleranceHz": 100000,
+    "maxPhaseErrorCycles": 0.05,
+    "holdUs": 4
+  }
+}
