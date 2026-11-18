@@ -1,0 +1,27 @@
+name: NOISE-01 phase noise and jitter
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/pll-noise01.yml'
+      - 'pll/labs/NOISE-01/**'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify analytical, transfer and integration cases
+        run: python pll/labs/NOISE-01/check_noise01.py
+      - name: Generate explicit PSD and jitter budget
+        run: python pll/labs/NOISE-01/noise01.py pll/labs/NOISE-01/noise01-settings.json "$RUNNER_TEMP/noise01"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: noise01-budget
+          path: ${{ runner.temp }}/noise01/
+          if-no-files-found: error
