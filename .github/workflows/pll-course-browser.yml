@@ -248,6 +248,79 @@ jobs:
               case 'fFft':
                change('f-window',8);check('8 µs window',/125\.0 kHz/);
                change('f-window',48);check('48 µs window',/20\.8 kHz/);break;
+              case 'cp':
+              case 'ripple': {
+               const ripple=()=>Number(output().match(/纹波 ([\d.]+) mVpp/)[1]);
+               change('cp-cap',10);change('cp-mismatch',0);check('matched at 10 pF',/纹波 0\.000 mVpp/);
+               change('cp-mismatch',5);const mismatch=ripple();
+               change('cp-mismatch',10);
+               checks.push({label:'more mismatch',actual:output(),pass:mismatch>0 && ripple()>mismatch});break;
+              }
+              case 'events': {
+               const first=()=>[...document.querySelector('#loop-events').rows[0].cells].map(cell=>cell.textContent).slice(1,4).join(',');
+               for(const [offset,expected] of [[-80,'REF,1,0'],[0,'REF + FB,0,0'],[80,'FB,0,1']]){
+                change('loop-offset',offset);const row=first();
+                checks.push({label:'first edge '+offset,actual:row,pass:row===expected});
+               }break;
+              }
+              case 'capture':
+               change('loop-offset',-80);check('negative offset, correction up',/末频偏 \+0\.005 MHz.*2\.170 V/);
+               change('loop-offset',80);check('positive offset, correction down',/末频偏 -0\.005 MHz.*0\.100 V/);break;
+              case 'slip':
+               change('loop-offset',0);check('aligned',/计数：0 次/);
+               change('loop-offset',-200);check('large initial offset',/计数：[1-9]\d* 次/);break;
+              case 'lock':
+               change('loop-offset',0);change('lock-dwell',15);check('aligned for 15 µs',/时刻 0\.000 µs.*保持 15 µs/);break;
+              case 'bode': {
+               const initial=output();
+               change('bode-view','phase');change('bode-view','closed');
+               checks.push({label:'same design metrics on all axes',actual:output(),pass:output()===initial &&
+                /^完整网络：0 dB 交越 [\d.]+ kHz · 相位裕量 [\d.]+° · 闭环 −3 dB [\d.]+ kHz$/.test(initial)});break;
+              }
+              case 'step': {
+               const peak=()=>Number(output().match(/峰值 ([\d.]+)/)[1]);
+               change('step-damping',0.3);const low=peak();
+               change('step-damping',0.9);
+               checks.push({label:'higher damping reduces peaking',actual:output(),pass:low>peak() && peak()>1});break;
+              }
+              case 'osc': {
+               const heat=()=>Number(output().match(/热噪声项 (-?[\d.]+) dBc/)[1]);
+               change('tank-q-d',5);const low=heat();change('tank-q-d',40);
+               checks.push({label:'Q ×8',actual:output(),pass:Math.abs(low-heat()-10*Math.log10(8))<0.11});break;
+              }
+              case 'leakage': {
+               const model=()=>Number(output().match(/模型 (-?[\d.]+) dBc/)[1]);
+               change('lf-kind','passive');change('leak-n',4);const low=model();change('leak-n',5);
+               checks.push({label:'leakage ×10',actual:output(),pass:Math.abs(model()-low-20)<0.11});break;
+              }
+              case 'mashView':
+               change('mash-word',0);check('zero input',/⟨y⟩ = 0\.0000.*目标 0\.0000/);
+               change('mash-word',15);check('target 15/16',/目标 0\.9375/);break;
+              case 'ditherView': {
+               change('dsm-bits',8);const initial=output();
+               change('dsm-bits',12);change('dsm-bits',8);
+               checks.push({label:'fixed dither seed',actual:output(),pass:output()===initial && /带内功率.*平均码/.test(initial)});break;
+              }
+              case 'walk':
+               change('fcw',16);change('adpll-step',0);check('zero initial phase error',/增加 16\.0000 圈.*差为 0\.0000/);break;
+              case 'pi':
+               change('pi-ki',0);change('pi-k',12);check('integrator disabled',/· I 0\.000 ·/);break;
+              case 'fDesign':
+               change('f-model','full');check('two-node model',/实装两节点 RC.*15 GHz/);
+               change('f-model','simple');check('series branch model',/仅串联 R2–C2.*15 GHz/);break;
+              case 'fSystem': {
+               change('f-mismatch',0);
+               const summary=document.querySelector('#f-rows').textContent;
+               checks.push({label:'matched CP suppresses spur',actual:summary,pass:summary.includes('模型无可辨纹波边带')});
+               change('f-mismatch',5);
+               const mismatch=document.querySelector('#f-rows').textContent;
+               checks.push({label:'mismatch restores sideband',actual:mismatch,pass:/-?[\d.]+ dBc/.test(mismatch)});break;
+              }
+              case 'fInspect': {
+               change('f-mismatch',5);change('f-cap',10);
+               const summary=document.querySelector('#f-rows').textContent;
+               checks.push({label:'CP-01 sample metadata',actual:summary,pass:summary.includes('5% / 10 pF') && summary.includes('500 点 / 2 ns')});break;
+              }
               case 'fractional':
                change('frac-num',0);check('NUM=0',/周期 1 拍.*240\.0000.*2\.400000 GHz/);
                change('frac-num',15);check('NUM=15',/周期 16 拍.*240\.9375.*2\.409375 GHz/);break;
