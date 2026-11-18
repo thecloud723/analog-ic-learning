@@ -64,3 +64,5 @@
 | [APP-2](../course/app-2.html) | 3 | fInspect |
 
 [第二次浏览器运行](https://github.com/thecloud723/analog-ic-learning/actions/runs/44352270772)补证第 01 章 #quiz，18/18 条旧章代表深链通过。线上共 104 次页面检查，103 次通过。桌面 C1.3 的请求记录有 HTTP 错误，页面最终渲染通过，需复跑确认状态码和稳定性。
+
+[第三次回归](https://github.com/thecloud723/analog-ic-learning/actions/runs/44352573992)线上与离线均全通过。同一浏览器分别以 1440×900、390×844 打开并刷新线上课程各 52 页，C1.3 桌面复跑无 HTTP 错误。两种来源合计 208 次页面检查，旧章代表深链 18/18。交互断言覆盖两个视口各 40 个滑块，其他控件和真实触屏设备未纳入本次运行。
