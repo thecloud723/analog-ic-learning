@@ -66,8 +66,9 @@ const samples = loop.simulate({
   config, onEvent: event => events.push(event),
 });
 
+const phaseErrorUnwrapped = sample => sample.ns / periodNs - sample.phase;
 const phaseError = sample => {
-  const error = sample.ns / periodNs - sample.phase;
+  const error = phaseErrorUnwrapped(sample);
   return error - Math.round(error);
 };
 let start = null;
@@ -96,12 +97,21 @@ try {
   // The runner also works from a source archive without Git metadata.
 }
 const modelSha256 = createHash('sha256').update(readFileSync(new URL('../../course/coupled-loop.js', here))).digest('hex');
+let phaseAnchor = phaseErrorUnwrapped(samples[0]);
+let cycleSlips = 0;
+let saturatedSamples = 0;
+for (const sample of samples) {
+  const wholeCycles = Math.trunc(phaseErrorUnwrapped(sample) - phaseAnchor);
+  phaseAnchor += wholeCycles;
+  cycleSlips += Math.abs(wholeCycles);
+  if (sample.cap <= config.voltageMin || sample.cap >= config.voltageMax) saturatedSamples++;
+}
 const runId = randomUUID();
 const directory = join(resolve(outputRoot), runId);
 const summary = {
   runId, sourceCommit, sourceModified, modelSha256, engine: 'piecewise-linear event model',
   node: process.version, createdAt: new Date().toISOString(), targetHz: targetMHz * 1e6,
-  samples: samples.length, events: events.length, lock: confirmed,
+  samples: samples.length, events: events.length, cycleSlips, saturatedSamples, lock: confirmed,
   finalFrequencyErrorHz: samples.at(-1).mhz * 1e6,
   finalPhaseErrorCycles: phaseError(samples.at(-1)), finalCapacitorVoltageV: samples.at(-1).cap,
 };
@@ -111,8 +121,8 @@ const csv = (filename, columns, rows) => writeFileSync(
   join(directory, filename), [columns.join(','), ...rows.map(row => row.join(','))].join('\n') + '\n',
 );
 json('settings.json', { common, model, effectiveConfig: config });
-csv('samples.csv', ['time_ns', 'capacitor_v', 'feedback_cycles', 'frequency_error_hz', 'wrapped_phase_error_cycles'],
-  samples.map(s => [s.ns, s.cap, s.phase, s.mhz * 1e6, phaseError(s)]));
+csv('samples.csv', ['time_ns', 'capacitor_v', 'feedback_cycles', 'frequency_error_hz', 'unwrapped_phase_error_cycles', 'wrapped_phase_error_cycles'],
+  samples.map(s => [s.ns, s.cap, s.phase, s.mhz * 1e6, phaseErrorUnwrapped(s), phaseError(s)]));
 csv('events.csv', ['time_ns', 'reference_edge', 'feedback_edge', 'reset_edge', 'up_after', 'down_after', 'capacitor_v', 'feedback_cycles'],
   events.map(e => [e.ns, +e.referenceEdge, +e.feedbackEdge, +e.resetEdge, +e.up, +e.down, e.cap, e.phase]));
 json('manifest.json', summary);
