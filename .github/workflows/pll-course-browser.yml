@@ -107,7 +107,7 @@ jobs:
              const lab=document.querySelector('.lab');
              if(!lab) return [];
              const checks=[];
-             const output=()=>lab.querySelector('[data-result], #c-lab-result, #d-result, #e-result')?.textContent || '';
+             const output=()=>lab.querySelector('[data-result], #c-lab-result, #d-result, #e-result, #f-result')?.textContent || '';
              const change=(id,value)=>{
               const input=document.getElementById(id);
               if(typeof value==='boolean') input.checked=value;
@@ -196,6 +196,58 @@ jobs:
               case 'calibrate':
                change('dco-target',-70);check('low clip',/选码 0（限幅）/);
                change('dco-target',200);check('high clip',/选码 63（限幅）/);break;
+              case 'noise':
+               change('marker','10 kHz');check('10 kHz',/-105\.1543 dBc\/Hz/);
+               change('marker','10 MHz');check('10 MHz',/-141\.5219 dBc\/Hz/);break;
+              case 'ring':
+               change('stages',3);change('stage-delay',25);check('3 stages',/75 ps.*6\.67 GHz/);
+               change('stages',9);check('9 stages',/225 ps.*2\.22 GHz/);break;
+              case 'tank':
+               change('tank-q',10);check('Q=10',/振幅 4\.3%.*能量 0\.2%/);
+               change('tank-q',80);check('Q=80',/振幅 67\.5%.*能量 45\.6%/);break;
+              case 'bank':
+               change('cap-step',20);change('cap-span',20);check('touch',/刚好接触/);
+               change('cap-span',10);check('gap',/频段空档/);
+               change('cap-span',30);check('overlap',/频段重叠/);break;
+              case 'margin':
+               change('pvt-shift',0);check('center',/0\.700 V.*500 mV/);
+               change('pvt-shift',150);check('at limit',/0\.200 V.* 0 mV/);
+               change('pvt-shift',200);check('out of range',/超出该曲线/);break;
+              case 'pfd':
+               change('pfd-mode','aligned');check('equal edges',/ 0\.0 ns/);
+               change('pfd-mode','ref');check('reference first',/\+[\d.]+ ns/);
+               change('pfd-mode','fb');check('feedback first',/-[\d.]+ ns/);break;
+              case 'rms': {
+               const jitter=()=>Number(output().match(/jitter ([\d.]+) ps/)[1]);
+               change('rms-band','12000:20000000');change('carrier',5);
+               const before=jitter();change('carrier',14);
+               checks.push({label:'carrier 5→14 GHz',actual:output(),pass:Math.abs(jitter()*14-before*5)<0.012});
+               const wide=jitter();change('rms-band','100000:20000000');
+               checks.push({label:'exclude low offsets',actual:output(),pass:jitter()<wide});break;
+              }
+              case 'mixing':
+               change('blocker',-40);change('lo-pn',-118);change('rx-bw',100000);check('100 kHz',/-108\.0 dBm/);
+               change('rx-bw',10000000);check('10 MHz',/-88\.0 dBm/);break;
+              case 'transfer':
+               for(const source of ['ref','vco','cp','fb']) change('noise-'+source,false);
+               check('all sources off',/四个噪声源均关闭/);
+               change('noise-ref',true);check('reference alone',/100 kHz 总计 -[\d.]+ dBc\/Hz/);break;
+              case 'readEvm':
+               change('evm-holdout',1);check('10 kHz marker',/实测标记 -105\.15 dBc\/Hz/);
+               change('evm-holdout',4);check('10 MHz marker',/实测标记 -141\.52 dBc\/Hz/);break;
+              case 'firstOrder':
+               change('mash-tenths',0);check('zero word',/进位 0.*残差 0\.0/);
+               change('mash-tenths',9);check('word 9/10',/进位 9.*残差 0\.0/);break;
+              case 'dtc': {
+               const first=()=>[...document.querySelector('#e-table').rows[0].cells].map(cell=>cell.textContent);
+               for(const [lsb,want] of [[5,['75.0','15','75.0','0.0']],[2,['75.0','31','62.0','-13.0']]]){
+                change('dtc-num',3);change('dtc-lsb',lsb);const row=first().slice(2);
+                checks.push({label:'DTC LSB='+lsb,actual:row,pass:row.join(',')===want.join(',')});
+               }break;
+              }
+              case 'fFft':
+               change('f-window',8);check('8 µs window',/125\.0 kHz/);
+               change('f-window',48);check('48 µs window',/20\.8 kHz/);break;
               case 'fractional':
                change('frac-num',0);check('NUM=0',/周期 1 拍.*240\.0000.*2\.400000 GHz/);
                change('frac-num',15);check('NUM=15',/周期 16 拍.*240\.9375.*2\.409375 GHz/);break;
