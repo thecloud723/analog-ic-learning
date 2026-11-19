@@ -2,66 +2,60 @@
 
 ## 当前任务信息
 
-- 项目：模拟系统知识学习 / analog-ic-learning
+- 项目：模拟系统知识学习 / `thecloud723/analog-ic-learning`
 - 任务：PLL A 部分 Classroom 交互式课程完整开发
 - 权威设计：`pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md`
-- 当前 Git 分支：`main`
-- 最新已完成实现提交：`2296e26a00bcd7f0d6a223209754ab027a6564a2`
-- 当前执行阶段：Phase 3（六页集成、浏览器与回归验收）
-- 更新时间：2026-11-19（Asia/Shanghai）
-- 工作约束：只改 PLL A 六页及必要资源/文档；不改 SerDes，不重构 B–F；成熟度以 `pll/EXPERIMENT_LEVEL_ROADMAP.md` 为准。
+- 当前分支：`main`
+- 当前已核对代码 HEAD：`e108790043e31981495fcdec7f33ce00a7711dd5`
+- Pages 工作流：`44489881106`，成功；A1.2 与 A2.3 最新图例已在部署页核验
+- 当前阶段：Phase 4 文档归档已推送；整体验收保留部分验证
+- 最后更新时间：2026-11-19（UTC）
+- 范围约束：不修改 SerDes 专题，不重构 PLL B–F；成熟度以 `pll/EXPERIMENT_LEVEL_ROADMAP.md` 为准。
 
 ## Phase 0 审计结论
 
-- 实施前 main HEAD 为 `3edc1c809d874d44489d7c17acd92035146c38cd`；SDD 所载基线已过期，审计使用当时 main 的真实状态。
-- 六个目标 URL、A–F 侧栏和课程翻页均存在。原 A 页面使用旧 `data-lab` 单控件脚本；本次 A 页切换到独立 `data-classroom-lab` 与 Classroom runtime，没有修改 `course.js`。
-- 复核并保留 JKU Fig. 74/78/79、ADI ADF4351 Fig. 1 与 MT-008 Fig. 1、TI LMX2594 Fig. 5-1。TI 图上的载波约 14.0000289 GHz，四个 marker 与 SDD 记录一致；读数显示到 0.1 dB，独立图只画离散点。
-- 数学核对：A2.1 采用 Δt=tFB−tREF、Δφ=φREF−φFB；A2.2 使用半开区间 [-0.5,+0.5) cycle；A2.3 REF/FB 顺序、reset 延迟和脉宽按 SDD 定义；A1.2 10 μs 向量为 Δf=−0.270618 kHz、ΔVCTRL=−0.002706 mV、Δφe=−0.185687 mrad。
+- 以真实 GitHub main 为实施基线；开始时文档记录的旧 SDD 基线已过期，实际审计使用当时 main HEAD。此次最后核对的实现头为 `e108790043e31981495fcdec7f33ce00a7711dd5`。
+- 六个 A 页面保留既有 URL、侧栏、翻页和 B–F 导航；旧 A 页交互层由共享 Classroom CSS、模型、数据和 UI 层承担，未改 `course.js`。
+- A1.1、A1.3、A2.3 来源图和数据在仓库核对；A1.3 使用 TI LMX2594 手册原始 Fig. 5-1 和来源中的离散 marker，不将其描述为本项目测量。
+- 核对关键符号：A2.1 `Δt=tFB−tREF`、`Δφ=φREF−φFB`；A2.2 wrapped 相位使用半开区间 `[-0.5,+0.5)` cycle；A2.3 按 REF/FB 事件顺序及 reset delay 推导 UP/DN；A1.2 分列频率误差、VCTRL 偏差和相位误差。
+- A-INT-01～06 均为 L1 课程交互/行为模型；TI 实测图仍是外部实测素材，不把 UI 实验提升为 L2–L4。
 
 ## 工作清单
 
-| Task ID | 工作项 | 修改文件 | 状态 | 对应提交 | 测试结果 | 剩余问题 |
+| Task ID | 页面/模块 | 修改范围 | 状态 | 已推送提交 | 测试与证据 | 剩余问题 |
 |---|---|---|---|---|---|---|
-| A-00 | main、SDD、六页、脚本、原图和公式审计 | 本文件、PROGRESS | 已完成 | `8854bd357650a19d26cf9f2c66a34a515c7c9515` | 真实 main HEAD 和页面/素材已核对 | 无 |
-| A-01 | 公共 Classroom 组件、布局和渲染 | `pll/course/a-classroom.css`、`a-classroom.js` | 已实现 | `9b6b0e74bc88c17e0c48551b144fe3a64a274390`、`2296e26a00bcd7f0d6a223209754ab027a6564a2` | 三个 JS 语法检查通过；六页静态结构检查通过 | Pages 视觉/浏览器验收待做 |
-| A-02 | 单位统一的纯模型与固定向量测试 | `pll/course/a-classroom-models.js`、`pll/course/tests/a-classroom-models.test.js` | 已完成 | `9b6b0e74bc88c17e0c48551b144fe3a64a274390`、`781cce93d2614ca5141746d538b9dbf3234cc4d3` | SDD 向量与边界 Node 测试 8/8 通过 | UI 浏览器联动待验 |
-| A-03 | TI marker 数据与来源元数据 | `pll/course/a-classroom-data.js` | 已完成 | `9b6b0e74bc88c17e0c48551b144fe3a64a274390`、`2296e26a00bcd7f0d6a223209754ab027a6564a2` | 图内标记核验；精度口径明确 | 文档台账同步待做 |
-| A-04 | 六页共享事件、读数、曲线、流程和交互绑定 | `pll/course/a-classroom.js` | 已实现 | `2296e26a00bcd7f0d6a223209754ab027a6564a2` | 语法检查通过；固定模型向量通过 | 动态浏览器、键盘和窄屏验收待做 |
-| A2.1 | 时间差/相位差、边沿拖动、相位圆盘 | `pll/course/a2-1.html` | 待验证 | `2296e26a00bcd7f0d6a223209754ab027a6564a2` | T-A21-01/02/03 通过；静态页检查通过 | 实际拖动和模式切换待验 |
-| A2.2 | 频差积分、未包裹/模相位、同步游标 | `pll/course/a2-2.html` | 待验证 | `2296e26a00bcd7f0d6a223209754ab027a6564a2` | T-A22-01/02/03 通过；静态页检查通过 | Play/Pause/Step/Reset 与边界窗口待验 |
-| A2.3 | REF/FB 逐事件状态机和多周期频差实验 | `pll/course/a2-3.html` | 待验证 | `2296e26a00bcd7f0d6a223209754ab027a6564a2` | T-A23-01/02/03/04 通过；静态页检查通过 | 浏览器事件播放与图表联动待验 |
-| A1.1 | SVG 框图、节点/路径、Guided Tour、R/N/D 计算 | `pll/course/a1-1.html` | 待验证 | `2296e26a00bcd7f0d6a223209754ab027a6564a2` | T-A11-01/02 通过；静态页与原图资源检查通过 | 点击/键盘/导览/分频变化待验 |
-| A1.2 | 三通道虚拟示波器、共享时间游标和局部边沿图 | `pll/course/a1-2.html` | 待验证 | `2296e26a00bcd7f0d6a223209754ab027a6564a2` | 起点、终点和正负频差模型向量通过 | 浏览器播放及三图同步待验 |
-| A1.3 | TI 原图、四个 marker、dBc 与 dBc/Hz 教学 | `pll/course/a1-3.html` | 待验证 | `2296e26a00bcd7f0d6a223209754ab027a6564a2` | TI 图/数值来源核对；本地图片路径通过 | marker 切换、图片显示与重置待验 |
-| A-REG | Pages、控制台、桌面/移动、离线、导航、B–F 回归 | 浏览器验收记录、测试脚本 | 进行中 | — | 本地静态 HTTP 六页均 200；Node 8/8、Python 4/4 | 浏览器环境限制下的本地渲染未验证；改用 Pages 检查 |
-| A-DOC | README、主纲、逐页计划、实验台账、进度和验收报告同步 | 指定文档及新报告 | 进行中 | — | 先前启动/审计状态已归档 | 等最终浏览器结果后一次同步真实验收状态 |
+| A-00 | Phase 0 审计 | 六页、共享资源、图/数据、公式、导航 | 已完成 | `8854bd357650a19d26cf9f2c66a34a515c7c9515` 起始状态记录 | 对照 SDD 与真实 main；公式符号与 TI marker 已核验 | 无 |
+| A-01 | 公共架构 | `a-classroom.css`、`a-classroom-models.js`、`a-classroom-data.js`、`a-classroom.js` | 已完成 | `2296e26`、`e0c4f95`、`801c564`、`e108790` | Node 8/8；三个 JS 语法检查；最新图例线上可见 | 手机/离线浏览器验收另列 |
+| A1.1 | 整机组成 | 既有页面 URL、SVG 框图、Guided Tour、R/N/D 频率链 | 已完成 | `2296e26`；当前头 `e108790` | 40 MHz、R=1、N=125、D=2 → fVCO=5 GHz、fOUT=2.5 GHz；N=126 与 D=4 复核；预测/检查和导览通过 | 最新桌面页面已加载；无功能遗留 |
+| A1.2 | 锁之前与锁之后 | 三同步曲线、时间游标、播放控件 | 已完成 | `2296e26`；最新图例 `e108790` | 正负初始频差、游标、Play/Pause/Step/Restart/Reset；频率/VCTRL/相位读数区分；最新部署三图图例可见 | 模型为解析近锁 L1 |
+| A1.3 | 第一张相噪图 | TI 原图、marker、dBc 与 dBc/Hz | 已完成 | `2296e26`；最新共享图例 `e108790` | 原图与四 marker 核对；14.0000289 GHz 载波；marker 切换、单位含义、检查题和 Reset 已实测 | 最新图例共享绘图器已覆盖；不代表本项目测量 |
+| A2.1 | 时间差到相位差 | 双时钟边沿、相位圆盘、双输入模式 | 已完成 | `2296e26`；当前头 `e108790` | 100 MHz / +40 ps=+1.44°；200 MHz=+2.88°；负偏移得到负相位；拖动、键盘、Reset | L1 |
+| A2.2 | 频差积成相位差 | 未包裹和模相位、时间游标 | 已完成 | `2296e26`；当前头 `e108790` | +2 kHz、初相位 0.15 cycle、1 ms → 2.15 / +0.15 cycle；负频差、零频差和播放控件已查 | L1 |
+| A2.3 | PFD 逐事件纠偏 | REF/FB、UP/DN/RESET、多周期频差 | 已完成 | `2296e26`；最新图例 `e108790` | REF-first 与 FB-first；220/20 ps 脉宽；100 vs 99.9/100.1 MHz 多周期方向、控制和 Reset；最新部署双曲线图例可见 | 理想 PFD 模型，不含 CP/VCO 闭环 |
+| A-UNIT | 自动测试 | Node 模型套件、Python 页面套件、JS 静态语法 | 已完成 | `e108790` | Node 8/8、Python 6/6、`node --check` 3/3 | 无 |
+| A-DEPLOY | Pages 部署与线上检查 | GitHub Pages 六页与共享资产 | 已完成 | `e108790` | Actions run `44489881106` 成功；六页交互曾逐页检查，最新头实时复核 A1.1/A1.2/A2.3；B–F 44/44 | 全页最新图例视觉复核未逐页重跑 |
+| A-REG | 综合回归与运行环境 | 视口、断网、本地 HTTP、Console、课程链接、B–F | 部分完成 | `e108790` | 桌面 Pages 已用；B–F 44/44；课程来源 Console 未见报错；早一代码头本地 HTTP 200 | 最新头本地 server 绑定失败；手机真实视口和浏览器 offline mode 均未验证；扩展自身 Console 噪声存在 |
+| A-DOC | 文档与持续断点 | README、主纲、逐页计划、台账、进度、SDD、报告、本文件 | 本批推送 | 本批文档提交随后记录于 main | 文档只记实际实现和证据，A-INT 仍为 L1 | 状态文件将在本批提交后做一次 SHA checkpoint |
 
-## 已完成工作（GitHub main）
+## 测试证据和未验证项
 
-- `pll/course/a-classroom.css`：三栏/单列样式、Canvas/SVG、可访问焦点、减少动态效果和窄屏布局。
-- `pll/course/a-classroom-models.js`：频率链、二阶近锁响应、时间差相位、频差相位累积、PFD 事件模型。
-- `pll/course/a-classroom-data.js`：TI marker 元数据、节点职责、信号路径与导览步骤。
-- `pll/course/a-classroom.js`：Canvas 图、SVG 边沿与相位圆盘、A1.1–A1.3 和 A2.1–A2.3 绑定、预测/检查反馈、Play/Pause/Step/Reset。
-- 六个既有 URL 页面均已实现课程流程和相应实验台；A1.1 区分 fVCO 与 fOUT，A1.3 保留 TI 原图并将四个点作为不连线的离散读数，A2.3 包含本地 JKU Fig. 78/79 原图。
-- 新增 `pll/course/tests/test_a_classroom_pages.py`，检查六页共享脚本、课程流程、唯一 ID、导航和本地图片。
+- 最新代码头的模型测试：`node --test pll/course/tests/a-classroom-models.test.js`，8/8 通过，包含默认/边界频率链、正负时间相位、wrapped/unwrapped/零偏移、A1.2 近锁数值、PFD 事件先后/脉宽/多周期方向/非法边界。
+- 最新代码头页面结构测试：`python3 -m unittest discover -s pll/course/tests -p 'test_*.py' -v`，6/6 通过，检查六页共享资源、导航/流程、图轴和曲线系列名、缓存版本。
+- `node --check` 对三个共享 JS 全过。
+- GitHub Actions Pages 部署 run `44489881106` 为 success；线上 A1.1、A1.2 和 A2.3（多周期）加载了 `20261119-3` 资产；图例在 A1.2、A2.3 可见。
+- 六页功能操作、数据和 B–F 44/44 页面回归已做。B–F 检查标题、主标题和侧栏链接，未修改 B–F 源码。
+- 代码头 `36cdf052` 曾通过本地 HTTP 冒烟；对最新 `e108790` 再次尝试多个端口时，当前托管沙箱拒绝本地监听/连接。因此最新头的本地 HTTP 不记为通过。
+- 真实移动设备/手机视口布局未在浏览器中模拟；只静态审阅响应式断点，不作为移动验收。
+- 浏览器断网模式下的六页交互未执行。当前云浏览器与 scratch localhost 不共享网络命名空间，且无法从本环境把该部署标签页切到离线。不得宣称已离线通过。
+- Console 有云浏览器扩展自身 metadata 错误；未见课程来源错误，但不宣称全局零错误。
 
-## 已运行测试
+## 下一步工作（恢复时从这里开始）
 
-- `node --test pll/course/tests/a-classroom-models.test.js`：8/8 通过，覆盖 SDD 固定向量和异常边界。
-- `python3 -m unittest discover -s pll/course/tests -p 'test_*.py' -v`：4/4 通过。
-- `node --check`：`a-classroom.js`、`a-classroom-data.js`、`a-classroom-models.js` 通过。
-- 本地静态 HTTP：六个页面分别返回 200。
-- 提交后从 GitHub commit `2296e26a00bcd7f0d6a223209754ab027a6564a2` 逐文件读回，10 个改动文件均与已测试工作区内容完全一致。
-- 尚未执行：部署 Pages 的动态交互、浏览器 Console、桌面与手机真实渲染、断网实测、B–F 页面浏览器回归。本地 Chromium 因受限运行环境无法启动；云浏览器与 scratch localhost 不在同一网络命名空间。不能把这些项目记为通过。
-
-## 下一步工作（按此恢复）
-
-1. 用云浏览器打开 GitHub Pages 的 A1.1，确认部署版本、主框图和资源加载；检查浏览器控制台。
-2. 在 Pages 上依次操作六页：频率链和 Guided Tour；A1.2 游标及 Play/Pause/Step/Restart；A1.3 marker/单位切换；A2.1 拖动与固定相位模式；A2.2 正负频差及游标；A2.3 REF/FB 事件和多周期模式。
-3. 检查各 A URL 的侧栏、上一页/下一页，和至少一个 B–F 旧页面，确认 `course.js` 功能未受影响；另按可验证范围检查手机宽度和控制台。
-4. 能修复的现场问题直接修复并复跑。无法做的验收明确列“未验证”，记录环境限制。
-5. 更新 `README.md`、`PLL_MASTER_COURSE_OUTLINE_2026-11-19.md`、`PLL_PAGE_PLAN.md`、`EXPERIMENT_LEVEL_ROADMAP.md`、`PROGRESS.md)，建立 `PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md`，随后提交并复核实际 SHA 和 GitHub 文件。
+1. 在具备浏览器设备仿真和网络离线开关的运行环境里，对 GitHub Pages 当前 main 做手机宽度交互和断网刷新/Reset 验收。
+2. 若可用本地静态服务器的执行环境可用，则对 `e108790` 文件树重新做六页与三个共享 JS 的 HTTP/MIME 冒烟。
+3. 用上述环境重新检查六页当前版本的图例布局、无溢出情况和 Console 来源。只记录实测；修复后再跑对应测试、提交、更新本文件和验收报告。
+4. 在具备上述工具环境后完成未验证项，再把部分验收更新为全项通过；此前不要宣布 PLL A 整体验收完成。
 
 ## 中断恢复协议
 
-恢复时先读取本文件和 GitHub main 最新 HEAD，再从“下一步工作”第一项继续。不要重复已经实际通过的模型与结构测试。遇到未验证项，保留待验证/受阻状态，不得伪造浏览器或部署验收。
+恢复时先读取本文件和 GitHub main 最新 HEAD，再从“下一步工作”第一项继续。不要重复已通过的 Node、Python、语法、公式向量或 B–F 回归。不能完成的项目留在“未验证”，不能以规划或代码存在代替实测。

@@ -3,7 +3,7 @@
 > 文档编号：PLL-A-CLASSROOM-SDD  
 > 版本：1.0  
 > 日期：2026-11-19  
-> 状态：**设计基线已建立，待 Work 按本 SDD 实施；本次不修改 A 部分 HTML/JS，也不新增仿真。**  
+> 状态：**设计基线已实施并部署；实际代码、逐页验收及未验证项见 [PLL A Classroom 验收报告](PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)。本 SDD 继续作为 A 部分交互和模型的权威设计基线；各实验成熟度仍以 `EXPERIMENT_LEVEL_ROADMAP.md` 为准。**  
 > 适用范围：PLL 课程 A 部分「系统与反馈基础」，共 6 个现有页面。SerDes 不在本文件范围内。  
 > 仓库基线：main 提交 bde93ee853b01b622efc870f37d7a94aaf5800dd。  
 > 规范用词：必须为验收硬要求；建议为默认方案；可选为后续增强。

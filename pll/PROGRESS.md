@@ -1,11 +1,13 @@
-## A 部分 Classroom 完整开发（2026-11-19）
+## A 部分 Classroom 完整开发与验收（2026-11-19）
 
-- 当前断点和逐项状态见 [WORK_EXECUTION_STATE.md](docs/WORK_EXECUTION_STATE.md)；权威交互基线为 [PLL A Classroom SDD](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)。
-- Phase 0 已审计当前 main、六个页面、共享脚本、公式与现有原图；没有修改 SerDes、B–F 或旧 `course.js`。
-- Phase 1/2 代码已提交：共享 Classroom CSS/模型/数据/交互层，以及 A1.1–A1.3、A2.1–A2.3 六页实验台。实现提交：`2296e26a00bcd7f0d6a223209754ab027a6564a2`。
-- A1.1 计算区分 fVCO 和 fOUT；A1.2 是标注边界的 L1 二阶近锁模型；A1.3 使用 TI 原始图及四个不连线的离散 marker；A2.1–A2.3 按 SDD 的符号、相位回卷和 PFD 事件定义实现。
-- 本地测试：Node 模型/公式 8/8，Python 页面结构/资源 4/4，三个共享 JS 语法检查通过，六页本地静态 HTTP 均返回 200；提交后 10 个改动文件已从 GitHub 读回核对。
-- 当前阶段：Phase 3 集成验收进行中。GitHub Pages 动态交互、浏览器 console、真实手机渲染、断网实测和 B–F 浏览器回归尚未验证；本地 Chromium 受执行环境限制未能启动，待部署页实测后如实记录。
+- 执行基线：[PLL A Classroom SDD](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)；持续断点：[WORK_EXECUTION_STATE.md](docs/WORK_EXECUTION_STATE.md)；逐页证据：[验收报告](docs/PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)。
+- 已实现公共 CSS、模型、数据和交互层，以及 A1.1–A1.3、A2.1–A2.3 六个既有 URL 页面。实现由 `2296e26a00bcd7f0d6a223209754ab027a6564a2` 起；后续模型/导航、布局与 Reset、资源缓存修复见 `e0c4f954949de871d5644a31f57f4803cb8b43cb`、`801c564ce28ceaeeb25c49f946994e4d6db9a885`、`36cdf0526ab2253fff87ab3372b64f32f23a41cd`。最新代码提交 `e108790043e31981495fcdec7f33ce00a7711dd5` 为所有交互曲线补充图例和测试断言；Pages 工作流 `44489881106` 成功。
+- GitHub Pages 对应部署工作流 `44485572195` 成功。六页线上冒烟检查 6/6；课堂交互检查覆盖频率链、示波器三曲线、TI marker、边沿正负号/拖动/键盘、相位回卷、PFD 事件及 Reset。
+- B–F 浏览器回归：从课程侧栏逐项打开 44 个既有页面，44/44 页面标题、主标题与侧栏存在；本任务未修改 SerDes 或 B–F 页面源码。
+- 自动化结果：Node 模型固定向量/边界测试 8/8；Python 页面结构测试 6/6；三个共享 JS `node --check` 通过。较早代码头 `36cdf052` 的本地静态 HTTP 六页及共享脚本返回 200；对最新图例补丁 `e108790` 重试本地 HTTP 时，沙箱端口监听/连接被拒绝，因此最新头的本地 HTTP 冒烟未验证。详见验收报告。
+- 线上 Console 检查未见课程域名来源的错误；云浏览器记录中存在扩展自身的 metadata 错误噪声，因此不宣称浏览器整体零错误。最新部署头 e108790 的图例已在 A1.2 和 A2.3 多周期图上实机查看。
+- **验收尚非全项通过：** 已在桌面宽视口实测部署页面；真实手机视口和浏览器断网后的实际交互未验证，原因与具体可补测条件见验收报告。A 部分交互成熟度仍为 L1；不得把 TI 外部原始测量图或 JS 模型计为本项目 L2/L3/L4。
+
 # PLL 课程制作与技术验收记录（01～18 章）
 
 ## 课程大纲更新（2026-11-19）
@@ -15,10 +17,9 @@
 
 ## A 部分 Classroom 交互教学 SDD（2026-11-19）
 
-- 新增 [PLL A 部分交互式教学系统软件设计说明书（SDD）](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)，覆盖 A1.1～A2.3 六个页面。
-- 明确每堂课的 Learn → Predict → Explore → Observe → Explain → Check 流程；桌面三栏实验台、移动端单栏布局、Guided Tour、示波器、时序事件、曲线游标和检查题。
-- 为六个交互定义 A-INT-01～06 页面交互 ID、模型公式、单位/符号约定、数据来源、软件文件划分和固定验收向量。
-- 本次仅创建设计文档和索引，不修改六个 A 页面，不新增仿真，不改变全局 L1–L4 台账；状态为设计完成、待 Work 实施。
+- 新增 [PLL A 部分交互式教学系统软件设计说明书（SDD）](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)，覆盖 A1.1～A2.3 六个页面；随后已按该基线实现公共架构和六页 Classroom 交互。
+- 六页均提供 Learn → Predict → Explore → Observe → Explain → Check；实现三栏桌面布局、移动断点、Guided Tour、曲线/事件图、读数、Reset 和检查反馈。
+- A-INT-01～06 的实现与测试状态见 [验收报告](docs/PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)。六项均属 L1 课程交互，不改变全局 L1–L4 台账；手机真实视口和真实浏览器离线验收尚未完成。
 
 ## 当前任务队列（2026-11-19）
 
