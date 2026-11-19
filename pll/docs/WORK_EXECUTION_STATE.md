@@ -11,22 +11,22 @@
 - 交互/模型规范：pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md
 - 当前分支：main
 - 审计基线 SHA：41b3444f46878f65d6769aa6f951572ec7d149d0
-- 最新本次提交：待完成 Phase 0 来源映射检查点
-- 当前阶段：Phase 0 完成，Phase 1 A2.1 进行中
+- 最新本次提交：A2.1 样板代码与测试 `7a463feef513057f4215703bf73a89da21285ce6`
+- 当前阶段：Phase 1 A2.1 完成；Phase 2 正在进入 A2.2
 - 最后更新时间：2026-11-19（Asia/Shanghai）
 
 ## V2 工作清单
 
 | Task ID | 页面/模块 | 计划修改文件 | 状态 | 对应 commit | 测试结果 | 剩余问题 |
 |---|---|---|---|---|---|---|
-| V2-00 | 原教材审计与来源映射 | pll/docs/PLL_A_SOURCE_MAPPING_V2.md、WORK_EXECUTION_STATE.md、PROGRESS.md | 进行中 | 本次检查点待确认 | 已读 V2/V1 SDD、内容清单、既有验收、六页 HTML 和共享模型；已核验 JKU 原文及 TI/ADI 许可 | 写入与 GitHub 读回待确认 |
-| V2-01 | A2.1 教学样板 | pll/course/a2-1.html、a-classroom.css、tests/test_a_classroom_pages.py | 未开始 | — | 待测 | 原式先于预测/交互；MathML、正负号例题、边沿/圆盘/Reset 保持 |
-| V2-02 | A2.2 频差积分 | pll/course/a2-2.html | 未开始 | — | 待测 | JKU 原式与本课程推导分开；未包裹/模相位语义 |
+| V2-00 | 原教材审计与来源映射 | pll/docs/PLL_A_SOURCE_MAPPING_V2.md、WORK_EXECUTION_STATE.md、PROGRESS.md | 已完成 | dbc22ef | 映射及状态文件已读回；基线 main=41b3444 | 实施阶段继续核验页面 |
+| V2-01 | A2.1 教学样板 | pll/course/a2-1.html、a-classroom.css、tests/test_a_classroom_pages.py | 已完成 | 7a463fe | Node 模型套件 8/8；A2.1 Reset 接线 unittest 通过；来源顺序/MathML/100 MHz 40 ps/1.44°/URL 自检通过 | 浏览器桌面/手机视觉待整页回归 |
+| V2-02 | A2.2 频差积分 | pll/course/a2-2.html | 进行中（下一项） | — | 待测 | JKU 原式与本课程推导分开；未包裹/模相位语义 |
 | V2-03 | A2.3 PFD | pll/course/a2-3.html | 未开始 | — | 待测 | Fig.77–81 原图组；REF/FB 顺序及脉宽 |
 | V2-04 | A1.1 框图/频率链 | pll/course/a1-1.html | 未开始 | — | 待测 | Fig.74 主体；ADF4351 官方链接；VCO 内部频率与输出 D |
 | V2-05 | A1.2 锁定与模型 | pll/course/a1-2.html | 未开始 | — | 待测 | Type-I Fig.76 Eq.62–64 与 Type-II Fig.83 Eq.67–69 区分 |
 | V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、materials/pll/FIGURE_MANIFEST.csv、必要的旧图引用 | 未开始 | — | 待测 | TI/ADI 官方链接；dBc/dBc/Hz 与 marker 来源 |
-| V2-07 | 公共样式和测试 | pll/course/a-classroom.css、tests/test_a_classroom_pages.py | 未开始 | — | 待测 | 增加 Source-First 顺序、MathML、许可回归检查 |
+| V2-07 | 公共样式和测试 | pll/course/a-classroom.css、tests/test_a_classroom_pages.py | 进行中 | 7a463fe | 增加 Source-First 样式、A1.3 受限素材断言和顺序检查；全六页测试待页面全部改造 | 完成六页后全套回归 |
 | V2-08 | 文档/实验台账 | README、主纲、页计划、成熟度台账、PROGRESS、执行状态、V2 验收报告 | 未开始 | — | 待测 | 不改变 L1–L4 成熟度判定 |
 | V2-09 | 集成与 Pages 验收 | 六页、原图、MathML、桌面/手机、B–F、部署 | 未开始 | — | 待测 | 未实测项目保持未验证 |
 
@@ -34,18 +34,17 @@
 
 - 最新审计基线 SHA 以上述 GitHub main 为准。main 新增了 A1–A2 内容清单，已将其纳入编排参考；旧 V1 页面验收不作为 V2 结果。
 - 六个 Classroom URL、侧栏和翻页骨架保持原样。当前 HTML 先放 Predict/Workbench，V2 要求把来源教材正文移到交互主体前。
-- JKU §7.1 原式 Δφ=2π·Δt/T_ref 和 V_error=K_PD·Δφ 均无编号。Eq.62–64 为 Type-I；§7.2 Eq.67–69 为 Type-II CP-PLL。现有三曲线模型不可引用 Eq.62–64。
+- JKU §7.1 原式 Δφ=2π·Δt/T_ref 和 V_error=K_PD·Δφ 均无编号；已在 A2.1 主体使用 MathML 并配套单位/正负号约定。Eq.62–64 为 Type-I；§7.2 Eq.67–69 为 Type-II CP-PLL。现有三曲线模型不可引用 Eq.62–64。
 - A2.1 约定 Δt=t_FB−t_REF、Δφ=φ_REF−φ_FB。100 MHz、+40 ps → +1.44°。相位式来源是 JKU，符号方向由页面声明。
 - A1.3 TI marker：10 kHz −105.1543、100 kHz −108.0194、1 MHz −116.4369、10 MHz −141.5219 dBc/Hz；图内 53.169 fs 是原图测量读数，不由四点重算。教学可视化与原测量图区分。
 - JKU Fig.73 原图在当前 PLL 图目录缺失；使用 §6.7 原公式及 Fig.73 官方定位，不自行重绘。
 
 ## 下一步工作
 
-1. 确认映射、执行状态和 PROGRESS 已写入 GitHub 并记录 SHA。
-2. 立即重排 A2.1：先呈现 JKU §7.1 原公式、变量单位和 100 MHz/40 ps 算例，再保留预测、边沿实验与圆盘；补 MathML/来源顺序测试。
-3. 运行现有模型与页面测试、修复回归，再检查公式在桌面/手机视口的排版。
-4. 继续 A2.2、A2.3、A1.1、A1.2、A1.3，每页完成后记录检查点并自动进入下一页。
-5. 最终跑六页浏览器/数值/导航/响应式/B–F/Pages 回归，写 V2 验收报告并推送；任何不能实测的项目明确标为未验证。
+1. 立即完成 A2.2：引用 JKU §6.7/§7.1 原式，明确本课程频差积分推导，保留双曲线/游标/播放/Reset。
+2. 继续 A2.3、A1.1、A1.2、A1.3，逐页完成原图/公式编排与独立数值/结构验收。
+3. 六页完成后跑完整 Python/Node/视觉/部署/导航/B–F 回归；未能实测的项明确标为未验证。
+4. 完成映射、README/主纲/页计划/台账/PROGRESS/最终验收报告并推送。
 
 ## 中断恢复协议
 
