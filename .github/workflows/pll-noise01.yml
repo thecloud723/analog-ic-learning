@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/pll-noise01.yml'
       - 'pll/labs/NOISE-01/**'
+      - 'pll/assets/noise01-data.js'
 permissions:
   contents: read
 jobs:
@@ -24,6 +25,20 @@ jobs:
         run: |
           python -m pip install numpy==2.3.5
           python pll/labs/NOISE-01/verify_noise01_fft.py pll/labs/NOISE-01/noise01-settings.json "$RUNNER_TEMP/noise01/fft-check.json"
+      - name: Validate TI holdouts and regenerate the offline asset
+        run: |
+          lab=pll/labs/NOISE-01
+          python "$lab/compare_evm.py" "$lab/ti-evm-markers.json" "$RUNNER_TEMP/noise01/evm.json"
+          python "$lab/export_noise01_web.py" "$lab/noise01-settings.json" "$lab/ti-evm-markers.json" "$RUNNER_TEMP/noise01/noise01-data.js"
+          cmp pll/assets/noise01-data.js "$RUNNER_TEMP/noise01/noise01-data.js"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          result = json.loads((Path(os.environ['RUNNER_TEMP']) / 'noise01/evm.json').read_text())['validation']
+          assert result['fit_count'] == 6
+          assert [r['offset_hz'] for r in result['holdouts']] == [100000, 10000000, 95000000]
+          assert abs(result['rms_residual_db'] - 3.536118448) < 1e-6
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: noise01-budget
