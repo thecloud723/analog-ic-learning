@@ -1,3 +1,9 @@
+## A 部分教材内容优先的方向修正（2026-11-19）
+
+- 用户完成六页浏览后，反馈当前 Classroom 改造的交互已可运行，但未达到教材内容预期：**希望以 JKU/TI/ADI 原图、原公式、关键论述和中文整理为课程主体，不希望重复静态绘图和另写教材公式。**
+- 新增 [原教材内容优先改造规范](docs/PLL_SOURCE_FIRST_COURSE_EDITORIAL_SPEC_2026-11-19.md)，逐页列出 A1.1–A2.3 的来源、原图/公式位置、现有交互的保留和内容重排要求，含版权边界与验收标准。
+- 本轮只更新内容规范和索引；**尚未改变这六页 HTML 与已通过的交互模型**。后续按规范先制作 A2.1 内容样板，再重排其他五页。
+
 ## A 部分 Classroom 完整开发与验收（2026-11-19）
 
 - 执行基线：[PLL A Classroom SDD](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)；持续断点：[WORK_EXECUTION_STATE.md](docs/WORK_EXECUTION_STATE.md)；逐页证据：[验收报告](docs/PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)。
