@@ -1,57 +1,33 @@
 # PLL 素材归档
 
-本目录保存 PLL 教程的原始材料、来源记录和授权信息；页面运行时实际引用的图片副本统一放在 pll/assets/。
+本目录保存 PLL 教程的开放许可图片、来源索引和授权记录。仓库通过 GitHub Pages 公开，因此**没有明确再发布授权的 TI/ADI 图片不存放在本仓库**；课程页面提供官方文档的准确链接和中文读图摘要。
 
 ## 目录
 
-- originals/jku/：JKU PLL Figures 74–98 的原始裁切 PNG、LICENSE、CITATION。
-- originals/jku-oscillators/：本轮新增的 JKU Oscillators 7 张上游 SVG。
-- originals/mdpi/：65 nm LC-DCO 论文 Figures 3、4、7。
-- originals/mdpi-dtc/：FPGA Vernier DTC 论文 Figure 4。
-- source-pdfs/：计划归档下载的 PDF；本轮 8 份 PDF 已下载到 Work 暂存区，尚未提交到仓库。
-- FIGURE_MANIFEST.csv：逐图来源、原始路径、页面副本路径、章节映射和状态。
-- SOURCES.md：来源索引与授权说明。
+- `originals/jku/`：JKU RFIC PLL 原图与许可/引用文件。
+- `originals/jku-oscillators/`：JKU Oscillators 上游 SVG 与许可/引用文件。
+- `originals/mdpi/`、`originals/mdpi-dtc/`、`originals/mdpi-asic-dtc/`：CC BY 4.0 论文图及引用记录。
+- `FIGURE_MANIFEST.csv`：逐图来源、准确位置、授权状态、页面路径或“仅官方链接”状态。
+- `SOURCES.md`：来源索引和素材使用规则。
 
-## 当前已归档的原始图片
+## 网页可用素材
 
-| 来源 | 数量 | 当前状态 | 原始归档路径 |
-|---|---:|---|---|
-| JKU PLL Figures 74–98 | 25 PNG | 24 张已在章节 HTML 使用；Figure 89 是未引用候选 | originals/jku/ |
-| JKU Oscillators Figures 60、61、69–73 | 7 SVG | 已在第 8 章使用 | originals/jku-oscillators/ |
-| MDPI 65 nm LC-DCO Figures 3、4、7 | 3 PNG | 已在第 8 章使用 | originals/mdpi/ |
-| MDPI FPGA Vernier DTC Figure 4 | 1 JPEG | 已在第 17 章作为实现例使用 | originals/mdpi-dtc/ |
+JKU Apache-2.0 和论文 CC BY 4.0 图片按相应许可保留来源、作者、图号和修改说明。网页资源副本位于 `pll/assets/`，对应的上游来源和许可证见清单。
 
-页面资源副本位于 pll/assets/，共 37 个文件：24 张 JKU PLL PNG、7 张 JKU Oscillator SVG、3 张 MDPI PNG、1 张 FPGA DTC JPEG，以及第 1 章原有的 2 张 JKU SVG。共 42 处引用分布在 14 个章节。
+TI、ADI 官方资料仍用于课程内容，但仅通过出版方链接打开。页面不嵌入或重新托管其图像；TI Marker 只以明确标注的数值读数呈现，并链接回 TI 原始 PDF。TI/ADI 历史镜像副本及其网页引用已于 2026-11-19 清理，详见 [Source-First 来源映射](../../pll/docs/PLL_A_SOURCE_MAPPING_V2.md)。
 
-## 已下载、待入库的 8 份 PDF
+## 官方来源示例
 
-本轮已下载 8 份 PDF，合计 19,496,505 bytes，尚未提交到 GitHub 仓库：
-
-| 文件 | 计划归档路径 | 用途 |
-|---|---|---|
-| rfic.pdf | source-pdfs/jku/rfic.pdf | JKU 全课程原始材料 |
-| mt086.pdf | source-pdfs/adi/mt086.pdf | 参考/反馈分频链，Figure 3A |
-| snaa106c.pdf | source-pdfs/ti/snaa106c.pdf | 环路滤波器、稳定性、瞬态和锁定时间 |
-| adf4351.pdf | source-pdfs/adi/adf4351.pdf | 产品功能框图、PFD/ABP Figure 18 |
-| snaa336a.pdf | source-pdfs/ti/snaa336a.pdf | LMX2594 VCO Core、Capcode 和校准 |
-| lmx2594.pdf | source-pdfs/ti/lmx2594.pdf | Fractional-N PLL 功能框图及寄存器 |
-| mdpi.pdf | source-pdfs/papers/mdpi.pdf | 65 nm LC-DCO 论文原文 |
-| an143.pdf | source-pdfs/adi/an143.pdf | Reference Spur Figure 3 |
-
-## 仍需补充的资料和图片
-
-- ADI PLL Fundamentals：保存离线网页快照并记录作者、图号和访问日期。
-- JKU 上游源码：完整源码归档状态待核实；已使用图片的 LICENSE/CITATION 需保留。
-- Staszewski ADPLL 课件：当前 IEEE 下载地址返回 503，需寻找作者或机构的可靠替代来源。
-- ASIC ADPLL DTC：仍缺与分数相位补偿路径对应的 ASIC DTC 电路和增益校准原图。已归档的 FPGA Vernier DTC Figure 4 只能作为可编程延迟线实现例，不能替代 ASIC 图。
-- 厂商原图：ADF4351 官方 Figure 1 已定位到 `https://mds.analog.com/api/public/content/adf4351-fbl.png`，但尚未下载归档、授权核对和替换第 1 章复绘；ADF4351 Figure 18、MT-086 Figure 3A、AN143 Figure 3、LMX2594 功能框图、SNAA336A Figure 1-4 等仍待提取。
-- SNAA106C 的锁定时间曲线图号和页码仍待核对。
-
-具体执行步骤见 materials/TASK_PLL_NEXT_BATCH.md；首轮任务记录见 materials/TASK_PLL_IMAGE_REFRESH.md；逐图状态以 FIGURE_MANIFEST.csv 为准。
+- [TI LMX2594EVM SNAU210B Fig. 5-1（PDF p.6）](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6)
+- [ADI MT-008（PDF p.1–4）](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf)
+- [ADI ADF4351 数据手册](https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf)
+- [ADI AN-143](https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf)
+- [TI SNAA336A](https://www.ti.com/lit/an/snaa336a/snaa336a.pdf)
 
 ## 授权说明
 
-- JKU RFIC 课程仓库声明 Apache-2.0，随图保留 LICENSE/CITATION。
-- MDPI 两篇论文图像按 CC BY 4.0 标注作者、论文、DOI、图号和修改情况。
-- ADI/TI 数据手册、应用笔记及 IEEE/作者课件需要逐项核对版权和许可。下载可访问不等于获得公开再分发许可。
-- 当前仓库为个人学习用途；未来公开发布前需复核每项素材授权。
+- JKU RFIC 源码仓库声明 Apache-2.0；保留上游许可证和引用文件，并标注中文翻译/改编。
+- MDPI 图像按 CC BY 4.0 标注作者、论文、DOI、图号和修改情况。
+- TI/ADI 下载可访问不等于允许公开复制、展示或分发；没有明确许可的图像只提供官方来源链接。
+- 论文实测数据、厂商测量读数、教学模型值分别标注，不相互冒充。
+- 发布前继续复核链接版本、素材许可和逐图清单。

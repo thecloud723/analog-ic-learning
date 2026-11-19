@@ -1,6 +1,6 @@
 # PLL 素材来源索引
 
-## JKU（开放许可优先）
+## JKU（Apache-2.0）
 
 - JKU RFIC course — PLL：https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html
 - JKU RFIC course — Oscillators：https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator.html
@@ -10,24 +10,29 @@
 ## MDPI（CC BY 4.0）
 
 - Biereigel et al., “Radiation-Tolerant All-Digital PLL/CDR with Varactorless LC DCO in 65 nm CMOS”, Electronics 2021, 10(22), 2741：https://www.mdpi.com/2079-9292/10/22/2741
-- DOI：https://doi.org/10.3390/electronics10222741
+- DOI：https://doi.org/10.3390/electronics1022741
 - License：https://creativecommons.org/licenses/by/4.0/
 - Figure 3：https://mdpi-res.com/electronics/electronics-10-02741/article_deploy/html/images/electronics-10-02741-g003.png
 - Figure 4：https://mdpi-res.com/electronics/electronics-10-02741/article_deploy/html/images/electronics-10-02741-g004.png
 - Figure 7：https://mdpi-res.com/electronics/electronics-10-02741/article_deploy/html/images/electronics-10-02741-g007.png
 
-## ADI
+## ADI（官方链接；不托管受限图像）
 
+- ADI MT-008, Fig. 1 p.1：https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=1
+- ADI MT-008, Fig. 3 p.2：https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=2
+- ADI MT-008, Fig. 4 p.3; Eq. 2–3 p.4：https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=3
+- ADI ADF4351 Datasheet, Fig. 1 p.1：https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf#page=1
+- ADI AN-143, Fig. 3 p.2：https://www.analog.com/media/en/technical-documentation/application-notes/an143f.pdf#page=2
 - ADI MT-086：https://www.analog.com/media/en/training-seminars/tutorials/MT-086.pdf
-- ADI ADF4351 Datasheet：https://www.analog.com/media/en/technical-documentation/data-sheets/adf4351.pdf
 - ADI PLL Fundamentals：https://www.analog.com/en/resources/analog-dialogue/articles/phase-locked-loop-pll-fundamentals.html
-- ADI AN143 PDF：https://www.analog.com/media/en/technical-documentation/application-notes/AN143f.pdf
 
-## TI
+## TI（官方链接；不托管受限图像）
 
+- TI LMX2594EVM SNAU210B Rev.B, Fig. 5-1 p.6：https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6
+- TI SNAA336A, Fig. 2-2 p.6：https://www.ti.com/lit/an/snaa336a/snaa336a.pdf#page=6
 - TI SNAA106C：https://www.ti.com/lit/ml/snaa106c/snaa106c.pdf
-- TI SNAA336A：https://www.ti.com/lit/an/snaa336a/snaa336a.pdf
 - TI LMX2594 product/datasheet page：https://www.ti.com/product/LMX2594
+- TI Copyright Terms：https://www.ti.com/legal/terms-conditions/copyright.html
 
 ## ADPLL / DTC 补充资料
 
@@ -36,16 +41,14 @@
 
 ## 使用要求
 
-- 优先使用开放许可资料；按许可证保留版权、作者和修改说明。
-- 对未明确开放许可的教材/论文/数据手册，优先链接原文并依据其内容独立绘图讲解，不直接打包整张受版权保护的图。
-- 论文实测数据、厂商典型值、教学仿真值分别标注。
-- 每条引用尽量记录具体图号、表号、页码和访问日期。
-- 页面实际使用的图片必须放入 pll/assets/，未使用的原始资料放入 materials/pll/。
+- GitHub Pages 会公开仓库中的文件；只有已核实可公开再发布的图像才保留本地副本。
+- 对 TI/ADI 及其他未明确开放许可的原文，链接至官方发布页，配原创中文说明；不得把下载权限等同于再发布权限。
+- 每条引用记录具体章节、图号、公式号或 PDF 页码。许可与链接状态以 [FIGURE_MANIFEST.csv](FIGURE_MANIFEST.csv) 为准。
+- 论文实测数据、厂商测量读数、教学模型值分别标注。
+- 本仓库不归档出版方 PDF。页面提供官方直链供读者访问。
 
-## 本轮新增来源
+## 本轮来源清理
 
-- [JKU Oscillators](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator.html)，Fig. 60、61、69–73，Apache-2.0。保留上游 SVG，许可和引用文件位于 `originals/jku/`。
-- [Biereigel et al.](https://doi.org/10.3390/electronics10222741)，Fig. 3、4、7，CC BY 4.0。保留出版商 PNG。
-- [Chenggang Yan、Chen Hu、Jianhui Wu](https://doi.org/10.3390/app9132705)，Fig. 4，CC BY 4.0。保留出版商 550 px JPEG。
-
-下载日期 2026-11-12。逐图链接及 PDF 下载状态见[材料清单](../README.md)。
+- 2026-11-19 审计并移除了未确认可公开再发布的 TI/ADI 图片副本；引用页面保留图号、官方链接和中文读图摘要。
+- 逐项移除记录及页内使用方式见 [FIGURE_MANIFEST.csv](FIGURE_MANIFEST.csv) 和 [PLL A Source Mapping V2](../../pll/docs/PLL_A_SOURCE_MAPPING_V2.md)。
+- 下载日期和历史候选状态以材料清单的 Git 记录为准。
