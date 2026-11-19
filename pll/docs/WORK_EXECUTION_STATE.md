@@ -1,76 +1,62 @@
 # PLL A Source-First V2 执行状态
 
-> 本节为当前 V2 任务断点；下方保留 V1 Classroom 开发历史。恢复时先读本节，再核对 GitHub main。
+> 本节是本次 V2 任务断点。下方为 V1 Classroom 开发历史；恢复时先读取本节，再核对 GitHub main 最新 SHA。
 
 ## 当前任务信息
 
 - 项目：模拟系统知识学习 / thecloud723/analog-ic-learning
 - 任务：PLL A 六页 Source-First 内容改造 V2
 - 权威内容规范：pll/docs/PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md
-- 内容清单：pll/docs/PLL_A1_A2_CONTENT_CHECKLIST_2026-11-19.md
+- 编辑原则：pll/docs/PLL_SOURCE_FIRST_COURSE_EDITORIAL_SPEC_2026-11-19.md
 - 交互/模型规范：pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md
 - 当前分支：main
-- 审计基线 SHA：41b3444f46878f65d6769aa6f951572ec7d149d0
-- 最新 A 部分页提交：A1.3 TI/ADI 原教材链接、读图说明与 Marker 交互 d368e848050e4c22c7bd54f38bb07aed54985751
-- 当前 main 检查点：公开素材清理提交 29ea81ef61ba12c5bd2e677db3967287c829d1e2
-- 当前阶段：Phase 3 六页集成回归与部署检查；页面内容及公开素材清理已完成
-- 最后更新时间：2026-11-19（Asia/Shanghai）
+- 最新已验证代码 SHA：fa00160778d9fb5b61d0945c412934142b997c95
+- 最新内容/来源/验收文档 SHA：0ada8a663142a924bb52d9495877e8335e57d58f
+- 本状态文件更新前 main HEAD：0ada8a663142a924bb52d9495877e8335e57d58f；本文件随其后的状态检查点提交，恢复时仍须重新读取 main。
+- 本状态更新时间：2026-11-19（Asia/Shanghai）
+- 当前阶段：Phase 4 文档归档已完成；整体验收部分通过，浏览器集成检查待有浏览器环境时补做。
+- Pages workflow：run 44567452401，head fa001607，success（只证明构建/部署任务成功，不证明页面已在浏览器实测）。
 
 ## V2 工作清单
 
 | Task ID | 页面/模块 | 计划修改文件 | 状态 | 对应 commit | 测试结果 | 剩余问题 |
 |---|---|---|---|---|---|---|
-| V2-00 | 原教材审计与来源映射 | pll/docs/PLL_A_SOURCE_MAPPING_V2.md、WORK_EXECUTION_STATE.md、PROGRESS.md | 已完成 | dbc22ef | 映射及状态文件已读回；基线 main=41b3444 | 实施阶段继续核验页面 |
-| V2-01 | A2.1 教学样板 | pll/course/a2-1.html、a-classroom.css、tests/test_a_classroom_pages.py | 已完成 | 7a463fe | Node 模型套件 8/8；A2.1 Reset 接线 unittest 通过；来源顺序/MathML/100 MHz 40 ps/1.44°/URL 自检通过 | 浏览器桌面/手机视觉待整页回归 |
-| V2-02 | A2.2 频差积分 | pll/course/a2-2.html | 已完成 | 17ce8e5 | Node 模型套件 8/8；静态断言确认 JKU §6.7/§7.1、Fig.73 链接、本课程推导、2.15/+0.15 cycle 测试向量及分页 | 浏览器视觉/手机视口待集成验收 |
-| V2-03 | A2.3 PFD | pll/course/a2-3.html | 已完成 | 530adf1968f95787b43ef951b49453f2aebbe7a3 | Node 模型套件 8/8；Fig.77–81 原图/本地路径静态检查通过；REF/FB 正体文字、Δt 数学变量拆分、reset 延迟近似式检查通过 | 全六页桌面/手机浏览器回归待 Phase 3 |
-| V2-04 | A1.1 框图/频率链 | pll/course/a1-1.html | 已完成 | a3f0f0595dd5303c401e2a1de5781878064ae9a7 | 来源顺序、JKU 原图路径/Apache 许可、ADF 官方 PDF 链接且无 ADI 图镜像、MathML 与 SVG f 下标检查通过；频率向量默认/D=4/N=126、Node 8/8、Reset/导览静态断言通过 | 全页浏览器视口检查待 Phase 3 |
-| V2-05 | A1.2 锁定与模型 | pll/course/a1-2.html、pll/course/a-classroom.css | 已完成 | 9b8a869f59f9e316a15de9623150920aec1e07ec | Fig.76/Fig.83 原图和 Eq.62–64/Eq.67–69 精确链接；Type-I/II与 C3 条件分开；39 个 MathML 块结构平衡；模型 t=0、+100 kHz 符号、3.25 μs公式复算通过；保留三曲线/游标/Play/Pause/Step/Restart | 浏览器排版与窄屏视觉待 Phase 3（本环境进程/浏览器不可用） |
-| V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、pll/course/a-classroom.css、pll/course/a-classroom-data.js | 已完成 | d368e848050e4c22c7bd54f38bb07aed54985751 | 来源区早于预测题；TI Fig.5-1/ADI MT-008 官方链接定位；9 个 MathML 块配对；4 个 Marker 数值、无连线、无厂商图片引用；选择器/单位切换/Reset/检查题保留 | 浏览器桌面/手机视觉待集成验收 |
-| V2-07 | 公共样式和测试 | pll/course/a-classroom.css、tests/test_a_classroom_pages.py | 进行中 | 7a463fe / d368e848 | 增加 Source-First 样式、公式索引和 Marker 表格；A1.3 MathML/来源顺序/无图片引用静态断言通过；全六页测试待集成回归 | 全页测试与浏览器视口待验 |
-| V2-10 | TI/ADI 公开图片副本审计 | pll/assets/originals/{adi,ti}/、materials/pll/originals/{adi,ti}/、8 个遗留 PLL HTML、FIGURE_MANIFEST.csv、材料说明与来源映射 | 已完成 | 29ea81ef61ba12c5bd2e677db3967287c829d1e2 | 73 个 HTML 全仓扫描无旧 vendor 图片引用；16 个仓库副本（10 个运行时/6 个材料归档）移除；8 个旧页面仅替换图块并保留全部 id/data-*/script/实验控件；来源链接和中文摘要保留 | Pages 部署与浏览器视口仍待最终验收 |
-| V2-08 | 文档/实验台账 | README、主纲、页计划、成熟度台账、PROGRESS、执行状态、V2 验收报告 | 进行中 | 29ea81ef | Source Mapping、FIGURE_MANIFEST、materials README/SOURCES 已同步；PLL 根 README、主纲、页计划、实验台账、V2 验收报告仍待更新 | 不改变 L1–L4 成熟度判定 |
-| V2-09 | 集成与 Pages 验收 | 六页、原图、MathML、桌面/手机、B–F、部署 | 进行中 | 29ea81ef | 全 73 HTML 不再引用 TI/ADI 本地图片；8 个非 A 教材页替换图块后 id/data/script 控件静态比对一致；Pages 工作流、模型/公式固定向量和浏览器回归待查 | 浏览器/离线/Pages 实测如不可用需明确未验证 |
+| V2-00 | 原教材审计与来源映射 | pll/docs/PLL_A_SOURCE_MAPPING_V2.md、materials/pll/FIGURE_MANIFEST.csv | 已完成 | 0ada8a6（归档）、29ea81e（材料清理） | 定位六页章节/图号/公式与许可；TI/ADI 原图改 official-link-only | 浏览器链接可达性待实测 |
+| V2-01 | A2.1 时间差→相位差 | pll/course/a2-1.html | 已完成 | 7a463fe | JKU §7.1 原式、100 MHz/40 ps=1.44°、正负号和静态结构检查；模型向量通过 | 页面视觉/手机浏览器未验 |
+| V2-02 | A2.2 频差→相位差 | pll/course/a2-2.html | 已完成 | 17ce8e5 | JKU §6.7/§7.1 与本课程推导分开；2.15/+0.15 cycle 固定向量通过 | 页面视觉/手机浏览器未验 |
+| V2-03 | A2.3 PFD 逐事件 | pll/course/a2-3.html | 已完成 | 530adf1 | Fig.77–81 来源与事件模型静态检查；REF/FB 顺序、reset 和多周期方向向量通过 | 页面视觉/手机浏览器未验 |
+| V2-04 | A1.1 框图/频率链 | pll/course/a1-1.html | 已完成 | a3f0f05；标签/符号修订 fa001607 | Fig.74 来源主图、ADF 官方 PDF 链接；R/N/D 频率向量、Reset、Guided Tour 检查 | 页面视觉/手机浏览器未验 |
+| V2-05 | A1.2 锁定与 Type-I/II | pll/course/a1-2.html、pll/course/a-classroom.css | 已完成 | 9b8a869 | Fig.76/Eq.62–64 与 Fig.83/Eq.67–69 分开；模型 t=0/采样向量通过；三曲线保留 | 页面视觉/手机浏览器未验 |
+| V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、pll/course/a-classroom-data.js | 已完成 | d368e848；厂商图清理 29ea81e | TI 四 marker、dBc/dBc/Hz、ADI Eq.2–3 与官方链接；无本地厂商图路径 | 页面视觉/手机浏览器未验 |
+| V2-07 | 数学排版及交互框图标签 | 六个 a*.html、a-classroom.css/js/data、tests/test_a_classroom_pages.py | 已完成 | fa001607 | 119 个 MathML 块结构无错；无数值 HTML 实体、fREF/fVCO 等裸伪公式；三共享 JS 解析通过 | 真实浏览器字体效果待验 |
+| V2-08 | 公式、图片与课程台账归档 | pll/docs/PLL_S1_04_FORMULA_INDEX.md、PLL_S1_05_FIGURE_MANIFEST.md、pll/EXPERIMENT_LEVEL_ROADMAP.md、PLL_MASTER_COURSE_OUTLINE、PLL_PAGE_PLAN、README、checklist | 已完成 | 0ada8a6 | 文档 GitHub 回读内容匹配；实验成熟度仍为 L1，旧图片清单标为历史 | 无 |
+| V2-09 | 验收报告和进度断点 | pll/docs/PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md、pll/docs/WORK_EXECUTION_STATE.md、pll/PROGRESS.md | 已完成（此状态检查点提交后） | 0ada8a6 + 本状态提交 | 六页/模型/来源证据已归档；报告明确未验证项 | 状态提交 SHA 由 main 历史读取 |
+| V2-10 | 六页真实浏览器/设备/离线及 B–F 回归 | 六个 A 页面、B–F 页面、共享资源 | 待验证 | — | 当前未运行 | 需可访问 Pages 的浏览器、390 px 视口、DevTools Offline/Console 与本地静态 HTTP |
 
-## 已核验事实
+## 已完成且已推送的代码/文档证据
 
-- 受限厂商图片审计提交 `29ea81ef61ba12c5bd2e677db3967287c829d1e2`：清理了 10 个 `pll/assets/originals/{adi,ti}` 和 6 个 `materials/pll/originals/{adi,ti}` 文件。A1.3 及旧第 1/11/12/13/18 章、课程 D1.1/D1.3/D3.1 共 9 个页面现在以官方出版方链接和中文读图摘要为准；旧课程文件的 id、data 属性、script 标签及交互控件标签逐项保持一致。
-- 审计证据：对仓库全部 73 个 HTML 重新检索，没有 `src`/`href` 指向 `pll/assets/originals/adi/` 或 `ti/`；当前递归 Git tree 中也没有 `pll/assets/originals/{adi,ti}/` 或 `materials/pll/originals/{adi,ti}/` 文件。材料清单、README、SOURCES 和来源映射同步了 publisher-link-only 状态。GitHub Pages 发布/浏览器视觉还需最终回归。
-- A1.3 页面提交 `d368e848050e4c22c7bd54f38bb07aed54985751` 将 TI SNAU210B Fig.5-1 及 ADI MT-008 的精确官方 PDF 定位、独立中文读图说明和来源限制放在 Marker 实验之前。TI 页内测量前提（干净参考源，例如 100 MHz Wenzel；普通信号发生器不够干净）已按官方手册补入；MT-008 Fig.1/3/4、Eq.2/3 分别链接到 PDF 页 1/2/3/4。
-- A1.3 保留四个原图 Marker 的离散点（10 kHz −105.1543、100 kHz −108.0194、1 MHz −116.4369、10 MHz −141.5219 dBc/Hz，显示精度 0.1 dB），不连线、不插值；TI 和 ADI 位图从该页移除。TI 原始图由官方链接打开。
-- A1.3 静态验收：来源主体早于 Predict；9 个 MathML 块标签配对平衡；关键来源页链接存在；vendor image URL/路径、未解码 &#x 实体不存在；Marker、单位切换、Reset、回答反馈控件和共享 `connect:false` 点列行为保留。浏览器桌面/移动渲染仍未验证，留待集成阶段。
-- A1.2 提交 `9b8a869f59f9e316a15de9623150920aec1e07ec` 在交互台前呈现 JKU Fig.76 Type-I 原图与 Eq.62–64、Fig.83 Type-II 架构原图与 Eq.67–69。每个公式链接到 JKU QMD 中核实的 Quarto 方程锚点；图注链接到原图锚点。
-- Type-II Eq.67–69 明确标注“忽略 C3 才得到二阶关系”；Fig.83 保留 C3 时滤波器为三阶。现有三曲线另列成本课程 Type-II 二阶近锁行为模型公式，并明确不是 JKU Type-I 方程的仿真，也不是 Fig.83 的 SPICE。
-- A1.2 模型单位区分 JKU `K_VCO` 的 rad/(s·V) 与共享模型采用的 Hz/V，显示 `K_VCO,ω=2πK_VCO,f`。默认初始相位误差为零，并给出 t=0 的 −100 kHz/−1 mV/0 rad 检查点。
-- A1.2 纯 JS 固定向量：t=0 负频差 → −100 kHz、−1 mV、0 rad；+100 kHz → +1 mV、0 rad；t=3.25 μs 与共享模型直接计算及独立闭式方程一致。39 个 MathML 块通过标签配对结构检查。此环境浏览器/本地进程刚不可用，未做该页渲染截图；留到集成验收且若运行环境仍不可用则标未验证。
+- 六页 URL、导航和原有实验结构保留；每页正文先呈现来源材料和中文解释，再进入已存在的交互验证。
+- JKU 可复用原图保留本地路径、原图号和许可信息；TI/ADI 厂商图没有镜像到公开页面；来源位置和现行清单已同步。
+- A1.1 明确 fVCO 与最终 RF 输出是不同节点。A1.2 不混淆 Type-I/Type-II。A2.2 不把相位显示回卷称为 Cycle Slip。A2.3 明确理想 PFD 事件模型边界。
+- V8 harness 中 Node 模型套件 8/8；32 个固定向量/边界断言通过。六页静态结构、关键控件、URL、Reset、导航和来源顺序检查通过。MathML 119/119 结构通过；共享 JavaScript 3/3 可解析。
+- GitHub main 上 fa001607 的 Pages build/deployment workflow success；内容/来源/验收 docs commit 0ada8a6 已推送并抽样回读。A-INT-01～06 成熟度全为 L1。
 
-- A1.1 `a3f0f0595dd5303c401e2a1de5781878064ae9a7` 已将 JKU §7.1 Fig.74 原图作为正文主图，并把交互框图明确标为教学扩展；图边标注 Apache-2.0 与直接原文定位。该简化原图没有独立输出分频器，原文锁定关系 `f_out=N f_ref` 用 MathML 呈现。
-- A1.1 的产品对照通过 ADI ADF4351 官方 PDF 第 1 页 Fig.1 直接链接阅读，移除了本页嵌入的 ADI 图。扩展计算器把 ÷R、反馈 ÷N、输出 ÷D 公式用 MathML 表达；既有互动 SVG 下标保持 `f` 斜体、文字下标正体。
-- A1.1 实测向量：40 MHz、R=1、N=125、D=2 → fVCO=5 GHz、fOUT=2.5 GHz；D=4 → fVCO 不变、fOUT=1.25 GHz；N=126 → fVCO=5.04 GHz。Node 模型 8/8 通过，页面来源顺序/MathML/官方链接/导览与 Reset 结构检查通过。
+## 下一步工作（精确恢复任务）
 
-- A2.3 页面提交 `530adf1968f95787b43ef951b49453f2aebbe7a3` 已将 JKU Fig.77–81 原图按电路/REF-first/FB-first/对齐/频差过渡排列在预测题和实验台之前；原图来源锚点与 Apache-2.0 许可链接已在图注附近。
-- A2.3 仍使用原有 PFD 事件状态机和多周期实验。理想模型的 REF/FB 标签以正体 MathML 文本显示，Δt 变量由独立的 Δ 与斜体 t 构成；脉宽关系明确标注为本课程理想事件模型。
-- A2.3 独立检查：Node 固定向量/边界套件 8/8；页面本地断言检查五张原图路径、Fig.77–81、来源段在实验台之前、CSS v9、MathML 正体标签和 Reset 均通过。完整跨页 Python 测试当前因 A1.1/A1.2/A1.3 尚未迁移而预期失败，不能作为本阶段通过证据；待六页完成后重跑。
+当前没有可用浏览器/截图、viewport、DevTools Offline/Console 或本地监听 shell。恢复环境后只做以下待验证项，不重做来源审计或改写交互：
 
-- 最新审计基线 SHA 以上述 GitHub main 为准。main 新增了 A1–A2 内容清单，已将其纳入编排参考；旧 V1 页面验收不作为 V2 结果。
-- 六个 Classroom URL、侧栏和翻页骨架保持原样。当前 HTML 先放 Predict/Workbench，V2 要求把来源教材正文移到交互主体前。
-- JKU §7.1 原式 Δφ=2π·Δt/T_ref 和 V_error=K_PD·Δφ 均无编号；已在 A2.1 主体使用 MathML 并配套单位/正负号约定。Eq.62–64 为 Type-I；§7.2 Eq.67–69 为 Type-II CP-PLL。现有三曲线模型不可引用 Eq.62–64。
-- A2.1 约定 Δt=t_FB−t_REF、Δφ=φ_REF−φ_FB。100 MHz、+40 ps → +1.44°。相位式来源是 JKU，符号方向由页面声明。
-- A1.3 TI marker：10 kHz −105.1543、100 kHz −108.0194、1 MHz −116.4369、10 MHz −141.5219 dBc/Hz；图内 53.169 fs 是原图测量读数，不由四点重算。教学可视化与原测量图区分。
-- JKU Fig.73 原图在当前 PLL 图目录缺失；使用 §6.7 原公式及 Fig.73 官方定位，不自行重绘。
+1. 打开 https://thecloud723.github.io/analog-ic-learning/pll/course/a1-1.html、a1-2.html、a1-3.html、a2-1.html、a2-2.html、a2-3.html，逐页验证来源图/公式、R/N/D、Marker、拖动边沿、相位圆盘、共享曲线游标、PFD 逐事件/多周期、Play/Step/Reset 和答题反馈。
+2. 设置约 390 px 手机视口，检查横向溢出、图轴/图例、公式行宽、控件可达和滚动表现；修复后复跑六页结构和模型测试。
+3. 打开 DevTools Console 检查课程自身错误；载入后切到 Offline，确认本地图片/脚本和关键交互仍可用。
+4. 在本地静态服务器环境验证六页 HTML 与共享资源 HTTP 状态/MIME；浏览器回归受图片链接变更影响的 PLL 遗留页及 B–F 页面。
+5. 将实测结果写回本文件、V2 验收报告、PROGRESS 和 README，再将“部分验收”结论按证据更新。
 
-## 下一步工作
-
-1. 对 A1.1–A2.3 六个页面重新跑静态 HTML/MathML/公式来源/模型固定向量/Reset/翻页检查，并核实所有 JKU 原图授权标注及厂商官方链接定位。
-2. 查看 GitHub Actions Pages 工作流和实际线上 A1.1–A2.3 URL；进行 B–F 导航/资源回归。尝试桌面/手机浏览器及本地静态/离线运行，工具受限项如实标记未验证。
-3. 更新根 README、PLL 主纲、页计划、实验成熟度台账，建立 `PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md`。
-4. 最后复核来源映射、进度、测试结果和 commit SHA，推送最终验收状态。
-
-
+以上浏览器检查是当前第一个未完成项。环境未提供对应能力时，保留“待验证”，不可伪造通过。
 
 ## 中断恢复协议
 
-读取本节和 GitHub main SHA，从首个非“已完成”任务恢复；先 fetch 最新版本再写入。禁止把旧 V1 通过项当作 V2 验收，也不要重复建设模型。
+恢复时先读取本文件和 GitHub main 最新 HEAD，从 V2-10 首个未完成事项继续；检查现有 commit 和验收证据，避免重复已完成的实施。
+
 ---
 
 # PLL A Classroom 持续执行状态
