@@ -360,6 +360,34 @@ jobs:
                   (index!==2 || actual.includes('100 kΩ'))});
               }
              }
+             const noise01=document.querySelector('[data-lab="noise01"]');
+             if(noise01){
+              const read=()=>noise01.querySelector('[data-result]').textContent;
+              const jitter=()=>Number(read().match(/随机 RMS ([\d.]+) ps/)[1]);
+              const baseline=jitter();
+              checks.push({label:'seven-source default close to Python',actual:read(),pass:Math.abs(baseline-.755425)<.002});
+              change('noise01-high',500000);
+              checks.push({label:'narrower and spur excluded',actual:read(),pass:jitter()<baseline && read().includes('带内纯 PM RMS 0.000 ps')});
+              change('noise01-high',20000000);
+              change('noise01-case','cp50');
+              checks.push({label:'lower CP current case',actual:read(),pass:Math.abs(jitter()-1.339458)<.003});
+              change('noise01-case','n100');
+              checks.push({label:'carrier tracks N',actual:read(),pass:read().startsWith('4.00 GHz')});
+              change('noise01-pm',true);
+              checks.push({label:'optional deterministic PM',actual:read(),pass:read().includes('合计 RMS')});
+              for(const input of noise01.querySelectorAll('[data-source]')) input.checked=false;
+              change('noise01-view','gain');
+              checks.push({label:'all sources off',actual:read(),pass:jitter()===0 &&
+                document.getElementById('noise01-axis').textContent.includes('100 kHz')});
+             }
+             const evmFixed=document.querySelector('[data-lab="evmFixed"]');
+             if(evmFixed){
+              for(const [index,residual] of [[0,'-2.78'],[1,'5.46'],[2,'-0.01']]){
+               change('evm-fixed-holdout',index);
+               const actual=evmFixed.querySelector('[data-result]').textContent;
+               checks.push({label:'fixed EVM holdout '+index,actual,pass:actual.includes('残差 '+residual+' dB')});
+              }
+             }
              return checks;
             });
             if(physical.length) result.physical=physical;
