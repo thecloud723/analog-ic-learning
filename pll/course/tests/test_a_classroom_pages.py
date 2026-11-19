@@ -119,7 +119,7 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertEqual({src.split("?", 1)[0] for src in page.stylesheets}, {"course.css", "a-classroom.css"})
                 for src in page.scripts + page.stylesheets:
                     if src.split("?", 1)[0] != "course.css":
-                        self.assertIn("?v=20261119-2", src)
+                        self.assertIn("?v=20261119-3", src)
                 self.assertIn("a-classroom-shell", page.shell_classes)
                 reset_action = "restart" if filename in {"a1-2.html", "a2-2.html"} else "reset"
                 self.assertIn(reset_action, page.actions)
@@ -153,6 +153,20 @@ class ClassroomPageTests(unittest.TestCase):
         self.assertIn("[data-action='reset']", a21)
         self.assertIn('modeSelect.value = "fixed-time"', a21)
         self.assertIn('setParam(root, "deltaTimePs", 40)', a21)
+
+    def test_every_data_chart_has_a_labeled_legend_and_axis_units(self):
+        runtime = (COURSE / "a-classroom.js").read_text(encoding="utf-8")
+        self.assertIn("legendSeries", runtime)
+        self.assertIn("spec.xLabel", runtime)
+        self.assertIn("spec.yLabel", runtime)
+        labels = [
+            "Unwrapped phase", "Wrapped phase", "FB edge", "tFB − tREF",
+            "UP pulse width", "DN pulse width", "Frequency error",
+            "Control voltage deviation", "Phase error", "TI measured markers",
+        ]
+        for label in labels:
+            with self.subTest(label=label):
+                self.assertTrue(f'label:"{label}"' in runtime or f'label: "{label}"' in runtime)
 
     def test_measured_and_original_figure_assets_are_present(self):
         required = [

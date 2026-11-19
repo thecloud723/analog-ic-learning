@@ -76,7 +76,8 @@
     var ctx = canvas.getContext("2d");
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, width, height);
-    var margin = {left: 62, right: 13, top: 15, bottom: 44};
+    var legendSeries = (spec.series || []).filter(function (series) { return !!series.label; });
+    var margin = {left: 62, right: 13, top: legendSeries.length ? 36 : 15, bottom: 44};
     var x0 = margin.left, x1 = width - margin.right;
     var y0 = margin.top, y1 = height - margin.bottom;
     var xSpan = (spec.xMax - spec.xMin) || 1;
@@ -107,6 +108,28 @@
     if (spec.yLabel) {
       ctx.save(); ctx.translate(15, (y0 + y1) / 2); ctx.rotate(-Math.PI / 2);
       ctx.fillText(spec.yLabel, 0, 0); ctx.restore();
+    }
+    if (legendSeries.length) {
+      ctx.save();
+      ctx.font = "11px system-ui, sans-serif";
+      var legendWidths = legendSeries.map(function (series) { return 20 + ctx.measureText(series.label).width; });
+      var legendGap = 14;
+      var legendTotal = legendWidths.reduce(function (sum, item) { return sum + item; }, 0) + legendGap * (legendSeries.length - 1);
+      var legendX = Math.max(6, (width - legendTotal) / 2);
+      var legendY = 19;
+      legendSeries.forEach(function (series, index) {
+        var color = series.color || "#17658b";
+        ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2.5;
+        if (series.dots) {
+          ctx.beginPath(); ctx.arc(legendX + 6, legendY, 3, 0, Math.PI * 2); ctx.fill();
+        } else {
+          ctx.beginPath(); ctx.moveTo(legendX, legendY); ctx.lineTo(legendX + 13, legendY); ctx.stroke();
+        }
+        ctx.fillStyle = "#314d60"; ctx.textAlign = "left";
+        ctx.fillText(series.label, legendX + 19, legendY + 4);
+        legendX += legendWidths[index] + legendGap;
+      });
+      ctx.restore();
     }
     (spec.series || []).forEach(function (series) {
       ctx.strokeStyle = series.color || "#17658b";
@@ -352,7 +375,7 @@
         xTicks: ticks([0, endUs / 4, endUs / 2, 3 * endUs / 4, endUs], " μs", endUs < 10 ? 2 : 0),
         yTicks: ticks([-yMax, -yMax / 2, 0, yMax / 2, yMax], "", 2),
         xLabel: "Observation time (μs)", yLabel: "Unwrapped phase (cycle)",
-        series: [{color: "#17658b", points: fullPoints}],
+        series: [{color: "#17658b", label: "Unwrapped phase", points: fullPoints}],
         cursor: cursorUs
       });
       drawChart(query(root, "#wrapped-chart"), {
@@ -360,7 +383,7 @@
         xTicks: ticks([0, endUs / 4, endUs / 2, 3 * endUs / 4, endUs], " μs", endUs < 10 ? 2 : 0),
         yTicks: ticks([-0.5, -0.25, 0, 0.25, 0.5], "", 2),
         xLabel: "Observation time (μs)", yLabel: "Wrapped phase (cycle)",
-        series: [{color: "#a64e25", points: wrapPoints, breakOnJump: 0.5}],
+        series: [{color: "#a64e25", label: "Wrapped phase", points: wrapPoints, breakOnJump: 0.5}],
         cursor: cursorUs
       });
       text(root, '[data-value="deltaFrequencyKHz"]', signed(dfKHz, 1) + " kHz");
@@ -454,7 +477,7 @@
           xMin: -2000, xMax: 2000, yMin: -2000, yMax: 2000,
           xTicks: ticks([-2000,-1000,0,1000,2000]," ps",0), yTicks: ticks([-2000,-1000,0,1000,2000],"",0),
           xLabel: "FB edge time relative to REF (ps)", yLabel: "Edge time (ps)",
-          series: [{color:"#a64e25",dots:true,connect:false,selectedIndex:0,points:[[fbPs,fbPs]]}]
+          series: [{color:"#a64e25",label:"FB edge",dots:true,connect:false,selectedIndex:0,points:[[fbPs,fbPs]]}]
         });
       } else {
         var index = Math.max(1, Math.min(pair.offsets.length, Math.round(number(root, "cycleIndex")))) - 1;
@@ -470,7 +493,7 @@
           xTicks: pair.offsets.map(function (_, i) { return [i + 1, String(i + 1)]; }),
           yTicks: [Math.min.apply(null,pair.offsets), 0, Math.max.apply(null,pair.offsets)].map(function (v) { return [v, fmt(v, 1)]; }),
           xLabel: "Comparison cycle", yLabel: "tFB − tREF (ps)",
-          series: [{color:"#17658b",points:pair.offsets.map(function (v,i) { return [i + 1,v]; })}],
+          series: [{color:"#17658b",label:"tFB − tREF",points:pair.offsets.map(function (v,i) { return [i + 1,v]; })}],
           cursor: index + 1
         });
         drawChart(query(root, "#pfd-width-chart"), {
@@ -480,8 +503,8 @@
           yTicks: [0, Math.max.apply(null,pair.widthsUp.concat(pair.widthsDn)) / 2, Math.max.apply(null,pair.widthsUp.concat(pair.widthsDn))].map(function (v) { return [v, fmt(v, 1)]; }),
           xLabel: "Comparison cycle", yLabel: "Pulse width (ps)",
           series: [
-            {color:"#17658b",points:pair.widthsUp.map(function (v,i) { return [i + 1,v]; })},
-            {color:"#a64e25",points:pair.widthsDn.map(function (v,i) { return [i + 1,v]; })}
+            {color:"#17658b",label:"UP pulse width",points:pair.widthsUp.map(function (v,i) { return [i + 1,v]; })},
+            {color:"#a64e25",label:"DN pulse width",points:pair.widthsDn.map(function (v,i) { return [i + 1,v]; })}
           ],
           cursor: index + 1
         });
@@ -596,9 +619,9 @@
       var freq=result.samples.map(function(s){return [s.timeSec*1e6,s.deltaFVcoHz/1e3];});
       var ctrl=result.samples.map(function(s){return [s.timeSec*1e6,s.deltaVctrlV*1e3];});
       var phase=result.samples.map(function(s){return [s.timeSec*1e6,s.deltaPhaseRefMinusFbRad*1e3];});
-      drawChart(query(root,"#settle-frequency"),{xMin:0,xMax:10,yMin:-220,yMax:220,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-200,-100,0,100,200],"",0),xLabel:"Time (μs)",yLabel:"ΔfVCO (kHz)",series:[{color:"#17658b",points:freq}],cursor:cursorUs});
-      drawChart(query(root,"#settle-control"),{xMin:0,xMax:10,yMin:-2.2,yMax:2.2,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-2,-1,0,1,2],"",0),xLabel:"Time (μs)",yLabel:"ΔVCTRL (mV)",series:[{color:"#2d6f59",points:ctrl}],cursor:cursorUs});
-      drawChart(query(root,"#settle-phase"),{xMin:0,xMax:10,yMin:-12,yMax:12,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-10,-5,0,5,10],"",0),xLabel:"Time (μs)",yLabel:"Δφe (mrad)",series:[{color:"#a64e25",points:phase}],cursor:cursorUs});
+      drawChart(query(root,"#settle-frequency"),{xMin:0,xMax:10,yMin:-220,yMax:220,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-200,-100,0,100,200],"",0),xLabel:"Time (μs)",yLabel:"ΔfVCO (kHz)",series:[{color:"#17658b",label:"Frequency error",points:freq}],cursor:cursorUs});
+      drawChart(query(root,"#settle-control"),{xMin:0,xMax:10,yMin:-2.2,yMax:2.2,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-2,-1,0,1,2],"",0),xLabel:"Time (μs)",yLabel:"ΔVCTRL (mV)",series:[{color:"#2d6f59",label:"Control voltage deviation",points:ctrl}],cursor:cursorUs});
+      drawChart(query(root,"#settle-phase"),{xMin:0,xMax:10,yMin:-12,yMax:12,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-10,-5,0,5,10],"",0),xLabel:"Time (μs)",yLabel:"Δφe (mrad)",series:[{color:"#a64e25",label:"Phase error",points:phase}],cursor:cursorUs});
       var at=M.settlingResponse({deltaF0Hz:offsetKHz*1e3,fnHz:90e3,zeta:.7,N:125,kvcoHzPerVolt:100e6},cursorUs*1e-6).samples[0];
       text(root,'[data-value="deltaF0KHz"]',signed(offsetKHz,0)+" kHz");
       text(root,'[data-value="cursorUs"]',fmt(cursorUs,2)+" μs");
@@ -708,7 +731,7 @@
       drawChart(query(root,"#noise-chart"),{
         xMin:4,xMax:7,yMin:-150,yMax:-100,xTicks:[[4,"10 kHz"],[5,"100 kHz"],[6,"1 MHz"],[7,"10 MHz"]],
         yTicks:ticks([-150,-140,-130,-120,-110,-100],"",0),xLabel:"Offset frequency (log scale)",yLabel:"SSB phase noise (dBc/Hz)",
-        series:[{color:"#17658b",dots:true,connect:false,selectedIndex:idx,points:points}]
+        series:[{color:"#17658b",label:"TI measured markers",dots:true,connect:false,selectedIndex:idx,points:points}]
       });
       text(root,"[data-noise-offset]",point.label);
       text(root,"[data-noise-level]",fmt(point.dbcPerHz,1)+" dBc/Hz");
