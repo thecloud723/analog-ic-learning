@@ -1,3 +1,12 @@
+## A 部分 Classroom 完整开发（2026-11-19）
+
+- 当前执行状态与逐项断点见 [WORK_EXECUTION_STATE.md](docs/WORK_EXECUTION_STATE.md)。权威交互基线为 [PLL A Classroom SDD](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)。
+- Phase 0 审计：当前 main 为 `3edc1c809d874d44489d7c17acd92035146c38cd`（SDD 所载基线已过期）；六个目标页及本地 JKU/ADI/TI 图源存在。六页仍是旧式单控件交互，Classroom 公共层、预测/检查流程、同步游标和 PFD 状态机尚未实现。
+- 核验 TI LMX2594 Fig. 5-1 本地图：载波约 14.0000289 GHz，四个测量 marker 与 SDD 记录相符；显示精度按图上读数采用 0.1 dB，离散 marker 不连接成实测曲线。
+- 公式抽查：A2.1 正负号约定一致；A2.2 使用 ([-0.5,0.5)) cycles；A2.3 延迟复位模型与示例脉宽一致；A1.2 的 10 μs 固定向量计算为 −0.270618 kHz、−0.002706 mV、−0.185687 mrad。
+- 本次只记录审计与启动状态；六页实现、独立测试和回归尚未完成，不代表课程已验收。
+- 提交：状态基线提交将创建于本次运行，完整 SHA 随后回填；下一步进入 Phase 1 公共模型与 Classroom 组件实施。
+
 # PLL 课程制作与技术验收记录（01～18 章）
 
 ## 课程大纲更新（2026-11-19）
