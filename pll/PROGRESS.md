@@ -1,8 +1,12 @@
 # PLL 课程制作与技术验收记录（01～18 章）
 
+## 阶段 3 已验收
+
+- 2026-11-19，NOISE-01 已补原图标记、固定留出、分源和积分网页交互，Notebook 在净环境执行并保存。TI 的留出 RMS 残差为 3.536 dB。见[验收记录](docs/PLL_S3_ACCEPTANCE.md)。
+
 ## 阶段 3 执行记录
 
-- 2026-11-19，NOISE-01 七源线性 PSD 预算、单双边口径、离散 PM 分离及两种记录长度的 FFT 校验通过。5 GHz 的教学工况中，12 kHz–20 MHz 随机 RMS 为 0.755425 ps。公开实测对照及网页交互待验收。见[阶段 3 验收](docs/PLL_S3_ACCEPTANCE.md)和[净环境运行](https://github.com/thecloud723/analog-ic-learning/actions/runs/44425261782)。
+- 2026-11-19，NOISE-01 七源线性 PSD 预算、单双边口径、离散 PM 分离及两种记录长度的 FFT 校验通过。5 GHz 的教学工况中，12 kHz–20 MHz 随机 RMS 为 0.755425 ps。后续公开实测和网页交互见上方验收。见[阶段 3 验收](docs/PLL_S3_ACCEPTANCE.md)和[净环境运行](https://github.com/thecloud723/analog-ic-learning/actions/runs/44425261782)。
 
 ## 阶段 2 已验收
 
