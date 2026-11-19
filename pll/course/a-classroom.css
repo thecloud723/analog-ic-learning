@@ -108,7 +108,7 @@
 .a-classroom .pll-diagram .diagram-node.is-frequency-focus .node-surface { fill: #fff4df; stroke: #b8582a; stroke-width: 4; }
 .a-classroom .pll-diagram .freq-label { fill: #38586c; font-size: 17px; font-weight: 650; text-anchor: middle; }
 .a-classroom .pll-diagram .freq-value { fill: #526d80; font-size: 15px; font-variant-numeric: tabular-nums; text-anchor: middle; }
-.a-classroom .pll-diagram .math-variable { font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "Times New Roman", serif; font-style: italic; }
+.a-classroom .pll-diagram .math-variable, .a-classroom svg .math-variable { font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "Times New Roman", serif; font-style: italic; }
 .a-classroom .pll-diagram .math-subscript { font-family: "STIX Two Math", "Cambria Math", "Times New Roman", serif; font-size: .68em; font-style: normal; baseline-shift: sub; }
 .a-classroom .pll-diagram [data-frequency-kind].is-frequency-focus .freq-label,
 .a-classroom .pll-diagram [data-frequency-kind].is-frequency-focus .freq-value { fill: #a64e25; font-weight: 800; }
@@ -214,8 +214,8 @@
 .a-classroom .source-equation math { display: block; width: max-content; max-width: none; margin: 0 auto; font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIXGeneral", "Times New Roman", serif; font-size: 1.28rem; }
 .a-classroom .source-equation-compact { margin: .25rem 0 .6rem; padding: .4rem .65rem; }
 .a-classroom .source-equation-compact math { font-size: 1.12rem; }
-.a-classroom .source-first-card math.inline-equation {
-  display: inline; vertical-align: -.16em; font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIXGeneral", "Times New Roman", serif; font-size: 1.08em;
+.a-classroom math.inline-equation {
+  display: inline; vertical-align: -.16em; font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIXGeneral", "Times New Roman", serif; font-size: 1.08em; white-space: nowrap;
 }
 .a-classroom .source-reference { color: #4e6878; font-size: .87rem; }
 .a-classroom .source-reference a, .a-classroom .source-first-card a { text-underline-offset: .15em; }

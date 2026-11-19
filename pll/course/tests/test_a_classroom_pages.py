@@ -117,9 +117,16 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertEqual(page.labs, [lab_id])
                 self.assertEqual({src.split("?", 1)[0] for src in page.scripts}, expected_scripts)
                 self.assertEqual({src.split("?", 1)[0] for src in page.stylesheets}, {"course.css", "a-classroom.css"})
+                expected_versions = {
+                    "a-classroom-models.js": "20261119-6",
+                    "a-classroom-data.js": "20261119-7",
+                    "a-classroom.js": "20261119-7",
+                    "a-classroom.css": "20261119-10",
+                }
                 for src in page.scripts + page.stylesheets:
-                    if src.split("?", 1)[0] != "course.css":
-                        self.assertIn("?v=" + ("20261119-6" if src.split("?", 1)[0].endswith(".js") else "20261119-9"), src)
+                    asset = src.split("?", 1)[0]
+                    if asset in expected_versions:
+                        self.assertIn("?v=" + expected_versions[asset], src)
                 self.assertIn("a-classroom-shell", page.shell_classes)
                 reset_action = "restart" if filename in {"a1-2.html", "a2-2.html"} else "reset"
                 self.assertIn(reset_action, page.actions)
@@ -164,8 +171,8 @@ class ClassroomPageTests(unittest.TestCase):
         for filename in PAGES:
             with self.subTest(page=filename):
                 page = (COURSE / filename).read_text(encoding="utf-8")
-                self.assertIn('a-classroom.js?v=20261119-6', page)
-                self.assertIn('a-classroom.css?v=20261119-9', page)
+                self.assertIn('a-classroom.js?v=20261119-7', page)
+                self.assertIn('a-classroom.css?v=20261119-10', page)
 
     def test_page_navigation_and_local_images_resolve(self):
         local_pages = set(PAGES)
@@ -196,7 +203,7 @@ class ClassroomPageTests(unittest.TestCase):
         self.assertIn("spec.xLabel", runtime)
         self.assertIn("spec.yLabel", runtime)
         labels = [
-            "Unwrapped phase", "Wrapped phase", "FB edge", "tFB − tREF",
+            "Unwrapped phase", "Wrapped phase", "FB edge", "FB edge offset",
             "UP pulse width", "DN pulse width", "Frequency error",
             "Control voltage deviation", "Phase error", "TI measured markers",
         ]
@@ -258,8 +265,10 @@ class ClassroomPageTests(unittest.TestCase):
         a21 = (COURSE / "a2-1.html").read_text(encoding="utf-8")
         a22 = (COURSE / "a2-2.html").read_text(encoding="utf-8")
         a23 = (COURSE / "a2-3.html").read_text(encoding="utf-8")
-        self.assertIn("RFOUT", a11)
-        self.assertIn("fVCO", a11)
+        self.assertIn('data-frequency-kind="vco"', a11)
+        self.assertIn('data-frequency-kind="output"', a11)
+        self.assertIn("<msub><mi>f</mi><mtext>VCO</mtext></msub>", a11)
+        self.assertIn("<msub><mi>f</mi><mtext>OUT</mtext></msub>", a11)
         self.assertIn("÷N", a11)
         self.assertIn("÷D", a11)
         self.assertIn("Type-I", a12)

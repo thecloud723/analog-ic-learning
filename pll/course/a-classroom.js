@@ -416,7 +416,7 @@
       '<path class="wave ref-wave" d="' + wave(0, 54, 101) + '"/>' +
       '<path class="wave fb-wave" d="' + wave(deltaTimeSec, 157, 204) + '"/>' +
       '<line x1="' + refX.toFixed(1) + '" y1="42" x2="' + fbX.toFixed(1) + '" y2="42" stroke="#a64e25" stroke-width="2" marker-start="url(#edge-arrow)" marker-end="url(#edge-arrow)"/>' +
-      '<text x="' + ((refX + fbX) / 2).toFixed(1) + '" y="32" text-anchor="middle">Δt = ' + signed(dtPs, 2) + ' ps</text>' +
+      '<text x="' + ((refX + fbX) / 2).toFixed(1) + '" y="32" text-anchor="middle"><tspan class="math-variable">Δt</tspan> = ' + signed(dtPs, 2) + ' ps</text>' +
       '<line x1="' + refX.toFixed(1) + '" y1="48" x2="' + refX.toFixed(1) + '" y2="216" stroke="#17658b" stroke-dasharray="4 4"/>' +
       '<line x1="' + fbX.toFixed(1) + '" y1="48" x2="' + fbX.toFixed(1) + '" y2="216" stroke="#a64e25" stroke-dasharray="4 4"/>' +
       '<circle class="edge-handle" data-edge-handle="true" cx="' + fbX.toFixed(1) + '" cy="225" r="9" role="slider" tabindex="0" aria-label="拖动反馈时钟边沿" aria-valuemin="' + (-period / 2 * 1e12).toFixed(2) + '" aria-valuemax="' + (period / 2 * 1e12).toFixed(2) + '" aria-valuenow="' + dtPs.toFixed(2) + '"/>' +
@@ -468,11 +468,11 @@
       text(root, "[data-phase-deg]", signed(result.phaseDeg, 3) + "°");
       text(root, "[data-phase-rad]", signed(result.phaseRad, 5) + " rad");
       text(root, "[data-fraction]", signed(result.fractionOfPeriod * 100, 4) + "%");
-      text(root, "[data-sign-explanation]", dtPs > 0.000001 ? "FB 边沿晚于 REF：Δt>0，所以参考相位领先，Δφ>0。" :
-        dtPs < -0.000001 ? "FB 边沿早于 REF：Δt<0，所以反馈相位领先，Δφ<0。" : "两个上升沿重合：Δt=0，当前相位差为零。");
+      text(root, "[data-sign-explanation]", dtPs > 0.000001 ? "FB 边沿晚于 REF：参考边沿领先，按本课定义相位差为正。" :
+        dtPs < -0.000001 ? "FB 边沿早于 REF：反馈边沿领先，按本课定义相位差为负。" : "两个上升沿重合，当前相位差为零。");
       drawEdgeSvg(edgeSvg, fHz, dtPs * 1e-12);
       drawPhaseDisk(disk, result.phaseDeg);
-      setBadge(root, mode === "fixed-phase" ? "固定相位角；频率改变时，所需 Δt 自动反比变化。" : "固定时间差；频率越高，同一 Δt 对应的相位角越大。");
+      setBadge(root, mode === "fixed-phase" ? "固定相位角；频率改变时，所需时间偏移量反向变化。" : "固定时间差；频率越高，对应的相位角越大。");
     }
     linkControls(root, render);
     query(root, "[data-action='reset']").addEventListener("click", function () {
@@ -569,7 +569,7 @@
       text(root, "[data-phase-unwrapped]", signed(current.unwrappedCycles, 4) + " cycles");
       text(root, "[data-phase-wrapped]", signed(current.wrappedCycles, 4) + " cycles");
       text(root, "[data-phase-rad]", signed(current.unwrappedRad, 4) + " rad");
-      setBadge(root, dfKHz === 0 ? "Δf=0：相位停在初始值，不继续累积。" : dfKHz > 0 ? "Δf>0：参考相位持续领先，未包裹相位斜率为正。" : "Δf<0：反馈频率更高，参考减反馈相位斜率为负。");
+      setBadge(root, dfKHz === 0 ? "参考与反馈频率相同：相位保持在初始值。" : dfKHz > 0 ? "参考频率更高：参考减反馈相位随时间增加。" : "反馈频率更高：参考减反馈相位随时间减小。");
     }
     function advance() {
       var step = Math.max(1, number(root, "durationUs") / 100);
@@ -668,8 +668,8 @@
           yMax: Math.max(1, Math.max.apply(null,pair.offsets)+5),
           xTicks: pair.offsets.map(function (_, i) { return [i + 1, String(i + 1)]; }),
           yTicks: [Math.min.apply(null,pair.offsets), 0, Math.max.apply(null,pair.offsets)].map(function (v) { return [v, fmt(v, 1)]; }),
-          xLabel: "Comparison cycle", yLabel: "tFB − tREF (ps)",
-          series: [{color:"#17658b",label:"tFB − tREF",points:pair.offsets.map(function (v,i) { return [i + 1,v]; })}],
+          xLabel: "Comparison cycle", yLabel: "FB edge offset (ps)",
+          series: [{color:"#17658b",label:"FB edge offset",points:pair.offsets.map(function (v,i) { return [i + 1,v]; })}],
           cursor: index + 1
         });
         drawChart(query(root, "#pfd-width-chart"), {
@@ -685,8 +685,8 @@
           cursor: index + 1
         });
       }
-      text(root, "[data-qualitative]", selected.state.UP ? "UP 有效：后级净作用方向为提高 VCTRL（本页只给方向，不计算电压）。" :
-        selected.state.DN ? "DN 有效：后级净作用方向为降低 VCTRL（本页只给方向，不计算电压）。" :
+      text(root, "[data-qualitative]", selected.state.UP ? "UP 有效：后级净作用方向为提高控制电压（本页只给方向，不计算电压）。" :
+        selected.state.DN ? "DN 有效：后级净作用方向为降低控制电压（本页只给方向，不计算电压）。" :
         "UP/DN 当前复位为低；后续影响方向要看下一组输入边沿。");
       setBadge(root, mode === "single" ? "理想 PFD 事件模型 · 单次边沿比较" : "理想 PFD 事件模型 · 连续频差逐周期比较");
       text(root, '[data-value="resetDelayPs"]', fmt(number(root, "resetDelayPs"), 0) + " ps");
@@ -795,16 +795,16 @@
       var freq=result.samples.map(function(s){return [s.timeSec*1e6,s.deltaFVcoHz/1e3];});
       var ctrl=result.samples.map(function(s){return [s.timeSec*1e6,s.deltaVctrlV*1e3];});
       var phase=result.samples.map(function(s){return [s.timeSec*1e6,s.deltaPhaseRefMinusFbRad*1e3];});
-      drawChart(query(root,"#settle-frequency"),{xMin:0,xMax:10,yMin:-220,yMax:220,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-200,-100,0,100,200],"",0),xLabel:"Time (μs)",yLabel:"ΔfVCO (kHz)",series:[{color:"#17658b",label:"Frequency error",points:freq}],cursor:cursorUs});
-      drawChart(query(root,"#settle-control"),{xMin:0,xMax:10,yMin:-2.2,yMax:2.2,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-2,-1,0,1,2],"",0),xLabel:"Time (μs)",yLabel:"ΔVCTRL (mV)",series:[{color:"#2d6f59",label:"Control voltage deviation",points:ctrl}],cursor:cursorUs});
-      drawChart(query(root,"#settle-phase"),{xMin:0,xMax:10,yMin:-12,yMax:12,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-10,-5,0,5,10],"",0),xLabel:"Time (μs)",yLabel:"Δφe (mrad)",series:[{color:"#a64e25",label:"Phase error",points:phase}],cursor:cursorUs});
+      drawChart(query(root,"#settle-frequency"),{xMin:0,xMax:10,yMin:-220,yMax:220,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-200,-100,0,100,200],"",0),xLabel:"Time (μs)",yLabel:"VCO frequency deviation (kHz)",series:[{color:"#17658b",label:"Frequency error",points:freq}],cursor:cursorUs});
+      drawChart(query(root,"#settle-control"),{xMin:0,xMax:10,yMin:-2.2,yMax:2.2,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-2,-1,0,1,2],"",0),xLabel:"Time (μs)",yLabel:"Control voltage deviation (mV)",series:[{color:"#2d6f59",label:"Control voltage deviation",points:ctrl}],cursor:cursorUs});
+      drawChart(query(root,"#settle-phase"),{xMin:0,xMax:10,yMin:-12,yMax:12,xTicks:ticks([0,2,4,6,8,10]," μs",0),yTicks:ticks([-10,-5,0,5,10],"",0),xLabel:"Time (μs)",yLabel:"REF minus FB phase error (mrad)",series:[{color:"#a64e25",label:"Phase error",points:phase}],cursor:cursorUs});
       var at=M.settlingResponse({deltaF0Hz:offsetKHz*1e3,fnHz:90e3,zeta:.7,N:125,kvcoHzPerVolt:100e6},cursorUs*1e-6).samples[0];
       text(root,'[data-value="deltaF0KHz"]',signed(offsetKHz,0)+" kHz");
       text(root,'[data-value="cursorUs"]',fmt(cursorUs,2)+" μs");
       text(root,"[data-readout-df]",signed(at.deltaFVcoHz/1e3,3)+" kHz");
       text(root,"[data-readout-v]",signed(at.deltaVctrlV*1e3,5)+" mV");
       text(root,"[data-readout-phase]",signed(at.deltaPhaseRefMinusFbRad*1e3,4)+" mrad");
-      text(root,"[data-readout-vco]","fVCO 偏差 "+signed(at.deltaFVcoHz/1e3,3)+" kHz");
+      text(root,"[data-readout-vco]","VCO 频率偏差 "+signed(at.deltaFVcoHz/1e3,3)+" kHz");
       var pfd=40e6;
       var edgeDelayPs=at.deltaPhaseRefMinusFbRad/(2*Math.PI*pfd)*1e12;
       var x0=150,x1=650,scale=6;
@@ -813,8 +813,8 @@
       svg.innerHTML='<line x1="90" y1="47" x2="770" y2="47" stroke="#e1e9ee"/><line x1="90" y1="96" x2="770" y2="96" stroke="#e1e9ee"/>'+
        '<text x="18" y="53">REF</text><text x="18" y="102">FB</text><line x1="'+x0+'" y1="25" x2="'+x0+'" y2="65" stroke="#17658b" stroke-width="4"/>'+
        '<line x1="'+fbX.toFixed(1)+'" y1="74" x2="'+fbX.toFixed(1)+'" y2="114" stroke="#a64e25" stroke-width="4"/>'+
-       '<text x="90" y="140">局部边沿相对位置（放大示意；Δt='+signed(edgeDelayPs,3)+' ps）</text>';
-      setBadge(root,offsetKHz<0?"VCO 偏慢：ΔfVCO<0，正 Kvco 下 ΔVCTRL<0。":"VCO 偏快或正好：控制偏差方向随 ΔfVCO 符号改变。");
+       '<text x="90" y="140">局部边沿相对位置（放大示意；时间偏移='+signed(edgeDelayPs,3)+' ps）</text>';
+      setBadge(root,offsetKHz<0?"VCO 偏慢：在正向 VCO 增益假设下，控制电压向下修正。":"VCO 偏快或正好：控制电压修正方向随频率偏差改变。");
     }
     function advance(){var next=number(root,"cursorUs")+.1;if(next>10)next=10;setParam(root,"cursorUs",next);render();if(next>=10){playing=false;stopTimer(root);}}
     linkControls(root,render);
@@ -864,7 +864,7 @@
       [["ref",p.fRefHz],["pfd",p.fPfdHz],["vco",p.fVcoHz],["fb",p.fFeedbackHz],["out",p.fOutHz]].forEach(function(pair){
         all(root,"[data-freq='"+pair[0]+"']").forEach(function(el){el.textContent=fmtHz(pair[1]);});
       });
-      text(root,"[data-frequency-explain]","fVCO = N·fPFD = "+fmtHz(p.fVcoHz)+"；fOUT = fVCO/D = "+fmtHz(p.fOutHz)+".");
+      text(root,"[data-frequency-explain]","VCO 内部频率："+fmtHz(p.fVcoHz)+"；最终输出频率："+fmtHz(p.fOutHz)+"。");
     }
     function focusFrequency(which){
       root.dataset.frequencyFocus=which;
