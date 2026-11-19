@@ -11,8 +11,8 @@
 - 交互/模型规范：pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md
 - 当前分支：main
 - 审计基线 SHA：41b3444f46878f65d6769aa6f951572ec7d149d0
-- 最新本次页面提交：A1.2 Type-I/Type-II 原图、原式与近锁模型区分 9b8a869f59f9e316a15de9623150920aec1e07ec
-- 当前阶段：Phase 2 A1.2 完成；继续 A1.3
+- 最新本次页面提交：A1.3 TI/ADI 原教材链接、读图说明与 Marker 交互 d368e848050e4c22c7bd54f38bb07aed54985751
+- 当前阶段：Phase 2 六页内容迁移；A1.3 页面完成，继续公开素材授权清理与全页同步
 - 最后更新时间：2026-11-19（Asia/Shanghai）
 
 ## V2 工作清单
@@ -25,13 +25,17 @@
 | V2-03 | A2.3 PFD | pll/course/a2-3.html | 已完成 | 530adf1968f95787b43ef951b49453f2aebbe7a3 | Node 模型套件 8/8；Fig.77–81 原图/本地路径静态检查通过；REF/FB 正体文字、Δt 数学变量拆分、reset 延迟近似式检查通过 | 全六页桌面/手机浏览器回归待 Phase 3 |
 | V2-04 | A1.1 框图/频率链 | pll/course/a1-1.html | 已完成 | a3f0f0595dd5303c401e2a1de5781878064ae9a7 | 来源顺序、JKU 原图路径/Apache 许可、ADF 官方 PDF 链接且无 ADI 图镜像、MathML 与 SVG f 下标检查通过；频率向量默认/D=4/N=126、Node 8/8、Reset/导览静态断言通过 | 全页浏览器视口检查待 Phase 3 |
 | V2-05 | A1.2 锁定与模型 | pll/course/a1-2.html、pll/course/a-classroom.css | 已完成 | 9b8a869f59f9e316a15de9623150920aec1e07ec | Fig.76/Fig.83 原图和 Eq.62–64/Eq.67–69 精确链接；Type-I/II与 C3 条件分开；39 个 MathML 块结构平衡；模型 t=0、+100 kHz 符号、3.25 μs公式复算通过；保留三曲线/游标/Play/Pause/Step/Restart | 浏览器排版与窄屏视觉待 Phase 3（本环境进程/浏览器不可用） |
-| V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、materials/pll/FIGURE_MANIFEST.csv、必要的旧图引用 | 未开始 | — | 待测 | TI/ADI 官方链接；dBc/dBc/Hz 与 marker 来源 |
-| V2-07 | 公共样式和测试 | pll/course/a-classroom.css、tests/test_a_classroom_pages.py | 进行中 | 7a463fe | 增加 Source-First 样式、A1.3 受限素材断言和顺序检查；全六页测试待页面全部改造 | 完成六页后全套回归 |
+| V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、pll/course/a-classroom.css、pll/course/a-classroom-data.js | 已完成 | d368e848050e4c22c7bd54f38bb07aed54985751 | 来源区早于预测题；TI Fig.5-1/ADI MT-008 官方链接定位；9 个 MathML 块配对；4 个 Marker 数值、无连线、无厂商图片引用；选择器/单位切换/Reset/检查题保留 | 浏览器桌面/手机视觉待集成验收 |
+| V2-07 | 公共样式和测试 | pll/course/a-classroom.css、tests/test_a_classroom_pages.py | 进行中 | 7a463fe / d368e848 | 增加 Source-First 样式、公式索引和 Marker 表格；A1.3 MathML/来源顺序/无图片引用静态断言通过；全六页测试待集成回归 | 全页测试与浏览器视口待验 |
+| V2-10 | TI/ADI 公开图片副本审计 | pll/assets/originals/{adi,ti}/、materials/pll/originals/{adi,ti}/、涉及的 PLL HTML、materials/pll/FIGURE_MANIFEST.csv、materials/pll/README.md | 进行中 | — | 已查出 9 个页面仍引用 vendor image；A1.3 已不嵌入图片，遗留页面及公开副本需替换/清理 | 必须保留官方出处链接并检查页面不再请求旧图片 |
 | V2-08 | 文档/实验台账 | README、主纲、页计划、成熟度台账、PROGRESS、执行状态、V2 验收报告 | 未开始 | — | 待测 | 不改变 L1–L4 成熟度判定 |
 | V2-09 | 集成与 Pages 验收 | 六页、原图、MathML、桌面/手机、B–F、部署 | 未开始 | — | 待测 | 未实测项目保持未验证 |
 
 ## 已核验事实
 
+- A1.3 页面提交 `d368e848050e4c22c7bd54f38bb07aed54985751` 将 TI SNAU210B Fig.5-1 及 ADI MT-008 的精确官方 PDF 定位、独立中文读图说明和来源限制放在 Marker 实验之前。TI 页内测量前提（干净参考源，例如 100 MHz Wenzel；普通信号发生器不够干净）已按官方手册补入；MT-008 Fig.1/3/4、Eq.2/3 分别链接到 PDF 页 1/2/3/4。
+- A1.3 保留四个原图 Marker 的离散点（10 kHz −105.1543、100 kHz −108.0194、1 MHz −116.4369、10 MHz −141.5219 dBc/Hz，显示精度 0.1 dB），不连线、不插值；TI 和 ADI 位图从该页移除。TI 原始图由官方链接打开。
+- A1.3 静态验收：来源主体早于 Predict；9 个 MathML 块标签配对平衡；关键来源页链接存在；vendor image URL/路径、未解码 &#x 实体不存在；Marker、单位切换、Reset、回答反馈控件和共享 `connect:false` 点列行为保留。浏览器桌面/移动渲染仍未验证，留待集成阶段。
 - A1.2 提交 `9b8a869f59f9e316a15de9623150920aec1e07ec` 在交互台前呈现 JKU Fig.76 Type-I 原图与 Eq.62–64、Fig.83 Type-II 架构原图与 Eq.67–69。每个公式链接到 JKU QMD 中核实的 Quarto 方程锚点；图注链接到原图锚点。
 - Type-II Eq.67–69 明确标注“忽略 C3 才得到二阶关系”；Fig.83 保留 C3 时滤波器为三阶。现有三曲线另列成本课程 Type-II 二阶近锁行为模型公式，并明确不是 JKU Type-I 方程的仿真，也不是 Fig.83 的 SPICE。
 - A1.2 模型单位区分 JKU `K_VCO` 的 rad/(s·V) 与共享模型采用的 Hz/V，显示 `K_VCO,ω=2πK_VCO,f`。默认初始相位误差为零，并给出 t=0 的 −100 kHz/−1 mV/0 rad 检查点。
@@ -54,10 +58,11 @@
 
 ## 下一步工作
 
-1. 立即完成 A1.3：按 TI SNAU210B Rev.B Fig.5-1 与 ADI MT-008 原文重排相噪读图正文，准确标注官方 PDF 页码、离散 marker、dBc 与 dBc/Hz；删除本页受限镜像图。
-2. 继续 A2.2/A2.3/A1.1/A1.2 内容和交互核对，整理映射、图片许可和原素材清单。
-3. 六页完成后跑完整 Python/Node/MathML/部署/导航/B–F 回归；浏览器不可用的实测项如实标未验证。
-4. 完成 README/主纲/页计划/台账/PROGRESS/最终验收报告并推送。
+1. 清理所有公开托管的 TI/ADI 图片副本，替换受影响 PLL 旧页的厂商图片为官方来源链接和中文读图摘要；保留页内功能与导航，运行定点静态检查。
+2. 同步 `PLL_A_SOURCE_MAPPING_V2.md`、`FIGURE_MANIFEST.csv`、`materials/pll/README.md`，明确已移除的公开副本、原图官方定位和授权边界。
+3. 对 A1.1–A2.3 六页执行 HTML/MathML/公式出处/模型向量/Reset/分页静态回归，并检查 GitHub Pages 与 B–F 图片请求/导航；浏览器不可用的桌面/手机实测标记未验证。
+4. 完成 README、主纲、页计划、实验成熟度台账、V2 验收报告和最终状态归档，逐项记录真实提交与测试证据。
+
 
 ## 中断恢复协议
 
