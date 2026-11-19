@@ -1,7 +1,7 @@
 # PLL A 部分：原教材优先的中文课程整合与交互融合 SDD（V2）
 
 > 版本：V2.0 · 2026-11-19  
-> 状态：**内容设计规范，待实施**。本次制定 SDD，不代表六个 HTML 页面已按 V2 改好。  
+> 状态：**内容规范已实施。** 六页正文已按本 SDD 重排；部署流水线成功，测试及未验证项目见 [V2 验收报告](PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md)。
 > 范围：PLL A1.1、A1.2、A1.3、A2.1、A2.2、A2.3；暂不涉及 B～F 和 SerDes。  
 > 仓库：https://github.com/thecloud723/analog-ic-learning  
 > 现有页面：https://thecloud723.github.io/analog-ic-learning/pll/course/a2-1.html  

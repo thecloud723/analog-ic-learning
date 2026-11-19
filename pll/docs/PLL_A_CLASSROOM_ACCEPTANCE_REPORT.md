@@ -1,3 +1,5 @@
+> **注意：本文件记录的是 V1 Classroom 交互验收历史，不是 Source-First V2 的最新验收。** V2 正文和当前测试边界见 [PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md](PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md)。此前“本地嵌入 TI 原图/ADF 产品图”的历史记录已被 V2 授权审计取代；当前 TI/ADI 受限图片仅使用官方链接。V1 的交互/模型测试历史保留供追溯，不应被当作 V2 浏览器验收证据。
+
 # PLL A Classroom 验收报告
 
 > 日期：2026-11-19  

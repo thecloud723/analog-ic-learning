@@ -4,37 +4,25 @@
 
 ## 课程入口
 
-- **[PLL A 原教材优先内容改造 SDD V2（2026-11-19）](docs/PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md)**：六页的源材料、原图/原公式、中文编排、互动保留、版权与验收规范；内容重排尚待 Work 执行。
-- **[PLL A V2 Work 完整执行提示词](docs/PLL_A_SOURCE_FIRST_WORK_PROMPT_V2_2026-11-19.md)**：开新 Work 会话直接复制使用。
-
-
-- **[PLL 教材内容优先改造规范（2026-11-19）](docs/PLL_SOURCE_FIRST_COURSE_EDITORIAL_SPEC_2026-11-19.md)**：原始 JKU/TI/ADI 图、公式和内容组织为主；既有 Classroom 交互保留作验证工具；当前为内容设计修正，尚未重排六页。
-
-
-- **[PLL A 部分 Classroom 交互教学 SDD（2026-11-19）](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)**：六堂课的权威交互与模型设计基线；A 部分已按此实现，逐页验收结果见[验收报告](docs/PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)。
-- **[持续执行状态](docs/WORK_EXECUTION_STATE.md)**：当前 main 提交、任务清单、测试证据和未验证项。
-- **[PLL 完备度评估与五阶段详细执行计划（2026-11-17）](docs/PLL_COMPLETENESS_AND_EXECUTION_PLAN_2026-11-17.md)**：当前课程对标、交互/实验状态，以及阶段 1～5 的任务、交付物和验收标准。
-- **[B1.2 频率规划器交互改造规格（2026-11-17）](docs/PLL_B1_2_FREQUENCY_PLANNER_SPEC_2026-11-17.md)**：按 TI TICS Pro Fig. 3-1 复刻布局，定义动态频率节点、LMX2594 约束、Mode A/B/C 和仿真/估算边界；仅为设计规格，尚未实施。
+- **[PLL A 原教材优先 SDD V2](docs/PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md)**：六页内容顺序、原图/公式、来源许可与验收规范。
+- **[PLL A Source-First 验收报告](docs/PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md)**：逐页实现、测试证据与未验证项。
+- **[PLL A 原教材来源映射](docs/PLL_A_SOURCE_MAPPING_V2.md)**：精确章节、图号/公式、授权与网页使用方式。
+- **[PLL A V2 执行状态](docs/WORK_EXECUTION_STATE.md)**：当前 main 检查点、测试清单、未验证项与恢复步骤。
+- **[PLL 教材内容优先改造规范](docs/PLL_SOURCE_FIRST_COURSE_EDITORIAL_SPEC_2026-11-19.md)**：全课程 Source-First 编辑原则。
+- **[PLL A Classroom SDD V1](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)**：共享组件、交互与数学模型；V2 内容组织与 V1 交互模型同时适用。
+- **[持续进度](PROGRESS.md) · [实验成熟度台账](EXPERIMENT_LEVEL_ROADMAP.md) · [完整课程主纲](docs/PLL_MASTER_COURSE_OUTLINE_2026-11-19.md) · [逐页规划](docs/PLL_PAGE_PLAN.md) · [公式索引](docs/PLL_S1_04_FORMULA_INDEX.md)
 
 **[从新版 A1.1 开始 PLL 交互课程](course/a1-1.html)**
 
-## A 部分 Classroom 交付状态
+## A 部分 Source-First 交付状态
 
-A1.1、A1.2、A1.3、A2.1、A2.2、A2.3 六页已在 GitHub Pages 部署，均按 `Learn → Predict → Explore → Observe → Explain → Check` 组织，并共享 Classroom UI、模型、数据和交互层。最新代码提交 [`e108790`](https://github.com/thecloud723/analog-ic-learning/commit/e108790043e31981495fcdec7f33ce00a7711dd5) 已通过 Pages 部署。该部分当前是 **L1**：A1.2 使用解析近锁模型，A2.1–A2.3 使用本地行为模型；A1.3 显示 TI 原始测量图和离散标记读数。它们不是新的 L2 仿真、L3 云端运行或 L4 读者复跑。
+六页已按 Source-First V2 重排，并保留现有交互。代码头 [fa001607](https://github.com/thecloud723/analog-ic-learning/commit/fa00160778d9fb5b61d0945c412934142b997c95) 的 Pages 构建/部署流程成功。JKU 原图在许可允许时本地展示；TI/ADI 受限图只给官方来源链接。A1.2 是简化 Type-II 近锁行为模型，A2.1–A2.3 是公式/理想事件模型；A1.3 是 TI 图上离散读数，不是本站实测。六项成熟度仍为 **L1**。
 
-- [打开已部署课程](https://thecloud723.github.io/analog-ic-learning/pll/course/a1-1.html)
-- [查看逐页验收、测试证据和未验证项](docs/PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)
-- **验收边界：** GitHub Pages 桌面交互、六页导航及 B–F 回归已检查；真实手机视口和浏览器断网运行仍未验证，故整体验收结论保留为部分验证。
-- [统一实验台账](EXPERIMENT_LEVEL_ROADMAP.md)（新版实验、49 项旧实验去向、L1–L4 状态与复跑证据）
-- [章节页面模板](PAGE_TEMPLATE.md)
-- [章节进度与验收记录](PROGRESS.md)
-- [参考资料索引](REFERENCES.md)
-- [第 11–13 章资料与模型说明](REFERENCES_11_13.md)
-- [第 14–16 章资料与模型说明](REFERENCES_14_16.md)
-- [工程案例补充说明](ENGINEERING_CASES.md)
-- [行内数学符号修订记录](MATH_RENDERING_CHANGELOG.md)
-- [第 12 章曲线互动实验改造记录](CH12_CURVE_INTERACTION_AUDIT.md)
-- [第 10、11、13、15 章曲线互动改造记录](CH10_11_13_15_CURVE_INTERACTION_AUDIT.md)
+- [打开课程 A1.1](https://thecloud723.github.io/analog-ic-learning/pll/course/a1-1.html)
+- [打开 V2 逐页验收报告](docs/PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md)
+- [查看 V1 Classroom 交互验收历史](docs/PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)
+
+**验收边界：** Pages 构建工作流成功；真实页面打开、桌面/手机视口、浏览器离线、Console 和当前头 B–F 浏览器回归未验证。因此按 V2 最终标准仍是部分验收，详见报告。
 
 ## 旧版章节与深链
 

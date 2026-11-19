@@ -1,13 +1,16 @@
 # PLL-S1-04 新版公式索引
 
-基线为 main `f11e66e`。每一行对应一个独立 MathML 公式块。页面引文沿用公式块附近的链接。课程推导与教学模型的链接供查阅概念、拓扑或测试工况。索引覆盖独立公式，尚需逐条复核引文与原文等式是否完全对应，行内公式也需单独核对。
+课程通用公式库存沿用既有 52 页索引；A1.1–A2.3 的 Source-First V2 逐页出处和适用边界已在本文件后文单列，并以网页旁的原始来源链接为准。六页行内变量与块级公式使用 MathML；公式补充推导标成课程推导。
 
 | 新版页面 | 公式 | 来源或类型 | 适用条件 |
 |---|---|---|---|
-| [A1-1](../course/a1-1.html) | `f_{\mathrm{VCO}}=N f_{\mathrm{PFD}}` | 页面引文 · [JKU §7.4 · 整数分频关系](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-pll-frac-n) | 整数 N、已锁定、输出节点取 VCO |
-| [A2-1](../course/a2-1.html) | `\Delta\phi=360^\circ\frac{\Delta t}{T}` | 页面引文 · [ADI AN-1067 · 相位与时间抖动](https://www.analog.com/en/resources/app-notes/an-1067.html) | 同周期比较，角度以度表示 |
-| [A2-2](../course/a2-2.html) | `\phi_{\mathrm e}(t)=\phi_{\mathrm e}(0)+2\pi\int_0^t\Delta f(\tau)\,\mathrm d\tau` | 页面引文 · [JKU §6.7 · 瞬时角频率积分为相位](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator-modeling) | 未折叠相位，频差用 Hz、相位用 rad |
-| [A2-3](../course/a2-3.html) | `\Delta f_{\mathrm{VCO}}\approx K_{\mathrm{VCO}}\Delta V_{\mathrm{CTRL}}` | 页面引文 · [JKU §6.6 · VCO 调谐增益](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-frequency-tuning-of-oscillators) | 工作点附近的小信号斜率 |
+| [A1-1](../course/a1-1.html) | JKU §7.1 锁定关系：fVCO=N·fPFD；产品/课程扩展：fRFOUT=fVCO/D | JKU §7.1 Fig.74/正文，输出分频 D 为产品拓扑扩展，不冒充 JKU Fig.74 的节点 | 整数 N、锁定；带 R/D 时按对应拓扑逐级计算 |
+| [A1-2](../course/a1-2.html) | H_I(s)=Φout(s)/Φref(s)；H_II(s)=Φout(s)/Φref(s) | JKU §7.1 Fig.76/Eq.62–64 Type-I；§7.2 Fig.83/Eq.67–69 Type-II；两组不是同一模型 | 原式各自适用的小信号/连续时间条件；Eq.67–69 的二阶近似忽略 C3 |
+| [A1-2 交互](../course/a1-2.html) | ΔfVCO、ΔVCTRL、Δφe 三量关系 | 本课程 Type-II 近锁行为模型；不是 JKU Eq.62–64 或 SPICE | 模型单位 Hz、V、rad；工作点附近，不描述捕获 |
+| [A1-3](../course/a1-3.html) | σφ,rms=√(2·10^(A/10))；σt,rms=σφ,rms/(2πfO) | ADI MT-008 Eq.2–3，PDF p.4；TI Fig.5-1 Marker 链接其测量数据来源 | A 是积分带宽后的 dBc 量，不能把单点 dBc/Hz 直接当成 A |
+| [A2-1](../course/a2-1.html) | Δφ=2π·Δt/Tref；Verror=KPD·Δφ | JKU §7.1 Fig.75 后、Eq.62 前的未编号原式 | 时间差/参考周期；角度为 rad。正负号采用课程另行声明的约定 |
+| [A2-2](../course/a2-2.html) | φVCO(t)=∫0^t ωVCO(τ)dτ；Δφe(t)=Δφe(0)+2π∫0^t Δf(τ)dτ | 第一式取 JKU §6.7；第二式是由 JKU 相位/角频率关系得到的本课程推导 | φ 单位 rad、ω rad/s、Δf Hz；Wrapped 是显示区间映射，不表示 Cycle Slip |
+| [A2-3](../course/a2-3.html) | REF-first: wUP≈|Δt|+treset, wDN≈treset；FB-first 反向 | 本课程理想 PFD 事件模型，图与时序背景见 JKU §7.2 Fig.77–81；不是 JKU 编号方程 | 仅理想 reset/事件延迟模型；不包括 CP 电流、VCTRL 或 VCO 闭环 |
 | [APP-1](../course/app-1.html) | `\Delta f=\frac{1}{T_\mathrm{obs}}` | 课程推导／教学模型 | 均匀采样 DFT 的频点间距，窗函数影响实际分辨能力 |
 | [B1-1](../course/b1-1.html) | `f_{\mathrm s}=\frac{1}{2\pi\sqrt{L_{\mathrm m}C_{\mathrm m}}}` | 页面引文 · [JKU §6.4 · 式 60–61](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-single-ended-oscillators) | 晶体等效模型，负载近似要求动态电容远小于总并联电容 |
 | [B1-1](../course/b1-1.html) | `f_0\approx f_{\mathrm s}\left[1+\frac{C_{\mathrm m}}{2(C_0+C_{\mathrm L})}\right]` | 页面引文 · [JKU §6.4 · 式 60–61](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-single-ended-oscillators) | 晶体等效模型，负载近似要求动态电容远小于总并联电容 |
@@ -59,16 +62,27 @@
 | [E4-3](../course/e4-3.html) | `\widehat K_{\mathrm{DCO}}=\frac{f(b)-f(a)}{b-a},\qquad c_{\mathrm{new}}=\operatorname{clip}_{[0,63]}\!\left(a+\operatorname{round}\frac{\Delta f}{\widehat K_{\mathrm{DCO}}}\right)` | 课程推导／教学模型 · [JKU ADPLL 框图 · 两点差分估计为教学模型](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-adpll-block-diagram) | 课程两点标定，差分增益非零且局部单调 |
 | [F1-3](../course/f1-3.html) | `\sigma_t=\frac{\sigma_\phi}{2\pi f_0},\qquad \mathcal L_{\mathrm{out}}=\mathcal L_{\mathrm{in}}-20\log_{10}M` | 页面引文 · [Jo 等 · PDF 第 10 页 · §5 的 ÷2 换算](https://mdpi-res.com/d_attachment/electronics/electronics-11-01118/article_deploy/electronics-11-01118.pdf#page=10) | 相位抖动用 rad，分频式假设理想无附加噪声 |
 
+## A 部分 Source-First V2 原文逐页核对
+
+| 页面 | 精确来源位置 | 核对与符号边界 |
+|---|---|---|
+| A1.1 | [JKU §7.1 Fig.74](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html#fig-pll-block-diagram)；[ADF4351 Fig.1 PDF p.1](https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf#page=1) | JKU 原文以 f_out=N·f_ref 表达锁定关系。课程把比较频率映射为 fPFD、环路输出节点称 fVCO；R、D 是更通用/产品链路扩展。ADF4351 原图仅链接官方 PDF。 |
+| A1.2 | [JKU §7.1 Fig.76/Eq.62–64](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pll-block-diagram-s-domain)；[JKU §7.2 Fig.83/Eq.67–69](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#fig-pfd-cp-pll) | Eq.62–64 是一积分环节的 Type-I；Eq.67–69 是 CP-PLL Type-II 推导，忽略 C3 才取其二阶近似。当前三曲线响应是独立 Type-II 近锁教学模型；来源图/方程不是此曲线数值的来源。 |
+| A1.3 | [TI SNAU210B Fig.5-1 PDF p.6](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6)；[ADI MT-008 Fig.1/3/4、Eq.2–3 PDF p.1–4](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf) | 厂商图不托管。TI marker 是图上离散 dBc/Hz 读数；ADI A 表示积分后的 dBc，必须与单点 dBc/Hz 区分。 |
+| A2.1 | [JKU §7.1 PLL slide](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) Fig.75 后、Eq.62 前 | 原始关系为 Δφ=2π·Δt/Tref，PD 输出关系为 Verror=KPD·Δφ。课程另行规定 Δt=tFB−tREF、Δφ=φREF−φFB；符号方向是课程约定。 |
+| A2.2 | [JKU §6.7 Oscillator Modelling](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-oscillator-modeling)；[§7.1 PLL slide](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) | φ=∫ωdt 和 ω=dφ/dt 对应原教材物理关系。Δφe 对 Δf 的积分式为课程推导。周期边界折返只改变显示值，不直接等于 Cycle Slip。 |
+| A2.3 | [JKU §7.2 Fig.77–81](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html#fig-pfd-implementation) | 原电路/工况用于解释事件先后和长期纠偏；页面简化脉宽计算是本课程理想事件模型，不是 JKU 编号方程。 |
+
 ## 行内公式覆盖范围
 
-正文未使用行内 MathML。下方索引按 52 页的正文，记录具有独立教学含义的定量关系与验算；独立公式在正文中的复述仍沿用对应公式条目。
+六个 A 页面共 119 个 MathML 块；本轮静态遍历确认 0 个标签结构错误、0 个数值 HTML 实体、0 个 fREF/fVCO 等纯文本伪公式。下方其余索引继续覆盖旧 52 页正文中具有独立教学含义的关系与验算。
 
-## 2026-11-19 原文逐式核对
+## 2026-11-19 全课程原文逐式核对（旧版库存）
 
 | 新版页面 | 原文定位 | 核对结果 |
 |---|---|---|
-| A1-1 | [JKU §7.4 首段](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-pll-frac-n) | 原文直接给出整数倍频关系。将原文的比较参考频率记为课程的 PFD 频率。 |
-| A2-3 | [JKU §6.6 调谐灵敏度定义](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#sec-frequency-tuning-of-oscillators) | 原文以频率对控制电压的导数定义 VCO 增益。课程式为工作点附近一阶近似，增益单位 Hz/V。 |
+| A1-1 | [JKU §7.1 Fig.74/正文](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html#fig-pll-block-diagram) | JKU 基本 PLL 锁定关系；课程把比较参考点记为 fPFD，把输出节点区分为 VCO。不要把 ADF4351 输出分频 D 归给 JKU Fig.74。 |
+| A2-3 | [JKU §7.2 Fig.77–81](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html#fig-pfd-implementation) | A2.3 的理想 UP/DN 脉宽是本课程 PFD 事件模型，不属于 JKU 图中的编号解析式；旧页面编号不再指向 VCO 增益。 |
 | B1-1 | [JKU 式 (60)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-crystal-series-resonance) | 串联谐振式一致。 |
 | B1-1 | [JKU 式 (61)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-crystal-pulling) | 负载拉频近似式一致，课程用 C_L 表示原文 C_load。 |
 | C1-2 | [JKU 式 (65)](https://iic-jku.github.io/radio-frequency-integrated-circuits/rfic.html#eq-cp-voltage-change) | 原文给出单个导通脉冲的电容电压增量。课程用 UP 减 DN 的净电流将同一关系扩展到两脉冲可重叠的情况。 |
@@ -137,7 +151,7 @@
 | E4-2 | [Electronics 12(4), 841，式 (10)](https://mdpi-res.com/d_attachment/electronics/electronics-12-00841/article_deploy/electronics-12-00841.pdf#page=5) | 原文用累加器输出形成输入周期的 256 级相位调整字。课程保留先从分数余量换算时间、再量化的结构，采用独立的 5 bit 正向延时教学编码。 |
 | F1-3 | [Jo 等 §5](https://mdpi-res.com/d_attachment/electronics/electronics-11-01118/article_deploy/electronics-11-01118.pdf#page=10) 与 [ADI MT-008 式 (3)](https://www.analog.com/media/en/training-seminars/tutorials/MT-008.pdf#page=4) | 理想 ÷2 使相噪下降 20log₁₀2≈6.02 dB。论文报告 −112.5 到 −118.5 dBc/Hz 的读数，课程沿用理想换算的符号。弧度抖动除以载波角频率换算为时间。 |
 
-### 纯文本行内公式复核（第二批）
+### 行内关系验算记录（第二批）
 
 | 页面 | 行内关系 | 方式和验算 |
 |---|---|---|
@@ -150,7 +164,7 @@
 | F1-2 | 40 MHz、N=125 给 5 GHz，4 µs 保持窗约含 160 个参考周期 | 目标由锁定比得到，时窗换算用 25 ns 比较周期。入带边界仍按样点时刻与频差门限共同判定。 |
 | F1-3 | 5.8 GHz 的公布 FoM 约 −202.8 dB | 1 MHz 偏移的载波比项 20log₁₀(1 MHz / 5.8 GHz)≈−75.27 dB，8 mW 归一项约 +9.03 dB。加上 −116.6 dBc/Hz 得 −202.84 dB。 |
 
-### 纯文本行内公式复核（第三批）
+### 行内关系验算记录（第三批）
 
 | 页面 | 行内关系 | 方式和验算 |
 |---|---|---|
@@ -163,7 +177,7 @@
 | F1-3 | 直出工况 36.2648 mrad 换算时间 RMS | 0.0362648/(2π·5.8 GHz)≈0.995 ps。 |
 | F1-3 | VCO 截图中两个频偏的标记差 | 1 MHz 处 −127.82−(−117.37)=−10.45 dB，100 kHz 处按正文给出的两位小数差约 +3.75 dB。 |
 
-### 纯文本行内公式复核（第四批）
+### 行内关系验算记录（第四批）
 
 | 页面 | 行内关系 | 方式和验算 |
 |---|---|---|

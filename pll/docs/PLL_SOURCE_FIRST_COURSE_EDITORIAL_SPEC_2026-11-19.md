@@ -3,7 +3,7 @@
 > **详细开发设计已单独建立：** [PLL A 原教材优先内容改造 SDD V2](PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md)；[完整 Work 执行提示词](PLL_A_SOURCE_FIRST_WORK_PROMPT_V2_2026-11-19.md)。本文件继续作为全课程通用内容编辑原则。
 
 > 日期：2026-11-19  
-> 状态：**内容策略已修正；现有六页交互代码保留，尚未实施此轮内容重排。**  
+> 状态：**Source-First 方法已用于 PLL A 六页；六页内容与测试边界见 [V2 验收报告](PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md)。本文件继续作为 B–F 后续内容编辑的通用原则。
 > 范围：当前先处理 PLL A1.1～A2.3，原则随后适用于 B～F；SerDes 暂不涉及。  
 > 背景：2026-11-19 Work 已按 [PLL A Classroom SDD](PLL_A_CLASSROOM_SDD_2026-11-19.md) 实现六堂交互课，但用户确认实际目标并非“自己重写教材、重新绘图、重新写公式”，而是把 JKU、TI、ADI 等已有优质教程的资料按自定义学习路径摘选、中文整理并组合；交互作为辅助理解手段。
 

@@ -1,6 +1,6 @@
 # PLL 完整课程新大纲：知识主线、交互实验与工程验证
 
-> **PLL A 内容实施基线：** [原教材优先 SDD V2](PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md)，配套 [Work 执行提示词](PLL_A_SOURCE_FIRST_WORK_PROMPT_V2_2026-11-19.md)。本主纲继续负责 A–F 章节知识主线。
+> **PLL A 内容实施状态：** 六页已按[原教材优先 SDD V2](PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md)完成重排；逐页来源与验收见[Source-First 验收报告](PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md)和[来源映射](PLL_A_SOURCE_MAPPING_V2.md)。本主纲继续负责 A–F 章节知识主线。
 
 > **教材内容策略更新：** 2026-11-19 起，PLL 的课程主体优先组织 JKU/TI/ADI 等原始教材材料，尽量直接采用可合法复用的原图和原公式，中文讲解与交互作辅助。详见 [原教材优先改造规范](PLL_SOURCE_FIRST_COURSE_EDITORIAL_SPEC_2026-11-19.md)。
 
@@ -126,17 +126,17 @@
 
 | 页面 | 核心问题与内容 | 必须出现的图/公式 | 交互与实验 | 当前资产/缺口 |
 |---|---|---|---|---|
-| A1.1 整机由哪些模块组成 | Reference、PFD/PD、CP、Loop Filter、VCO、反馈 Divider、输出 Divider；PLL 在 RF 本振、时钟生成中的用途；概览 Integer-N、Fractional-N、ADPLL | JKU Fig. 74 教学框图、ADF4351 产品框图与反馈路径 | 已实现可点击 SVG 节点/路径、Guided Tour 和 R/N/D 频率链计算；分别显示 fPFD、fVCO、fFB、fOUT | 已部署；N 改变 fVCO 与 fOUT，D 只改变输出支路；通用整数关系，不校验具体器件寄存器约束 |
-| A1.2 锁之前与锁之后 | 未锁定到近锁过程的教学示例；明确区分频率误差、控制电压偏差和相位误差 | REF/VCO/FB 时钟及频率误差、VCTRL 偏差、相位误差三条同步曲线 | 已实现三通道虚拟示波器、共享时间游标和 Play/Pause/Step/Restart | 已部署；当前为 L1 解析近锁模型，不是 LOOP-01 回放、SPICE 仿真或完整锁定判据 |
-| A1.3 第一张相噪图怎么读 | 认识载波、频偏、连续噪声裙边、离散 Spur；区分单边带相噪密度 dBc/Hz 与离散 Spur 电平 dBc | 本地 TI SNAU210B Fig. 5-1 原始测量图；来源页和工况保留 | 已实现四个离散 marker 读数、marker 切换与噪声/Spur 解释卡；不在原图点之间画插值曲线 | 已部署；图为 TI 原始测量，课程标记是读图交互，不是本项目新测量 |
+| A1.1 整机由哪些模块组成 | Reference、PFD/PD、CP、Loop Filter、VCO、反馈 ÷N、RF 输出 ÷D；区分内部 VCO 与最终输出 | JKU §7.1 Fig.74 原图与锁定关系；ADF4351 Fig.1 官方 PDF 来源链接；R/D 链路按产品拓扑说明 | 已实现中文点击路径、Guided Tour 和 R/N/D 频率链；分别显示 fPFD、fVCO、fFB、fOUT | JKU 关系按节点映射；N 决定反馈锁定比，D 作用于输出支路；不代表具体器件寄存器合法性 |
+| A1.2 锁之前与锁之后 | 区分频率误差、控制电压偏差和相位误差；理解近锁模型边界 | JKU Fig.76/Eq.62–64 Type-I；Fig.83/Eq.67–69 Type-II | 保留三同步曲线、共享时间游标和播放/单步/Reset | 曲线是 L1 Type-II 近锁行为模型，不是 Type-I Eq.62–64 仿真或 SPICE |
+| A1.3 第一张相噪图怎么读 | 读 Offset Frequency、连续 SSB 相噪和离散 Spur；区分 dBc/Hz 与 dBc | TI SNAU210B Fig.5-1 官方 PDF p.6 链接；ADI MT-008 Fig.1/3/4、Eq.2–3 官方 PDF 链接 | 四个离散 marker、切换、读数与检查；不连线/不插值 | 厂商图片仅官方链接；marker 是 TI 图上读数，不是本站测量 |
 
 ### A2. 用边沿理解反馈
 
 | 页面 | 核心问题与内容 | 必须出现的图/公式 | 交互与实验 | 当前资产/缺口 |
 |---|---|---|---|---|
-| A2.1 时间差怎样变成相位差 | 同频时钟边沿的时间偏移和相位角；正负号约定 Δt=tFB−tREF、Δφ=φREF−φFB | Δφ=360°·f·Δt；双时钟边沿图和相位圆盘 | 已实现时间/相位两种输入模式、SVG 边沿拖动与键盘微调，实时计算周期和相位 | 已部署；100 MHz、+40 ps 得 +1.44°，负时间差得到负相位差 |
-| A2.2 频差怎样积成相位差 | 恒定频差会使未包裹相位持续累积；区分未包裹相位与模相位回卷 | φu=φ0+Δf·t（cycle）；wrapped 相位映射到 [-0.5,+0.5) cycle | 已实现正/负频差、相位累积曲线、未包裹/模相位双图和共享时间游标 | 已部署 L1 模型；零频差保持相位，正负频差方向和回卷通过检查 |
-| A2.3 PLL 第一次怎么纠偏 | REF/FB 事件先后、理想 PFD 的 UP/DN 脉宽与异步复位；多周期频差怎样改变事件顺序 | PFD 逐事件状态模型；UP/DN/RESET 时间轴；正负频差实验 | 已实现逐事件 Play/Pause/Step/Reset、相位偏移和多周期频差输入 | 已部署 L1 理想 PFD 模型；不模拟 CP 电流、VCTRL 或 VCO 闭环动态，避免把数字状态机误称完整 PLL 仿真 |
+| A2.1 时间差怎样变成相位差 | 依据 JKU §7.1 原式理解同频边沿的时间偏移、相位和正负号 | JKU Δφ=2π·Δt/Tref、Verror=KPD·Δφ；紧邻原文链接 | 双边沿拖动与相位圆盘，100 MHz、+40 ps 得 +1.44° | 课程显式定义 Δt=tFB−tREF、Δφ=φREF−φFB；固定向量通过 |
+| A2.2 频差怎样积成相位差 | 从 JKU §6.7 相位积分与 §7.1 角频率关系理解 Δf 如何累积 | JKU φVCO=∫ωVCO dt、ω=dφ/dt；Δφe 对 Δf 积分为本课程推导 | 未包裹/模相位动态双曲线与共享时间游标 | 模相位回卷是显示映射，不称 Cycle Slip；实验为 L1 |
+| A2.3 PLL 第一次怎么纠偏 | 读 JKU PFD 电路与 REF/FB 先后、多周期频差的工况 | JKU §7.2 Fig.77–81 原图组；本课程理想事件模型公式 | 逐事件状态机、UP/DN/RESET 时序、Play/Step/Reset、多周期实验 | 理想 PFD 模型截至事件脉宽，不含 CP/VCO 连续闭环 |
 
 **A 部分检查题：**
 - 为什么频率差会变成不断增大的相位差？

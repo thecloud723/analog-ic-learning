@@ -2,7 +2,7 @@
 
 > 课程页面、教学问题和交互实验的新版映射见 [PLL 完整课程新大纲](docs/PLL_MASTER_COURSE_OUTLINE_2026-11-19.md)。**本文件仍是实验 ID、L1–L4 成熟度和真实运行证据的唯一状态台账**；课程大纲中的状态表只作导航摘要。
 
-> **A 部分 Classroom 交付状态（2026-11-19）：** [SDD](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md) 所列 A1.1–A2.3 六页已在 main 实现并部署；逐页交互和测试证据见[验收报告](docs/PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)。A-INT-01～06 属课程 UI/行为模型，成熟度均为 **L1**；本次没有把任何计划实验标成 L2、L3 或 L4。A1.2 是解析近锁教学模型，A2.1–A2.3 是本地公式/理想事件模型；A1.3 显示 TI 原始测量图和离散 marker 数据，不代表本项目进行了测量。真实手机视口与浏览器断网运行未验证。
+> **A 部分 Source-First 交付状态（2026-11-19）：** 六页已按 [V2 SDD](docs/PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md) 完成内容重排；代码头 fa001607 的 Pages workflow success。A-INT-01～06 仍均为 **L1**，没有升级实验成熟度。A1.2 是 Type-II 近锁教学行为模型；A2.1–A2.3 是公式/理想事件模型；A1.3 只链接 TI 原图并显示离散图上读数，不是本站实测。逐页与数值证据见 [V2 验收报告](docs/PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md)。浏览器实际渲染、390 px 手机视口、offline、当前头 HTTP/Console 与 B–F 浏览器回归未验证。
 
 > **阶段 1 · PLL-S1-01**　已做[课程入口与导航源码审计](docs/PLL_S1_01_NAVIGATION_AUDIT.md)。已补齐 18 章迁移映射，可用于 S1-07 关联旧实验。实验成熟度沿用既有证据。旧实验保留原 ID，章级新版去向已补在各章标题下。
 > **PLL-S1-02**　[新版 52 页覆盖矩阵](docs/PLL_S1_02_COURSE_COVERAGE.md)已建立，可用于 S1-07 合并台账。
