@@ -11,8 +11,8 @@
 - 交互/模型规范：pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md
 - 当前分支：main
 - 审计基线 SHA：41b3444f46878f65d6769aa6f951572ec7d149d0
-- 最新本次页面提交：A1.1 JKU Fig.74 原图优先重排 a3f0f0595dd5303c401e2a1de5781878064ae9a7
-- 当前阶段：Phase 2 A1.1 完成；继续 A1.2
+- 最新本次页面提交：A1.2 Type-I/Type-II 原图、原式与近锁模型区分 9b8a869f59f9e316a15de9623150920aec1e07ec
+- 当前阶段：Phase 2 A1.2 完成；继续 A1.3
 - 最后更新时间：2026-11-19（Asia/Shanghai）
 
 ## V2 工作清单
@@ -24,13 +24,18 @@
 | V2-02 | A2.2 频差积分 | pll/course/a2-2.html | 已完成 | 17ce8e5 | Node 模型套件 8/8；静态断言确认 JKU §6.7/§7.1、Fig.73 链接、本课程推导、2.15/+0.15 cycle 测试向量及分页 | 浏览器视觉/手机视口待集成验收 |
 | V2-03 | A2.3 PFD | pll/course/a2-3.html | 已完成 | 530adf1968f95787b43ef951b49453f2aebbe7a3 | Node 模型套件 8/8；Fig.77–81 原图/本地路径静态检查通过；REF/FB 正体文字、Δt 数学变量拆分、reset 延迟近似式检查通过 | 全六页桌面/手机浏览器回归待 Phase 3 |
 | V2-04 | A1.1 框图/频率链 | pll/course/a1-1.html | 已完成 | a3f0f0595dd5303c401e2a1de5781878064ae9a7 | 来源顺序、JKU 原图路径/Apache 许可、ADF 官方 PDF 链接且无 ADI 图镜像、MathML 与 SVG f 下标检查通过；频率向量默认/D=4/N=126、Node 8/8、Reset/导览静态断言通过 | 全页浏览器视口检查待 Phase 3 |
-| V2-05 | A1.2 锁定与模型 | pll/course/a1-2.html | 未开始 | — | 待测 | Type-I Fig.76 Eq.62–64 与 Type-II Fig.83 Eq.67–69 区分 |
+| V2-05 | A1.2 锁定与模型 | pll/course/a1-2.html、pll/course/a-classroom.css | 已完成 | 9b8a869f59f9e316a15de9623150920aec1e07ec | Fig.76/Fig.83 原图和 Eq.62–64/Eq.67–69 精确链接；Type-I/II与 C3 条件分开；39 个 MathML 块结构平衡；模型 t=0、+100 kHz 符号、3.25 μs公式复算通过；保留三曲线/游标/Play/Pause/Step/Restart | 浏览器排版与窄屏视觉待 Phase 3（本环境进程/浏览器不可用） |
 | V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、materials/pll/FIGURE_MANIFEST.csv、必要的旧图引用 | 未开始 | — | 待测 | TI/ADI 官方链接；dBc/dBc/Hz 与 marker 来源 |
 | V2-07 | 公共样式和测试 | pll/course/a-classroom.css、tests/test_a_classroom_pages.py | 进行中 | 7a463fe | 增加 Source-First 样式、A1.3 受限素材断言和顺序检查；全六页测试待页面全部改造 | 完成六页后全套回归 |
 | V2-08 | 文档/实验台账 | README、主纲、页计划、成熟度台账、PROGRESS、执行状态、V2 验收报告 | 未开始 | — | 待测 | 不改变 L1–L4 成熟度判定 |
 | V2-09 | 集成与 Pages 验收 | 六页、原图、MathML、桌面/手机、B–F、部署 | 未开始 | — | 待测 | 未实测项目保持未验证 |
 
 ## 已核验事实
+
+- A1.2 提交 `9b8a869f59f9e316a15de9623150920aec1e07ec` 在交互台前呈现 JKU Fig.76 Type-I 原图与 Eq.62–64、Fig.83 Type-II 架构原图与 Eq.67–69。每个公式链接到 JKU QMD 中核实的 Quarto 方程锚点；图注链接到原图锚点。
+- Type-II Eq.67–69 明确标注“忽略 C3 才得到二阶关系”；Fig.83 保留 C3 时滤波器为三阶。现有三曲线另列成本课程 Type-II 二阶近锁行为模型公式，并明确不是 JKU Type-I 方程的仿真，也不是 Fig.83 的 SPICE。
+- A1.2 模型单位区分 JKU `K_VCO` 的 rad/(s·V) 与共享模型采用的 Hz/V，显示 `K_VCO,ω=2πK_VCO,f`。默认初始相位误差为零，并给出 t=0 的 −100 kHz/−1 mV/0 rad 检查点。
+- A1.2 纯 JS 固定向量：t=0 负频差 → −100 kHz、−1 mV、0 rad；+100 kHz → +1 mV、0 rad；t=3.25 μs 与共享模型直接计算及独立闭式方程一致。39 个 MathML 块通过标签配对结构检查。此环境浏览器/本地进程刚不可用，未做该页渲染截图；留到集成验收且若运行环境仍不可用则标未验证。
 
 - A1.1 `a3f0f0595dd5303c401e2a1de5781878064ae9a7` 已将 JKU §7.1 Fig.74 原图作为正文主图，并把交互框图明确标为教学扩展；图边标注 Apache-2.0 与直接原文定位。该简化原图没有独立输出分频器，原文锁定关系 `f_out=N f_ref` 用 MathML 呈现。
 - A1.1 的产品对照通过 ADI ADF4351 官方 PDF 第 1 页 Fig.1 直接链接阅读，移除了本页嵌入的 ADI 图。扩展计算器把 ÷R、反馈 ÷N、输出 ÷D 公式用 MathML 表达；既有互动 SVG 下标保持 `f` 斜体、文字下标正体。
@@ -49,10 +54,10 @@
 
 ## 下一步工作
 
-1. 立即完成 A1.2：原样呈现 JKU Fig.76 与 Eq.62–64 Type-I，以及 Fig.83 与 Eq.67–69 Type-II；解释现有三曲线模型属于 Type-II 近锁行为模型，不把两者合并成同一模型。
-2. 继续 A1.3、逐页视觉/交互核对其他已改页面，并完成来源清单和版权安全检查。
-3. 六页完成后跑完整 Python/Node/视觉/部署/导航/B–F 回归；未能实测的项明确标为未验证。
-4. 完成映射、README/主纲/页计划/台账/PROGRESS/最终验收报告并推送。
+1. 立即完成 A1.3：按 TI SNAU210B Rev.B Fig.5-1 与 ADI MT-008 原文重排相噪读图正文，准确标注官方 PDF 页码、离散 marker、dBc 与 dBc/Hz；删除本页受限镜像图。
+2. 继续 A2.2/A2.3/A1.1/A1.2 内容和交互核对，整理映射、图片许可和原素材清单。
+3. 六页完成后跑完整 Python/Node/MathML/部署/导航/B–F 回归；浏览器不可用的实测项如实标未验证。
+4. 完成 README/主纲/页计划/台账/PROGRESS/最终验收报告并推送。
 
 ## 中断恢复协议
 
