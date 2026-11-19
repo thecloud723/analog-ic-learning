@@ -1,5 +1,7 @@
 # PLL 完整课程新大纲：知识主线、交互实验与工程验证
 
+> **PLL A 内容实施基线：** [原教材优先 SDD V2](PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md)，配套 [Work 执行提示词](PLL_A_SOURCE_FIRST_WORK_PROMPT_V2_2026-11-19.md)。本主纲继续负责 A–F 章节知识主线。
+
 > **教材内容策略更新：** 2026-11-19 起，PLL 的课程主体优先组织 JKU/TI/ADI 等原始教材材料，尽量直接采用可合法复用的原图和原公式，中文讲解与交互作辅助。详见 [原教材优先改造规范](PLL_SOURCE_FIRST_COURSE_EDITORIAL_SPEC_2026-11-19.md)。
 
 
