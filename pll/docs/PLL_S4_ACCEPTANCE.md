@@ -24,4 +24,6 @@
 
 MASH 1-1-1 的最大谱格在此窗口下降 **22.61 dB**，带内功率由基准 0 增到 7.592×10⁻⁶。有限窗口内 Y₃ 均值为 0.125061，差对应误差抵消边界项。该谱是数字分频命令，射频输出的 dBc 或 dBc/Hz 须经 PLL 边沿模型计算。另用 1001/4096、seed 0x1234、幅度 3 LSB 重跑。
 
+[完整 DSM-01 CI](https://github.com/thecloud723/analog-ic-learning/actions/runs/44433810541)通过 RTL 对照及一至三阶 dither 频谱测试，并归档 CSV 与摘要。
+
 运行入口位于 [DSM-01](../labs/DSM-01/)。下一批接入逐沿 Fractional-N 闭环并比较理想平均分频。ADPLL-01 的定点、量化及校准验收尚未开始。
