@@ -119,7 +119,7 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertEqual({src.split("?", 1)[0] for src in page.stylesheets}, {"course.css", "a-classroom.css"})
                 for src in page.scripts + page.stylesheets:
                     if src.split("?", 1)[0] != "course.css":
-                        self.assertIn("?v=20261119-6", src)
+                        self.assertIn("?v=" + ("20261119-6" if src.split("?", 1)[0].endswith(".js") else "20261119-7"), src)
                 self.assertIn("a-classroom-shell", page.shell_classes)
                 reset_action = "restart" if filename in {"a1-2.html", "a2-2.html"} else "reset"
                 self.assertIn(reset_action, page.actions)
@@ -145,6 +145,7 @@ class ClassroomPageTests(unittest.TestCase):
         self.assertIn(".inline-math .math-variable", styles)
         self.assertIn("sub.math-subscript", styles)
         self.assertIn("min-width: 760px", styles)
+        self.assertIn('.a-classroom[data-classroom-lab="a11"] .workbench', styles)
         self.assertIn(".lesson-outcome { display: block;", styles)
         self.assertIn('viewBox="0 0 1260 520"', a11)
         self.assertIn('class="diagram-scroll"', a11)
@@ -163,7 +164,7 @@ class ClassroomPageTests(unittest.TestCase):
             with self.subTest(page=filename):
                 page = (COURSE / filename).read_text(encoding="utf-8")
                 self.assertIn('a-classroom.js?v=20261119-6', page)
-                self.assertIn('a-classroom.css?v=20261119-6', page)
+                self.assertIn('a-classroom.css?v=20261119-7', page)
 
     def test_page_navigation_and_local_images_resolve(self):
         local_pages = set(PAGES)
