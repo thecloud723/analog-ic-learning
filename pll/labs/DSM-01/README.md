@@ -13,4 +13,14 @@ vvp /tmp/mash.vvp +vectors=/tmp/mash-vectors.txt
 python "$lab/measure_mash.py" /tmp/mash-spectrum
 ```
 
-谱输出包含每拍有效输入和命令 CSV、矩形窗单边功率谱和摘要。记录单位为 command²/bin。启用 dither 时可选 seed 和幅度。默认一阶与 MASH 命令比较在 1/8，另可传入 NUM 与 DEN。闭环将在后续验收接入这些命令。
+谱输出包含每拍有效输入和命令 CSV、矩形窗单边功率谱和摘要。记录单位为 command²/bin。启用 dither 时可选 seed 和幅度。默认一阶与 MASH 命令比较在 1/8，另可传入 NUM 与 DEN。
+
+## Fractional-N 逐边沿闭环
+
+需 Node.js 与 NumPy。从仓库根目录执行以下命令，或在本目录打开 [闭环 Notebook](FractionalN_Closed_Loop.ipynb)。
+
+```sh
+python pll/labs/DSM-01/compare_fractional.py /tmp/dsm-closed-loop
+```
+
+输出包括四种反馈工况的相位/频偏 CSV 以及入带时刻、相位 RMS 和复包络谱摘要。可用 `--num`、`--den`、`--width` 和 `--seed` 复跑。测试以 40 MHz 采样谱比较模型，分辨带宽为 40 MHz / 8192。

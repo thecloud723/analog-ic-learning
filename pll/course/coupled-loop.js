@@ -97,7 +97,7 @@
     };
   }
 
-  function simulate({offset,mismatch,resetDelay,curve,duration=45,config,onEvent,onVcoEdge}){
+  function simulate({offset,mismatch,resetDelay,curve,duration=45,config,onEvent,onVcoEdge,nextDivider}){
     const {
       referenceHz,divider,resistanceOhm:resistance,capacitanceF:capacitance,shuntF:shunt,pumpA,pumpOutputResistanceOhm:rout,upDelayNs,downDelayNs,
       voltageMin:floor,voltageMax:ceiling,initialVoltage,firstReferenceNs,initialFeedbackCycles,linear,curved,
@@ -111,6 +111,19 @@
     const pumpCurrent=()=>pumpA*(Number(pumpUp)-(1-mismatch/100)*Number(pumpDown));
     const data=[];
     let nextVcoEdge=Math.floor(phase*divider)+1;
+    let feedbackCount=0, feedbackIndex=0;
+    // The divider latches a positive integer count for each feedback interval.
+    const scheduleFeedback=()=>{
+      const count=nextDivider(feedbackIndex++);
+      if(!Number.isSafeInteger(count)||count<=0)throw new RangeError("Invalid feedback divider count");
+      feedbackCount+=count;
+      if(!Number.isSafeInteger(feedbackCount))throw new RangeError("Feedback edge count exceeds integer precision");
+      return feedbackCount/divider;
+    };
+    if(nextDivider){
+      nextFb=scheduleFeedback();
+      if(phase>=nextFb)throw new RangeError("Initial phase reaches first feedback edge");
+    }
     while(nextSample<=duration*1000){
       const current=pumpCurrent();
       const dv=current/capacitance*1e-9;
@@ -152,10 +165,10 @@
       const dt=end-t;
       const endPhase=phase+advance(dt);
       if(onVcoEdge){
-        const reached=(feedback?nextFb:endPhase)*divider+1e-9;
+        const reached=(feedback&&nextDivider?feedbackCount:(feedback?nextFb:endPhase)*divider)+1e-9;
         while(nextVcoEdge<=reached){
           const edge=nextVcoEdge++;
-          if(feedback && edge===nextFb*divider){
+          if(feedback && edge===(nextDivider?feedbackCount:nextFb*divider)){
             onVcoEdge({ns:end,edge});
             continue;
           }
@@ -177,7 +190,11 @@
       const prevUp=up,prevDown=dn;
       if(t===reset){up=false;dn=false;reset=Infinity;}
       if(t===nextRef){up=true;nextRef+=referenceNs;}
-      if(feedback){phase=nextFb++;dn=true;}
+      if(feedback){
+        phase=nextFb;
+        nextFb=nextDivider?scheduleFeedback():nextFb+1;
+        dn=true;
+      }
       let immediateReset=false;
       if(up&&dn&&reset===Infinity){
         if(resetDelay>0)reset=t+resetDelay;

@@ -2,7 +2,7 @@
 
 ## 阶段 4 执行记录
 
-- 2026-11-19，DSM-01 在 4/12/24 位共 12,288 拍 RTL/Python 对照通过，完成一阶/MASH 1-1/MASH 1-1-1 命令谱与 dither 对照。Fractional-N 闭环及 ADPLL 定点待验收。见[阶段 4 验收](docs/PLL_S4_ACCEPTANCE.md)。
+- 2026-11-19，DSM-01 在 4/12/24 位共 12,288 拍 RTL/Python 对照通过，完成一阶/MASH 1-1/MASH 1-1-1 命令谱与 dither 对照。Fractional-N 逐沿闭环的两组改参对照已通过本地测试，ADPLL 定点待验收。见[阶段 4 验收](docs/PLL_S4_ACCEPTANCE.md)。
 
 ## 阶段 3 已验收
 
