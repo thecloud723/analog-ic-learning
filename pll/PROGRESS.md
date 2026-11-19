@@ -5,6 +5,13 @@
 - 新增 [PLL 完整课程新大纲](docs/PLL_MASTER_COURSE_OUTLINE_2026-11-19.md)，重新整理 A–F 六部分、现有 52 页的学习问题、交互实验和 L1–L4 证据关系。
 - 本次只更新课程规划文档，不修改 HTML、不新增仿真、不改变阶段 2–4 的执行状态。工程执行仍以 [PLL 完备度与执行计划](docs/PLL_COMPLETENESS_AND_EXECUTION_PLAN_2026-11-17.md) 为准，实验成熟度仍以 [实验四级台账](EXPERIMENT_LEVEL_ROADMAP.md) 为准。
 
+## A 部分 Classroom 交互教学 SDD（2026-11-19）
+
+- 新增 [PLL A 部分交互式教学系统软件设计说明书（SDD）](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)，覆盖 A1.1～A2.3 六个页面。
+- 明确每堂课的 Learn → Predict → Explore → Observe → Explain → Check 流程；桌面三栏实验台、移动端单栏布局、Guided Tour、示波器、时序事件、曲线游标和检查题。
+- 为六个交互定义 A-INT-01～06 页面交互 ID、模型公式、单位/符号约定、数据来源、软件文件划分和固定验收向量。
+- 本次仅创建设计文档和索引，不修改六个 A 页面，不新增仿真，不改变全局 L1–L4 台账；状态为设计完成、待 Work 实施。
+
 ## 当前任务队列（2026-11-19）
 
 - **总体状态**：阶段 1 结构冻结完成；阶段 2、3 已验收；阶段 4 进行中（DSM-01 RTL/Python 对照通过，Fractional-N 逐沿闭环两组改参通过本地测试，ADPLL-01 浮点基准通过，定点验收待做）。
