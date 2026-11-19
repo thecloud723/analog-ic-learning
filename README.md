@@ -37,6 +37,7 @@
 ## 项目管理
 
 - [课程总路线图](docs/COURSE_ROADMAP.md)
+- [交互式教学平台设计规范（Classroom 源码拆解）](docs/INTERACTIVE_TEACHING_PLATFORM_SPEC_2026-11-19.md)
 - [版本管理规范](docs/VERSIONING.md)
 - [更新记录](CHANGELOG.md)
 
