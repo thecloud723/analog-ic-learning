@@ -8,6 +8,8 @@
   var SVG_NS = "http://www.w3.org/2000/svg";
   var INLINE_MATH_REGEX = /(^|[^A-Za-z0-9_])(ΔfVCO|ΔVCTRL|Δφe|Δf0|φe,cycle(?:\([^)]+\))?|φe(?:\([^)]+\))?|fPFD|fREF|fVCO|fFB|fOUT|tREF|tFB|fn|f0|VCTRL|Kvco|ωdt|ωn|ωd|dτ|dt|cos|sin|Δφ|Δt|Δf|φREF|φFB|φu|φ0|φ|τ|α|ζ|π|e|[NDRftT])(?=$|[^A-Za-z0-9_])/g;
 
+  function query(root, selector) { return root.querySelector(selector); }
+  function all(root, selector) { return Array.prototype.slice.call(root.querySelectorAll(selector)); }
   function mathElement(name, value, variant) {
     var el = document.createElement("span");
     el.className = name === "mo" ? "math-operator" : name === "mn" ? "math-number" : variant === "normal" ? "math-upright" : "math-variable";
