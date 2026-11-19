@@ -6,10 +6,9 @@
       evidence: "TI Datasheet / Measured Figure",
       sourceName: "Texas Instruments LMX2594EVM User's Guide, SNAU210B, Fig. 5-1",
       sourceUrl: "https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6",
-      imagePath: "../assets/originals/ti/lmx2594-fig5-1.png",
       carrierHz: 14000028900,
       carrierDisplayGHz: 14.0000289,
-      extraction: "Values copied from the marker readouts printed in the TI measurement figure. UI rounds to 0.1 dB; this is not a newly acquired instrument data set.",
+      extraction: "Four discrete readings copied from markers printed in TI SNAU210B Fig. 5-1. UI rounds to 0.1 dB; the points are not interpolated and are not a newly acquired instrument data set.",
       markerPoints: [
         {offsetHz: 10000, dbcPerHz: -105.1543, label: "10 kHz"},
         {offsetHz: 100000, dbcPerHz: -108.0194, label: "100 kHz"},

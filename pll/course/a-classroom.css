@@ -241,3 +241,13 @@
 /* Source-first equation index links */
 .a-classroom .equation-number { margin-top: .28rem; color: #5a7180; font-size: .76rem; line-height: 1.35; text-align: right; }
 .a-classroom .equation-number a { color: inherit; text-underline-offset: .14em; }
+
+/* Source-first A1.3: compact marker evidence table */
+.a-classroom .source-marker-table {
+  width: 100%; border-collapse: collapse; margin: .65rem 0; font-variant-numeric: tabular-nums;
+}
+.a-classroom .source-marker-table th, .a-classroom .source-marker-table td {
+  padding: .42rem .55rem; border-bottom: 1px solid #d7e4eb; text-align: left;
+}
+.a-classroom .source-marker-table th { color: #34566a; background: #f1f7fa; font-size: .88rem; }
+.a-classroom .source-marker-table td:last-child { white-space: nowrap; }
