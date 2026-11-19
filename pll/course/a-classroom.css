@@ -13,7 +13,7 @@
 .a-classroom .lesson-head { margin: 0 0 1rem; }
 .a-classroom .lesson-head h1 { margin-top: .15em; }
 .a-classroom .lesson-kicker { color: var(--classroom-blue); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.a-classroom .lesson-outcome { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; color: var(--classroom-muted); }
+.a-classroom .lesson-outcome { display: block; color: var(--classroom-muted); }
 .a-classroom .lesson-outcome strong { color: var(--classroom-ink); }
 .a-classroom .lesson-flow { display: flex; flex-wrap: wrap; gap: .35rem; margin: .8rem 0; }
 .a-classroom .lesson-flow span { border: 1px solid var(--classroom-border); border-radius: 999px; padding: .15rem .55rem; color: var(--classroom-muted); font-size: .75rem; }
@@ -114,8 +114,10 @@
 .a-classroom .pll-diagram [data-frequency-kind].is-frequency-focus .freq-value { fill: #a64e25; font-weight: 800; }
 .a-classroom .pll-diagram .path-key text { fill: #496476; font-size: 13px; font-weight: 650; }
 .a-classroom .pll-diagram .path-key line { stroke-width: 4; stroke-linecap: round; }
-.a-classroom math.inline-math { display: inline; font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIXGeneral", "Times New Roman", serif; font-size: 1.1em; line-height: 1; color: inherit; vertical-align: -0.08em; white-space: nowrap; }
-.a-classroom math.inline-math mi[mathvariant="normal"] { font-style: normal; }
+.a-classroom .inline-math { display: inline; color: inherit; font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIXGeneral", "Times New Roman", serif; font-size: 1.08em; line-height: 1; white-space: nowrap; }
+.a-classroom .inline-math .math-variable { font-style: italic; }
+.a-classroom .inline-math .math-upright, .a-classroom .inline-math .math-operator, .a-classroom .inline-math .math-number { font-style: normal; }
+.a-classroom .inline-math sub.math-subscript { font-size: .68em; line-height: 0; vertical-align: sub; font-style: normal; }
 .a-classroom .tour-panel { background: #f8fbfd; }
 .a-classroom .timeline-svg { width: 100%; min-height: 280px; touch-action: none; }
 .a-classroom .timeline-svg text { fill: var(--classroom-muted); font-size: 13px; }
