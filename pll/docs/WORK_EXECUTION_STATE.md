@@ -11,8 +11,8 @@
 - 交互/模型规范：pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md
 - 当前分支：main
 - 审计基线 SHA：41b3444f46878f65d6769aa6f951572ec7d149d0
-- 最新本次页面提交：A2.3 JKU Fig.77–81 原图与脉宽 MathML 修订 530adf1968f95787b43ef951b49453f2aebbe7a3
-- 当前阶段：Phase 2 A2.3 完成；继续 A1.1
+- 最新本次页面提交：A1.1 JKU Fig.74 原图优先重排 a3f0f0595dd5303c401e2a1de5781878064ae9a7
+- 当前阶段：Phase 2 A1.1 完成；继续 A1.2
 - 最后更新时间：2026-11-19（Asia/Shanghai）
 
 ## V2 工作清单
@@ -23,7 +23,7 @@
 | V2-01 | A2.1 教学样板 | pll/course/a2-1.html、a-classroom.css、tests/test_a_classroom_pages.py | 已完成 | 7a463fe | Node 模型套件 8/8；A2.1 Reset 接线 unittest 通过；来源顺序/MathML/100 MHz 40 ps/1.44°/URL 自检通过 | 浏览器桌面/手机视觉待整页回归 |
 | V2-02 | A2.2 频差积分 | pll/course/a2-2.html | 已完成 | 17ce8e5 | Node 模型套件 8/8；静态断言确认 JKU §6.7/§7.1、Fig.73 链接、本课程推导、2.15/+0.15 cycle 测试向量及分页 | 浏览器视觉/手机视口待集成验收 |
 | V2-03 | A2.3 PFD | pll/course/a2-3.html | 已完成 | 530adf1968f95787b43ef951b49453f2aebbe7a3 | Node 模型套件 8/8；Fig.77–81 原图/本地路径静态检查通过；REF/FB 正体文字、Δt 数学变量拆分、reset 延迟近似式检查通过 | 全六页桌面/手机浏览器回归待 Phase 3 |
-| V2-04 | A1.1 框图/频率链 | pll/course/a1-1.html | 未开始 | — | 待测 | Fig.74 主体；ADF4351 官方链接；VCO 内部频率与输出 D |
+| V2-04 | A1.1 框图/频率链 | pll/course/a1-1.html | 已完成 | a3f0f0595dd5303c401e2a1de5781878064ae9a7 | 来源顺序、JKU 原图路径/Apache 许可、ADF 官方 PDF 链接且无 ADI 图镜像、MathML 与 SVG f 下标检查通过；频率向量默认/D=4/N=126、Node 8/8、Reset/导览静态断言通过 | 全页浏览器视口检查待 Phase 3 |
 | V2-05 | A1.2 锁定与模型 | pll/course/a1-2.html | 未开始 | — | 待测 | Type-I Fig.76 Eq.62–64 与 Type-II Fig.83 Eq.67–69 区分 |
 | V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、materials/pll/FIGURE_MANIFEST.csv、必要的旧图引用 | 未开始 | — | 待测 | TI/ADI 官方链接；dBc/dBc/Hz 与 marker 来源 |
 | V2-07 | 公共样式和测试 | pll/course/a-classroom.css、tests/test_a_classroom_pages.py | 进行中 | 7a463fe | 增加 Source-First 样式、A1.3 受限素材断言和顺序检查；全六页测试待页面全部改造 | 完成六页后全套回归 |
@@ -31,6 +31,10 @@
 | V2-09 | 集成与 Pages 验收 | 六页、原图、MathML、桌面/手机、B–F、部署 | 未开始 | — | 待测 | 未实测项目保持未验证 |
 
 ## 已核验事实
+
+- A1.1 `a3f0f0595dd5303c401e2a1de5781878064ae9a7` 已将 JKU §7.1 Fig.74 原图作为正文主图，并把交互框图明确标为教学扩展；图边标注 Apache-2.0 与直接原文定位。该简化原图没有独立输出分频器，原文锁定关系 `f_out=N f_ref` 用 MathML 呈现。
+- A1.1 的产品对照通过 ADI ADF4351 官方 PDF 第 1 页 Fig.1 直接链接阅读，移除了本页嵌入的 ADI 图。扩展计算器把 ÷R、反馈 ÷N、输出 ÷D 公式用 MathML 表达；既有互动 SVG 下标保持 `f` 斜体、文字下标正体。
+- A1.1 实测向量：40 MHz、R=1、N=125、D=2 → fVCO=5 GHz、fOUT=2.5 GHz；D=4 → fVCO 不变、fOUT=1.25 GHz；N=126 → fVCO=5.04 GHz。Node 模型 8/8 通过，页面来源顺序/MathML/官方链接/导览与 Reset 结构检查通过。
 
 - A2.3 页面提交 `530adf1968f95787b43ef951b49453f2aebbe7a3` 已将 JKU Fig.77–81 原图按电路/REF-first/FB-first/对齐/频差过渡排列在预测题和实验台之前；原图来源锚点与 Apache-2.0 许可链接已在图注附近。
 - A2.3 仍使用原有 PFD 事件状态机和多周期实验。理想模型的 REF/FB 标签以正体 MathML 文本显示，Δt 变量由独立的 Δ 与斜体 t 构成；脉宽关系明确标注为本课程理想事件模型。
@@ -45,8 +49,8 @@
 
 ## 下一步工作
 
-1. 立即完成 A1.1：将 JKU Fig.74 原图置于可点击框图实验之前；ADF4351 仅链接官方 PDF；统一把频率链公式改成 MathML，保留互动框图、Guided Tour 和计算器。
-2. 继续 A1.2、A1.3、A2.2、A2.3 的逐页视觉/交互核对（页面内容改造已经提交的按实际差异处理）。
+1. 立即完成 A1.2：原样呈现 JKU Fig.76 与 Eq.62–64 Type-I，以及 Fig.83 与 Eq.67–69 Type-II；解释现有三曲线模型属于 Type-II 近锁行为模型，不把两者合并成同一模型。
+2. 继续 A1.3、逐页视觉/交互核对其他已改页面，并完成来源清单和版权安全检查。
 3. 六页完成后跑完整 Python/Node/视觉/部署/导航/B–F 回归；未能实测的项明确标为未验证。
 4. 完成映射、README/主纲/页计划/台账/PROGRESS/最终验收报告并推送。
 
