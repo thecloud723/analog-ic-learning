@@ -8,7 +8,8 @@
 > 日期：2026-11-19  
 > 状态：**设计基线已实施并部署；实际代码、逐页验收及未验证项见 [PLL A Classroom 验收报告](PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)。本 SDD 继续作为 A 部分交互和模型的权威设计基线；各实验成熟度仍以 `EXPERIMENT_LEVEL_ROADMAP.md` 为准。**  
 > 适用范围：PLL 课程 A 部分「系统与反馈基础」，共 6 个现有页面。SerDes 不在本文件范围内。  
-> 仓库基线：main 提交 bde93ee853b01b622efc870f37d7a94aaf5800dd。  
+> 设计编写时仓库基线：main 提交 bde93ee853b01b622efc870f37d7a94aaf5800dd。  
+> 最新图框与数学排版修订：main 提交 `0b33b2f956b1e520c86f01e6f58976132af8df96`，Pages run `44533031320` 成功。  
 > 规范用词：必须为验收硬要求；建议为默认方案；可选为后续增强。
 
 ---
@@ -728,17 +729,17 @@ A1.2 可以引用 LOOP-01 结果，但不能重复建立另一套闭环 SPICE �
 
 ### 11.1 当前仓库基线
 
-当前六个 A 页面已存在：
-- pll/course/a1-1.html
-- pll/course/a1-2.html
-- pll/course/a1-3.html
-- pll/course/a2-1.html
-- pll/course/a2-2.html
-- pll/course/a2-3.html
+六个 A 页面沿用既有 URL：
+- `pll/course/a1-1.html`
+- `pll/course/a1-2.html`
+- `pll/course/a1-3.html`
+- `pll/course/a2-1.html`
+- `pll/course/a2-2.html`
+- `pll/course/a2-3.html`
 
-当前页面共用 course.css 和 course.js。course.js 通过单个 [data-lab] 标识分派多种旧式实验。A 部分已有 N 滑块、三条锁定曲线、四个相噪 marker、时间差图、相位累积图和 UP/DN 方向选择，但尚未形成统一的 Guided Tour、Prediction、事件状态机和共享实验台结构。
+当前实现由 `a-classroom.css`、`a-classroom-models.js`、`a-classroom-data.js` 和 `a-classroom.js` 提供 A 部分专用实验台；B–F 继续使用原 `course.css` / `course.js` 路径。六页已包含统一的 Learn → Predict → Explore → Observe → Explain → Check 流程、Guided Tour、模型驱动的交互图和读数。
 
-### 11.2 本期建议新增的前端文件
+### 11.2 已实现的前端文件
 
 | 文件 | 职责 |
 |---|---|
@@ -756,6 +757,7 @@ A1.2 可以引用 LOOP-01 结果，但不能重复建立另一套闭环 SPICE �
 - 模型函数不依赖 DOM；UI 层不能重新实现模型公式。
 - 不新增 React/Vue 等框架，不增加运行时 CDN 依赖；静态 GitHub Pages 和离线本地服务器均可运行。
 - 所有图片使用仓库本地路径；外部链接只用于来源追溯，不作为实验运行依赖。
+- 正文与动态读数中的变量使用共享的语义化行内数学标记：变量字母/希腊符号按数学斜体显示，多字母下标（如 `REF`、`VCO`）作为下标并保持正体，单位与普通说明文字保持正体；不得退化成 `fREF` 一类纯文本拼接。实现使用本地 HTML/CSS 的 `<span>`、`<i>`、`<sub>` 结构，无 MathJax/KaTeX 远程运行依赖。
 
 ### 11.4 模型函数接口建议
 
@@ -966,16 +968,18 @@ A1.2 还需覆盖：
 
 ## 16. 本 SDD 的完成定义
 
-本文件当前状态为**设计完成、待实施**。只有以下事项全部完成，A 部分才可标记为实施验收完成：
+本 SDD 的设计基线已实施并部署；截至 `0b33b2f956b1e520c86f01e6f58976132af8df96`，**实现与桌面视觉验收部分通过，整体验收仍未完成**。逐项状态以 `PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md` 和 `WORK_EXECUTION_STATE.md` 为准。
 
-- [ ] 六个页面均按本 SDD 完成交互教学流程。
-- [ ] 六个页面均有独立实验 ID、模型/数据来源和证据标签。
-- [ ] 共享组件和模型层已实现，页面没有重复维护同一公式。
-- [ ] 固定测试向量全部通过。
-- [ ] A1.3 原图和四个测量点重新核验。
-- [ ] 桌面、移动、离线和键盘验收通过。
-- [ ] B–F 原有页面和交互无回归。
-- [ ] README、课程大纲、页面计划、实验台账和 PROGRESS 已同步。
-- [ ] 提交 SHA 和验收证据已记录。
+- [x] 六个页面均按本 SDD 完成交互教学流程。
+- [x] 六个页面均有实验 ID、模型/数据来源和证据标签。
+- [x] 共享组件和模型层已实现，页面没有重复维护同一公式。
+- [x] 固定模型测试向量通过；Node 套件 8/8。
+- [x] A1.3 原图和四个离散测量点已核验。
+- [ ] 桌面、移动、离线和键盘全项验收：桌面宽视口、关键键盘操作已检查；手机真实视口和浏览器断网交互仍未验证。
+- [x] B–F 页面导航/标题/侧栏回归 44/44；B–F 源码未改动。
+- [x] README、课程大纲、页面计划、实验台账和 PROGRESS 已同步。
+- [x] 实施提交和逐页验收证据已记录。
+
+因此，当前状态不能标记为“A 部分整体验收完成”。
 
 **设计原则总结：A 部分不是把六篇文章加上六个滑块，而是交付六堂有目标、有预测、有实验、有观察、有解释、有验证的交互式小课。**
