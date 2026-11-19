@@ -11,8 +11,8 @@
 - 交互/模型规范：pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md
 - 当前分支：main
 - 审计基线 SHA：41b3444f46878f65d6769aa6f951572ec7d149d0
-- 最新本次提交：A2.1 样板代码与测试 `7a463feef513057f4215703bf73a89da21285ce6`
-- 当前阶段：Phase 1 A2.1 完成；Phase 2 正在进入 A2.2
+- 最新本次提交：A2.2 原教材正文与交互顺序 17ce8e54502e01187bf3b560062a3fb1e5d9af01
+- 当前阶段：Phase 2 A2.2 完成；继续 A2.3
 - 最后更新时间：2026-11-19（Asia/Shanghai）
 
 ## V2 工作清单
@@ -21,8 +21,8 @@
 |---|---|---|---|---|---|---|
 | V2-00 | 原教材审计与来源映射 | pll/docs/PLL_A_SOURCE_MAPPING_V2.md、WORK_EXECUTION_STATE.md、PROGRESS.md | 已完成 | dbc22ef | 映射及状态文件已读回；基线 main=41b3444 | 实施阶段继续核验页面 |
 | V2-01 | A2.1 教学样板 | pll/course/a2-1.html、a-classroom.css、tests/test_a_classroom_pages.py | 已完成 | 7a463fe | Node 模型套件 8/8；A2.1 Reset 接线 unittest 通过；来源顺序/MathML/100 MHz 40 ps/1.44°/URL 自检通过 | 浏览器桌面/手机视觉待整页回归 |
-| V2-02 | A2.2 频差积分 | pll/course/a2-2.html | 进行中（下一项） | — | 待测 | JKU 原式与本课程推导分开；未包裹/模相位语义 |
-| V2-03 | A2.3 PFD | pll/course/a2-3.html | 未开始 | — | 待测 | Fig.77–81 原图组；REF/FB 顺序及脉宽 |
+| V2-02 | A2.2 频差积分 | pll/course/a2-2.html | 已完成 | 17ce8e5 | Node 模型套件 8/8；静态断言确认 JKU §6.7/§7.1、Fig.73 链接、本课程推导、2.15/+0.15 cycle 测试向量及分页 | 浏览器视觉/手机视口待集成验收 |
+| V2-03 | A2.3 PFD | pll/course/a2-3.html | 进行中（下一项） | — | 待测 | Fig.77–81 原图组；REF/FB 顺序及脉宽 |
 | V2-04 | A1.1 框图/频率链 | pll/course/a1-1.html | 未开始 | — | 待测 | Fig.74 主体；ADF4351 官方链接；VCO 内部频率与输出 D |
 | V2-05 | A1.2 锁定与模型 | pll/course/a1-2.html | 未开始 | — | 待测 | Type-I Fig.76 Eq.62–64 与 Type-II Fig.83 Eq.67–69 区分 |
 | V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、materials/pll/FIGURE_MANIFEST.csv、必要的旧图引用 | 未开始 | — | 待测 | TI/ADI 官方链接；dBc/dBc/Hz 与 marker 来源 |
@@ -41,8 +41,8 @@
 
 ## 下一步工作
 
-1. 立即完成 A2.2：引用 JKU §6.7/§7.1 原式，明确本课程频差积分推导，保留双曲线/游标/播放/Reset。
-2. 继续 A2.3、A1.1、A1.2、A1.3，逐页完成原图/公式编排与独立数值/结构验收。
+1. 立即完成 A2.3：按 JKU Fig.77–81 排入 PFD 电路及四工况原图，保留逐事件/多周期状态机。
+2. 继续 A1.1、A1.2、A1.3，逐页完成原图/公式编排与独立数值/结构验收。
 3. 六页完成后跑完整 Python/Node/视觉/部署/导航/B–F 回归；未能实测的项明确标为未验证。
 4. 完成映射、README/主纲/页计划/台账/PROGRESS/最终验收报告并推送。
 
