@@ -18,6 +18,7 @@
 | PLL-02 | [C1.2](course/c1-2.html) | 等效 CP 净电荷 5 点 |
 | PLL-03 | [C2.1](course/c2-1.html) | 平均相位闭环的 SPICE 求解 |
 | LOOP-01 | [F1.2](course/f1-2.html) | [逐边沿行为级基准](docs/PLL_S2_ACCEPTANCE.md)已独立复跑，串联 RC 脉冲和 PLL-01 校准通过，与 PLL-03 交叉验证。额外极点及非理想 CP 矩阵已复跑，F1.2 已接入带来源记录的标定模型回放。公开作者 Notebook 与 GitHub Actions 洁净读者复制改参已验收。平台、日志与下载见阶段 2 验收表。 |
+| NOISE-01 | [D2.1](course/d2-1.html)、[D1.3](course/d1-3.html) | [七源随机谱与离散 PM 基准](docs/PLL_S3_ACCEPTANCE.md)在 CI 复跑通过。实测 EVM 对照和分源交互待验收。 |
 | PLL-04 | [D3.2](course/d3-2.html) | 周期纹波、参考杂散及示例输入谱的抖动预算 |
 
 [Notebook 源码与实验边界](labs/PLL-SPICE/README.md)。原 49 项保留在下文。逐实验去向见下表。映射按教学主题确定，复现记录沿用各实验原有证据。作者运行记录与独立访客 L3/L4 验收分别取证。
