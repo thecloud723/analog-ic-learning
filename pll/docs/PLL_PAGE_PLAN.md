@@ -4,7 +4,7 @@
 
 以下为页面编写清单。页号用于规划，旧网页与页签依照主计划迁移。每行描述讲解要点、拟放的公式和图、读图任务或实验，只记录选材与编写动作。图与公式写入正文时，分别直链原图或公式所在小节，不加 ref:。没有可靠原图时，使用来源明确的教学示意或实验导出图，注明原图、绘制、实测、仿真或公式生成。
 
-[改造主计划](JKU_PLL_REDESIGN.md) · [旧页面公式台账](PLL_FORMULA_SOURCE_INVENTORY.md) · [实验台账](../EXPERIMENT_LEVEL_ROADMAP.md)
+[改造主计划](JKU_PLL_REDESIGN.md) · [旧页面公式台账](PLL_FORMULA_SOURCE_INVENTORY.md) · [实验台账](../EXPERIMENT_LEVEL_ROADMAP.md) · [A 部分 Classroom 交互教学 SDD](PLL_A_CLASSROOM_SDD_2026-11-19.md)
 
 
 ### A1 从规格认识 PLL · 旧 01/04
