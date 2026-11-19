@@ -2,6 +2,8 @@
 
 > 课程页面、教学问题和交互实验的新版映射见 [PLL 完整课程新大纲](docs/PLL_MASTER_COURSE_OUTLINE_2026-11-19.md)。**本文件仍是实验 ID、L1–L4 成熟度和真实运行证据的唯一状态台账**；课程大纲中的状态表只作导航摘要。
 
+> **A 部分交互设计：** [PLL A 部分 Classroom 交互教学 SDD](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md) 已建立，定义 A1.1–A2.3 六堂课的交互和验收。A-INT-01～06 是课程页面交互 ID，不替代本文件中的独立仿真实验 ID，也不改变 L1–L4 状态。
+
 > **阶段 1 · PLL-S1-01**　已做[课程入口与导航源码审计](docs/PLL_S1_01_NAVIGATION_AUDIT.md)。已补齐 18 章迁移映射，可用于 S1-07 关联旧实验。实验成熟度沿用既有证据。旧实验保留原 ID，章级新版去向已补在各章标题下。
 > **PLL-S1-02**　[新版 52 页覆盖矩阵](docs/PLL_S1_02_COURSE_COVERAGE.md)已建立，可用于 S1-07 合并台账。
 > **PLL-S1-03**。[外部资料对照与正文引用](docs/PLL_S1_03_EXTERNAL_REFERENCE_MATRIX.md)已归档。公式级核对纳入 S1-04。
