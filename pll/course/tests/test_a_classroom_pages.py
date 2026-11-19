@@ -115,8 +115,11 @@ class ClassroomPageTests(unittest.TestCase):
             with self.subTest(page=filename):
                 page = self.inventory(filename)
                 self.assertEqual(page.labs, [lab_id])
-                self.assertEqual(set(page.scripts), expected_scripts)
-                self.assertEqual(set(page.stylesheets), {"course.css", "a-classroom.css"})
+                self.assertEqual({src.split("?", 1)[0] for src in page.scripts}, expected_scripts)
+                self.assertEqual({src.split("?", 1)[0] for src in page.stylesheets}, {"course.css", "a-classroom.css"})
+                for src in page.scripts + page.stylesheets:
+                    if src.split("?", 1)[0] != "course.css":
+                        self.assertIn("?v=20261119-2", src)
                 self.assertIn("a-classroom-shell", page.shell_classes)
                 reset_action = "restart" if filename in {"a1-2.html", "a2-2.html"} else "reset"
                 self.assertIn(reset_action, page.actions)
@@ -135,7 +138,8 @@ class ClassroomPageTests(unittest.TestCase):
                 page = self.inventory(filename)
                 for src in page.scripts + page.stylesheets + page.images:
                     self.assertFalse(src.startswith(("http:", "https:")), src)
-                    self.assertTrue((COURSE / src).is_file(), f"missing local asset {src} in {filename}")
+                    asset = src.split("?", 1)[0]
+                    self.assertTrue((COURSE / asset).is_file(), f"missing local asset {asset} in {filename}")
                 pager = [href for href in page.pager_links if href in local_pages]
                 self.assertTrue(pager, "the existing A-course pager should remain")
                 by_code = {link["code"]: link["href"] for link in page.nav_links}
