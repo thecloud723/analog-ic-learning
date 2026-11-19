@@ -1,0 +1,25 @@
+{
+  "source": "Texas Instruments SNAU210B, Figure 5-1, printed page 6",
+  "url": "https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6",
+  "document_sha256": "54400fe461d00787eb6b156d932c2aa381a8b17e87be97f858427328dbb0bff7",
+  "carrier_hz": 14000028900,
+  "carrier_dbm": 0.0796,
+  "reference_note": "TI specifies a clean input reference such as a 100 MHz Wenzel oscillator. The figure does not confirm the selected reference configuration.",
+  "pfd_hz": null,
+  "measurement_loop_bandwidth_hz": null,
+  "instrument_model": null,
+  "measurement_rbw_hz": null,
+  "filter_design_nominal": {"vco_hz": 15000000000, "pfd_hz": 200000000, "bandwidth_hz": 285000},
+  "instrument_band_markers": {"integrated_span_hz": 19690000, "rms_jitter_fs": 53.169, "endpoints_hz": null},
+  "markers": [
+    {"offset_hz": 100, "ssb_dbc_per_hz": -84.7166, "split": "fit"},
+    {"offset_hz": 1000, "ssb_dbc_per_hz": -95.0518, "split": "fit"},
+    {"offset_hz": 10000, "ssb_dbc_per_hz": -105.1543, "split": "fit"},
+    {"offset_hz": 100000, "ssb_dbc_per_hz": -108.0194, "split": "holdout"},
+    {"offset_hz": 1000000, "ssb_dbc_per_hz": -116.4369, "split": "fit"},
+    {"offset_hz": 10000000, "ssb_dbc_per_hz": -141.5219, "split": "holdout"},
+    {"offset_hz": 40000000, "ssb_dbc_per_hz": -147.8783, "split": "fit"},
+    {"offset_hz": 95000000, "ssb_dbc_per_hz": -149.1259, "split": "holdout"},
+    {"offset_hz": 100000000, "ssb_dbc_per_hz": -149.2126, "split": "fit"}
+  ]
+}
