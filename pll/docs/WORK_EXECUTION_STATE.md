@@ -11,8 +11,9 @@
 - 交互/模型规范：pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md
 - 当前分支：main
 - 审计基线 SHA：41b3444f46878f65d6769aa6f951572ec7d149d0
-- 最新本次页面提交：A1.3 TI/ADI 原教材链接、读图说明与 Marker 交互 d368e848050e4c22c7bd54f38bb07aed54985751
-- 当前阶段：Phase 2 六页内容迁移；A1.3 页面完成，继续公开素材授权清理与全页同步
+- 最新 A 部分页提交：A1.3 TI/ADI 原教材链接、读图说明与 Marker 交互 d368e848050e4c22c7bd54f38bb07aed54985751
+- 当前 main 检查点：公开素材清理提交 29ea81ef61ba12c5bd2e677db3967287c829d1e2
+- 当前阶段：Phase 3 六页集成回归与部署检查；页面内容及公开素材清理已完成
 - 最后更新时间：2026-11-19（Asia/Shanghai）
 
 ## V2 工作清单
@@ -27,12 +28,14 @@
 | V2-05 | A1.2 锁定与模型 | pll/course/a1-2.html、pll/course/a-classroom.css | 已完成 | 9b8a869f59f9e316a15de9623150920aec1e07ec | Fig.76/Fig.83 原图和 Eq.62–64/Eq.67–69 精确链接；Type-I/II与 C3 条件分开；39 个 MathML 块结构平衡；模型 t=0、+100 kHz 符号、3.25 μs公式复算通过；保留三曲线/游标/Play/Pause/Step/Restart | 浏览器排版与窄屏视觉待 Phase 3（本环境进程/浏览器不可用） |
 | V2-06 | A1.3 相噪读图 | pll/course/a1-3.html、pll/course/a-classroom.css、pll/course/a-classroom-data.js | 已完成 | d368e848050e4c22c7bd54f38bb07aed54985751 | 来源区早于预测题；TI Fig.5-1/ADI MT-008 官方链接定位；9 个 MathML 块配对；4 个 Marker 数值、无连线、无厂商图片引用；选择器/单位切换/Reset/检查题保留 | 浏览器桌面/手机视觉待集成验收 |
 | V2-07 | 公共样式和测试 | pll/course/a-classroom.css、tests/test_a_classroom_pages.py | 进行中 | 7a463fe / d368e848 | 增加 Source-First 样式、公式索引和 Marker 表格；A1.3 MathML/来源顺序/无图片引用静态断言通过；全六页测试待集成回归 | 全页测试与浏览器视口待验 |
-| V2-10 | TI/ADI 公开图片副本审计 | pll/assets/originals/{adi,ti}/、materials/pll/originals/{adi,ti}/、涉及的 PLL HTML、materials/pll/FIGURE_MANIFEST.csv、materials/pll/README.md | 进行中 | — | 已查出 9 个页面仍引用 vendor image；A1.3 已不嵌入图片，遗留页面及公开副本需替换/清理 | 必须保留官方出处链接并检查页面不再请求旧图片 |
-| V2-08 | 文档/实验台账 | README、主纲、页计划、成熟度台账、PROGRESS、执行状态、V2 验收报告 | 未开始 | — | 待测 | 不改变 L1–L4 成熟度判定 |
-| V2-09 | 集成与 Pages 验收 | 六页、原图、MathML、桌面/手机、B–F、部署 | 未开始 | — | 待测 | 未实测项目保持未验证 |
+| V2-10 | TI/ADI 公开图片副本审计 | pll/assets/originals/{adi,ti}/、materials/pll/originals/{adi,ti}/、8 个遗留 PLL HTML、FIGURE_MANIFEST.csv、材料说明与来源映射 | 已完成 | 29ea81ef61ba12c5bd2e677db3967287c829d1e2 | 73 个 HTML 全仓扫描无旧 vendor 图片引用；16 个仓库副本（10 个运行时/6 个材料归档）移除；8 个旧页面仅替换图块并保留全部 id/data-*/script/实验控件；来源链接和中文摘要保留 | Pages 部署与浏览器视口仍待最终验收 |
+| V2-08 | 文档/实验台账 | README、主纲、页计划、成熟度台账、PROGRESS、执行状态、V2 验收报告 | 进行中 | 29ea81ef | Source Mapping、FIGURE_MANIFEST、materials README/SOURCES 已同步；PLL 根 README、主纲、页计划、实验台账、V2 验收报告仍待更新 | 不改变 L1–L4 成熟度判定 |
+| V2-09 | 集成与 Pages 验收 | 六页、原图、MathML、桌面/手机、B–F、部署 | 进行中 | 29ea81ef | 全 73 HTML 不再引用 TI/ADI 本地图片；8 个非 A 教材页替换图块后 id/data/script 控件静态比对一致；Pages 工作流、模型/公式固定向量和浏览器回归待查 | 浏览器/离线/Pages 实测如不可用需明确未验证 |
 
 ## 已核验事实
 
+- 受限厂商图片审计提交 `29ea81ef61ba12c5bd2e677db3967287c829d1e2`：清理了 10 个 `pll/assets/originals/{adi,ti}` 和 6 个 `materials/pll/originals/{adi,ti}` 文件。A1.3 及旧第 1/11/12/13/18 章、课程 D1.1/D1.3/D3.1 共 9 个页面现在以官方出版方链接和中文读图摘要为准；旧课程文件的 id、data 属性、script 标签及交互控件标签逐项保持一致。
+- 审计证据：对仓库全部 73 个 HTML 重新检索，没有 `src`/`href` 指向 `pll/assets/originals/adi/` 或 `ti/`；当前递归 Git tree 中也没有 `pll/assets/originals/{adi,ti}/` 或 `materials/pll/originals/{adi,ti}/` 文件。材料清单、README、SOURCES 和来源映射同步了 publisher-link-only 状态。GitHub Pages 发布/浏览器视觉还需最终回归。
 - A1.3 页面提交 `d368e848050e4c22c7bd54f38bb07aed54985751` 将 TI SNAU210B Fig.5-1 及 ADI MT-008 的精确官方 PDF 定位、独立中文读图说明和来源限制放在 Marker 实验之前。TI 页内测量前提（干净参考源，例如 100 MHz Wenzel；普通信号发生器不够干净）已按官方手册补入；MT-008 Fig.1/3/4、Eq.2/3 分别链接到 PDF 页 1/2/3/4。
 - A1.3 保留四个原图 Marker 的离散点（10 kHz −105.1543、100 kHz −108.0194、1 MHz −116.4369、10 MHz −141.5219 dBc/Hz，显示精度 0.1 dB），不连线、不插值；TI 和 ADI 位图从该页移除。TI 原始图由官方链接打开。
 - A1.3 静态验收：来源主体早于 Predict；9 个 MathML 块标签配对平衡；关键来源页链接存在；vendor image URL/路径、未解码 &#x 实体不存在；Marker、单位切换、Reset、回答反馈控件和共享 `connect:false` 点列行为保留。浏览器桌面/移动渲染仍未验证，留待集成阶段。
@@ -58,10 +61,11 @@
 
 ## 下一步工作
 
-1. 清理所有公开托管的 TI/ADI 图片副本，替换受影响 PLL 旧页的厂商图片为官方来源链接和中文读图摘要；保留页内功能与导航，运行定点静态检查。
-2. 同步 `PLL_A_SOURCE_MAPPING_V2.md`、`FIGURE_MANIFEST.csv`、`materials/pll/README.md`，明确已移除的公开副本、原图官方定位和授权边界。
-3. 对 A1.1–A2.3 六页执行 HTML/MathML/公式出处/模型向量/Reset/分页静态回归，并检查 GitHub Pages 与 B–F 图片请求/导航；浏览器不可用的桌面/手机实测标记未验证。
-4. 完成 README、主纲、页计划、实验成熟度台账、V2 验收报告和最终状态归档，逐项记录真实提交与测试证据。
+1. 对 A1.1–A2.3 六个页面重新跑静态 HTML/MathML/公式来源/模型固定向量/Reset/翻页检查，并核实所有 JKU 原图授权标注及厂商官方链接定位。
+2. 查看 GitHub Actions Pages 工作流和实际线上 A1.1–A2.3 URL；进行 B–F 导航/资源回归。尝试桌面/手机浏览器及本地静态/离线运行，工具受限项如实标记未验证。
+3. 更新根 README、PLL 主纲、页计划、实验成熟度台账，建立 `PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md`。
+4. 最后复核来源映射、进度、测试结果和 commit SHA，推送最终验收状态。
+
 
 
 ## 中断恢复协议
