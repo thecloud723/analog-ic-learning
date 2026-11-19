@@ -1,5 +1,9 @@
 # PLL 课程制作与技术验收记录（01～18 章）
 
+## 阶段 4 执行记录
+
+- 2026-11-19，DSM-01 在 4/12/24 位共 12,288 拍 RTL/Python 对照通过，完成一阶/MASH 1-1/MASH 1-1-1 命令谱与 dither 对照。Fractional-N 闭环及 ADPLL 定点待验收。见[阶段 4 验收](docs/PLL_S4_ACCEPTANCE.md)。
+
 ## 阶段 3 已验收
 
 - 2026-11-19，NOISE-01 已补原图标记、固定留出、分源和积分网页交互，Notebook 在净环境执行并保存。TI 的留出 RMS 残差为 3.536 dB。见[验收记录](docs/PLL_S3_ACCEPTANCE.md)。
