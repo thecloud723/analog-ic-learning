@@ -1,0 +1,137 @@
+from html.parser import HTMLParser
+from pathlib import Path
+import unittest
+
+
+COURSE = Path(__file__).resolve().parents[1]
+PAGES = {
+    "a1-1.html": "a11",
+    "a1-2.html": "a12",
+    "a1-3.html": "a13",
+    "a2-1.html": "a21",
+    "a2-2.html": "a22",
+    "a2-3.html": "a23",
+}
+PARAMS = {
+    "a1-1.html": {"fRefMHz", "refDividerR", "feedbackDividerN", "outputDividerD"},
+    "a1-2.html": {"deltaF0KHz", "cursorUs"},
+    "a1-3.html": set(),
+    "a2-1.html": {"frequencyMHz", "deltaTimePs", "phaseTargetDeg"},
+    "a2-2.html": {"deltaFrequencyKHz", "initialPhaseCycles", "durationUs", "cursorUs"},
+    "a2-3.html": {"fbEdgePs", "refFrequencyMHz", "fbFrequencyMHz", "cycleCount", "cycleIndex", "resetDelayPs"},
+}
+FLOW = {"Learn", "Predict", "Explore", "Observe", "Explain", "Check"}
+
+
+class PageInventory(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.ids = []
+        self.scripts = []
+        self.stylesheets = []
+        self.images = []
+        self.links = []
+        self.pager_links = []
+        self.active_nav = []
+        self.labs = []
+        self.params = []
+        self.answer_forms = 0
+        self.flow_labels = set()
+        self._flow_depth = 0
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if attrs.get("id"):
+            self.ids.append(attrs["id"])
+        if tag == "script" and attrs.get("src"):
+            self.scripts.append(attrs["src"])
+        if tag == "link" and attrs.get("rel") == "stylesheet":
+            self.stylesheets.append(attrs.get("href", ""))
+        if tag == "img" and attrs.get("src"):
+            self.images.append(attrs["src"])
+        if tag == "a" and attrs.get("href"):
+            self.links.append(attrs["href"])
+            if "course-page-link" in attrs.get("class", "").split():
+                self.pager_links.append(attrs["href"])
+            if attrs.get("aria-current") == "page":
+                self.active_nav.append(attrs["href"])
+        if attrs.get("data-classroom-lab"):
+            self.labs.append(attrs["data-classroom-lab"])
+        if attrs.get("data-param"):
+            self.params.append(attrs["data-param"])
+        if "data-answer-form" in attrs:
+            self.answer_forms += 1
+        if tag == "div" and attrs.get("class") == "lesson-flow":
+            self._flow_depth += 1
+
+    def handle_endtag(self, tag):
+        if tag == "div" and self._flow_depth:
+            self._flow_depth -= 1
+
+    def handle_data(self, data):
+        value = data.strip()
+        if self._flow_depth and value in FLOW:
+            self.flow_labels.add(value)
+
+
+class ClassroomPageTests(unittest.TestCase):
+    def inventory(self, filename):
+        parser = PageInventory()
+        parser.feed((COURSE / filename).read_text(encoding="utf-8"))
+        return parser
+
+    def test_all_six_pages_load_the_shared_local_runtime(self):
+        expected_scripts = {
+            "a-classroom-models.js",
+            "a-classroom-data.js",
+            "a-classroom.js",
+        }
+        for filename, lab_id in PAGES.items():
+            with self.subTest(page=filename):
+                page = self.inventory(filename)
+                self.assertEqual(page.labs, [lab_id])
+                self.assertEqual(set(page.scripts), expected_scripts)
+                self.assertEqual(set(page.stylesheets), {"course.css", "a-classroom.css"})
+                self.assertTrue(FLOW.issubset(page.flow_labels))
+                self.assertGreaterEqual(page.answer_forms, 2)
+                self.assertEqual(len(page.ids), len(set(page.ids)), "page IDs must be unique")
+                self.assertTrue(PARAMS[filename].issubset(page.params))
+                self.assertIn(filename, page.active_nav)
+
+    def test_page_navigation_and_local_images_resolve(self):
+        local_pages = set(PAGES)
+        for filename in PAGES:
+            with self.subTest(page=filename):
+                page = self.inventory(filename)
+                for src in page.scripts + page.stylesheets + page.images:
+                    self.assertFalse(src.startswith(("http:", "https:")), src)
+                    self.assertTrue((COURSE / src).is_file(), f"missing local asset {src} in {filename}")
+                pager = [href for href in page.pager_links if href in local_pages]
+                self.assertTrue(pager, "the existing A-course pager should remain")
+
+    def test_measured_and_original_figure_assets_are_present(self):
+        required = [
+            "../assets/originals/ti/lmx2594-fig5-1.png",
+            "../assets/originals/adi/mt008-fig1.png",
+            "../assets/originals/adi/adf4351-fig1.png",
+            "../assets/originals/jku/fig_074.png",
+            "../assets/originals/jku/fig_078.png",
+            "../assets/originals/jku/fig_079.png",
+        ]
+        referenced = set()
+        for filename in PAGES:
+            referenced.update(self.inventory(filename).images)
+        for src in required:
+            with self.subTest(asset=src):
+                self.assertIn(src, referenced)
+                self.assertTrue((COURSE / src).is_file())
+
+    def test_no_a_page_depends_on_remote_scripts(self):
+        for filename in PAGES:
+            with self.subTest(page=filename):
+                parser = self.inventory(filename)
+                self.assertTrue(all(not src.startswith(("http:", "https:")) for src in parser.scripts))
+
+
+if __name__ == "__main__":
+    unittest.main()
