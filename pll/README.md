@@ -4,6 +4,10 @@
 
 ## 课程入口
 
+- **[PLL A 原教材优先内容改造 SDD V2（2026-11-19）](docs/PLL_A_SOURCE_FIRST_SDD_V2_2026-11-19.md)**：六页的源材料、原图/原公式、中文编排、互动保留、版权与验收规范；内容重排尚待 Work 执行。
+- **[PLL A V2 Work 完整执行提示词](docs/PLL_A_SOURCE_FIRST_WORK_PROMPT_V2_2026-11-19.md)**：开新 Work 会话直接复制使用。
+
+
 - **[PLL 教材内容优先改造规范（2026-11-19）](docs/PLL_SOURCE_FIRST_COURSE_EDITORIAL_SPEC_2026-11-19.md)**：原始 JKU/TI/ADI 图、公式和内容组织为主；既有 Classroom 交互保留作验证工具；当前为内容设计修正，尚未重排六页。
 
 
