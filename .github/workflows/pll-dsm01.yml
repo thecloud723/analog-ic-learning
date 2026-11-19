@@ -30,7 +30,15 @@ jobs:
               -o "$RUNNER_TEMP/mash-$width.vvp" "$lab/mash111.sv" "$lab/mash111_tb.sv"
             vvp "$RUNNER_TEMP/mash-$width.vvp" "+vectors=$RUNNER_TEMP/vectors-$width.txt"
           done | tee "$RUNNER_TEMP/dsm-check.log"
+      - name: Compare one-, two- and three-stage spectra with dither
+        run: |
+          python -m pip install numpy==2.3.5
+          python pll/labs/DSM-01/measure_mash.py "$RUNNER_TEMP/dsm-spectrum"
+          python pll/labs/DSM-01/measure_mash.py "$RUNNER_TEMP/dsm-spectrum-custom" --num 1001 --den 4096 --seed 0x1234 --amplitude 3
       - uses: actions/upload-artifact@v4
         with:
           name: dsm01-check
-          path: ${{ runner.temp }}/dsm-check.log
+          path: |
+            ${{ runner.temp }}/dsm-check.log
+            ${{ runner.temp }}/dsm-spectrum/
+            ${{ runner.temp }}/dsm-spectrum-custom/
