@@ -33,6 +33,10 @@ class PageInventory(HTMLParser):
         self.links = []
         self.pager_links = []
         self.active_nav = []
+        self.nav_links = []
+        self._in_course_nav = False
+        self._nav_anchor = None
+        self._in_nav_code = False
         self.labs = []
         self.params = []
         self.answer_forms = 0
@@ -43,6 +47,12 @@ class PageInventory(HTMLParser):
         attrs = dict(attrs)
         if attrs.get("id"):
             self.ids.append(attrs["id"])
+        if tag == "nav" and attrs.get("aria-label") == "PLL 目录":
+            self._in_course_nav = True
+        if tag == "a" and self._in_course_nav:
+            self._nav_anchor = {"href": attrs.get("href", ""), "current": attrs.get("aria-current"), "code": ""}
+        if tag == "span" and self._nav_anchor is not None and "nav-code" in attrs.get("class", "").split():
+            self._in_nav_code = True
         if tag == "script" and attrs.get("src"):
             self.scripts.append(attrs["src"])
         if tag == "link" and attrs.get("rel") == "stylesheet":
@@ -53,8 +63,6 @@ class PageInventory(HTMLParser):
             self.links.append(attrs["href"])
             if "course-page-link" in attrs.get("class", "").split():
                 self.pager_links.append(attrs["href"])
-            if attrs.get("aria-current") == "page":
-                self.active_nav.append(attrs["href"])
         if attrs.get("data-classroom-lab"):
             self.labs.append(attrs["data-classroom-lab"])
         if attrs.get("data-param"):
@@ -67,8 +75,19 @@ class PageInventory(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "div" and self._flow_depth:
             self._flow_depth -= 1
+        if tag == "span" and self._in_nav_code:
+            self._in_nav_code = False
+        if tag == "a" and self._nav_anchor is not None:
+            self.nav_links.append(self._nav_anchor)
+            if self._nav_anchor["current"] == "page":
+                self.active_nav.append(self._nav_anchor)
+            self._nav_anchor = None
+        if tag == "nav":
+            self._in_course_nav = False
 
     def handle_data(self, data):
+        if self._nav_anchor is not None and self._in_nav_code:
+            self._nav_anchor["code"] += data.strip()
         value = data.strip()
         if self._flow_depth and value in FLOW:
             self.flow_labels.add(value)
@@ -96,7 +115,9 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertGreaterEqual(page.answer_forms, 2)
                 self.assertEqual(len(page.ids), len(set(page.ids)), "page IDs must be unique")
                 self.assertTrue(PARAMS[filename].issubset(page.params))
-                self.assertIn(filename, page.active_nav)
+                self.assertEqual(len(page.active_nav), 1)
+                self.assertEqual(page.active_nav[0]["href"], filename)
+                self.assertEqual(page.active_nav[0]["code"], filename[:-5].upper().replace("-", "."))
 
     def test_page_navigation_and_local_images_resolve(self):
         local_pages = set(PAGES)
@@ -108,6 +129,10 @@ class ClassroomPageTests(unittest.TestCase):
                     self.assertTrue((COURSE / src).is_file(), f"missing local asset {src} in {filename}")
                 pager = [href for href in page.pager_links if href in local_pages]
                 self.assertTrue(pager, "the existing A-course pager should remain")
+                by_code = {link["code"]: link["href"] for link in page.nav_links}
+                self.assertEqual(by_code["A2.1"], "a2-1.html")
+                for code, target in (("A1.1", "a1-1.html"), ("A1.2", "a1-2.html"), ("A1.3", "a1-3.html"), ("A2.1", "a2-1.html"), ("A2.2", "a2-2.html"), ("A2.3", "a2-3.html")):
+                    self.assertEqual(by_code[code], target)
 
     def test_measured_and_original_figure_assets_are_present(self):
         required = [
