@@ -237,3 +237,7 @@
   .a-classroom .source-equation math { margin-left: 0; margin-right: 0; }
   .a-classroom .source-figure-card img, .a-classroom .source-figure-card.source-figure-wide img { max-height: 22rem; }
 }
+
+/* Source-first equation index links */
+.a-classroom .equation-number { margin-top: .28rem; color: #5a7180; font-size: .76rem; line-height: 1.35; text-align: right; }
+.a-classroom .equation-number a { color: inherit; text-underline-offset: .14em; }
