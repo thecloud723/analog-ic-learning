@@ -4,6 +4,9 @@
 
 ## 课程入口
 
+- **[PLL 教材内容优先改造规范（2026-11-19）](docs/PLL_SOURCE_FIRST_COURSE_EDITORIAL_SPEC_2026-11-19.md)**：原始 JKU/TI/ADI 图、公式和内容组织为主；既有 Classroom 交互保留作验证工具；当前为内容设计修正，尚未重排六页。
+
+
 - **[PLL A 部分 Classroom 交互教学 SDD（2026-11-19）](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)**：六堂课的权威交互与模型设计基线；A 部分已按此实现，逐页验收结果见[验收报告](docs/PLL_A_CLASSROOM_ACCEPTANCE_REPORT.md)。
 - **[持续执行状态](docs/WORK_EXECUTION_STATE.md)**：当前 main 提交、任务清单、测试证据和未验证项。
 - **[PLL 完备度评估与五阶段详细执行计划（2026-11-17）](docs/PLL_COMPLETENESS_AND_EXECUTION_PLAN_2026-11-17.md)**：当前课程对标、交互/实验状态，以及阶段 1～5 的任务、交付物和验收标准。
