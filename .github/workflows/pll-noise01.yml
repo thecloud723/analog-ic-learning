@@ -39,6 +39,38 @@ jobs:
           assert [r['offset_hz'] for r in result['holdouts']] == [100000, 10000000, 95000000]
           assert abs(result['rms_residual_db'] - 3.536118448) < 1e-6
           PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Probe locked ngspice capabilities
+        run: |
+          set -o pipefail
+          unzip -q pll/assets/lc-vco-lab.zip -d "$RUNNER_TEMP/noise-engine"
+          engine="$RUNNER_TEMP/noise-engine/lc-vco-lab"
+          cp pll/labs/NOISE-01/probe_noise_engine.mjs "$engine/"
+          npm ci --prefix "$engine" --no-audit --no-fund
+          node "$engine/probe_noise_engine.mjs" | tee "$RUNNER_TEMP/noise01/spice-capabilities.log"
+      - name: Execute and save the NOISE-01 notebook
+        run: |
+          python -m pip install nbclient==0.10.2 ipykernel==6.30.1 matplotlib==3.10.6
+          python - <<'PY'
+          import base64, os
+          from pathlib import Path
+          import shutil
+          import nbformat
+          from nbclient import NotebookClient
+          notebook = nbformat.read('pll/labs/NOISE-01/NOISE-01_Phase_Noise_Jitter.ipynb', as_version=4)
+          root = Path(os.environ['RUNNER_TEMP']) / 'noise01-notebook'
+          root.mkdir()
+          NotebookClient(notebook, timeout=180, kernel_name='python3',
+                         resources={'metadata':{'path':str(root)}}).execute()
+          out = Path(os.environ['RUNNER_TEMP']) / 'noise01'
+          saved = out / 'NOISE-01_executed.ipynb'
+          nbformat.write(notebook, saved)
+          figure, = root.glob('noise01-*/results/noise01-evidence.png')
+          shutil.copyfile(figure, out / figure.name)
+          print('SAVED_NOISE01_NOTEBOOK=' + base64.b64encode(saved.read_bytes()).decode())
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: noise01-budget
