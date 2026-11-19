@@ -4,7 +4,7 @@
 
 ## 课程入口
 
-- **[PLL 完整课程新大纲（2026-11-19）](docs/PLL_MASTER_COURSE_OUTLINE_2026-11-19.md)**：新的课程主纲，逐页定义学习问题、公式/图表、交互实验和 L1–L4 证据关系；本次只归档大纲，不代表已开始页面改造。
+- **[PLL A 部分 Classroom 交互教学 SDD（2026-11-19）](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)**：A 部分 6 堂交互课的实现级设计，包含实验台 UI、Guided Tour、模型公式、状态机、数据来源、文件架构和验收用例；当前为设计完成、待 Work 实施。
 - **[PLL 完备度评估与五阶段详细执行计划（2026-11-17）](docs/PLL_COMPLETENESS_AND_EXECUTION_PLAN_2026-11-17.md)**：当前课程对标、交互/实验状态，以及阶段 1～5 的任务、交付物和验收标准。
 - **[B1.2 频率规划器交互改造规格（2026-11-17）](docs/PLL_B1_2_FREQUENCY_PLANNER_SPEC_2026-11-17.md)**：按 TI TICS Pro Fig. 3-1 复刻布局，定义动态频率节点、LMX2594 约束、Mode A/B/C 和仿真/估算边界；仅为设计规格，尚未实施。
 
