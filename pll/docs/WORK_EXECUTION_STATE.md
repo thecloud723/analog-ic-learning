@@ -6,7 +6,9 @@
 - 任务：PLL A 部分 Classroom 交互式课程完整开发
 - 权威设计：`pll/docs/PLL_A_CLASSROOM_SDD_2026-11-19.md`
 - 当前分支：`main`
-- 当前已核对代码 HEAD：`e108790043e31981495fcdec7f33ce00a7711dd5`
+- 当前 main HEAD（本状态 checkpoint 之前）：`3466ba25c72df42c9ed7c65bc5b0c7f2ef8710ed`
+- 最新代码提交：`e108790043e31981495fcdec7f33ce00a7711dd5`
+- 文档批次提交：`3466ba25c72df42c9ed7c65bc5b0c7f2ef8710ed`；本文件随后以独立 checkpoint 更新
 - Pages 工作流：`44489881106`，成功；A1.2 与 A2.3 最新图例已在部署页核验
 - 当前阶段：Phase 4 文档归档已推送；整体验收保留部分验证
 - 最后更新时间：2026-11-19（UTC）
@@ -35,7 +37,7 @@
 | A-UNIT | 自动测试 | Node 模型套件、Python 页面套件、JS 静态语法 | 已完成 | `e108790` | Node 8/8、Python 6/6、`node --check` 3/3 | 无 |
 | A-DEPLOY | Pages 部署与线上检查 | GitHub Pages 六页与共享资产 | 已完成 | `e108790` | Actions run `44489881106` 成功；六页交互曾逐页检查，最新头实时复核 A1.1/A1.2/A2.3；B–F 44/44 | 全页最新图例视觉复核未逐页重跑 |
 | A-REG | 综合回归与运行环境 | 视口、断网、本地 HTTP、Console、课程链接、B–F | 部分完成 | `e108790` | 桌面 Pages 已用；B–F 44/44；课程来源 Console 未见报错；早一代码头本地 HTTP 200 | 最新头本地 server 绑定失败；手机真实视口和浏览器 offline mode 均未验证；扩展自身 Console 噪声存在 |
-| A-DOC | 文档与持续断点 | README、主纲、逐页计划、台账、进度、SDD、报告、本文件 | 本批推送 | 本批文档提交随后记录于 main | 文档只记实际实现和证据，A-INT 仍为 L1 | 状态文件将在本批提交后做一次 SHA checkpoint |
+| A-DOC | 文档与持续断点 | README、主纲、逐页计划、台账、进度、SDD、报告、本文件 | 文档批次已推送；状态 checkpoint 更新中 | `3466ba25c72df42c9ed7c65bc5b0c7f2ef8710ed` | 八份文档在 GitHub main 已创建/更新；A-INT 仍为 L1 | 状态 checkpoint 的新 commit SHA 由 GitHub main ref 确认 |
 
 ## 测试证据和未验证项
 
