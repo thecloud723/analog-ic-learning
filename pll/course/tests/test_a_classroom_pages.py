@@ -119,7 +119,7 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertEqual({src.split("?", 1)[0] for src in page.stylesheets}, {"course.css", "a-classroom.css"})
                 for src in page.scripts + page.stylesheets:
                     if src.split("?", 1)[0] != "course.css":
-                        self.assertIn("?v=" + ("20261119-6" if src.split("?", 1)[0].endswith(".js") else "20261119-8"), src)
+                        self.assertIn("?v=" + ("20261119-6" if src.split("?", 1)[0].endswith(".js") else "20261119-9"), src)
                 self.assertIn("a-classroom-shell", page.shell_classes)
                 reset_action = "restart" if filename in {"a1-2.html", "a2-2.html"} else "reset"
                 self.assertIn(reset_action, page.actions)
@@ -165,7 +165,7 @@ class ClassroomPageTests(unittest.TestCase):
             with self.subTest(page=filename):
                 page = (COURSE / filename).read_text(encoding="utf-8")
                 self.assertIn('a-classroom.js?v=20261119-6', page)
-                self.assertIn('a-classroom.css?v=20261119-8', page)
+                self.assertIn('a-classroom.css?v=20261119-9', page)
 
     def test_page_navigation_and_local_images_resolve(self):
         local_pages = set(PAGES)
@@ -204,28 +204,74 @@ class ClassroomPageTests(unittest.TestCase):
             with self.subTest(label=label):
                 self.assertTrue(f'label:"{label}"' in runtime or f'label: "{label}"' in runtime)
 
-    def test_measured_and_original_figure_assets_are_present(self):
-        required = [
-            "../assets/originals/ti/lmx2594-fig5-1.png",
-            "../assets/originals/adi/mt008-fig1.png",
-            "../assets/originals/adi/adf4351-fig1.png",
-            "../assets/originals/jku/fig_074.png",
-            "../assets/originals/jku/fig_078.png",
-            "../assets/originals/jku/fig_079.png",
-        ]
-        referenced = set()
+    def test_source_first_material_precedes_prediction_and_lab(self):
+        required_jku = {
+            "a1-1.html": ["fig_074.png"],
+            "a1-2.html": ["fig_076.png", "fig_083.png"],
+            "a1-3.html": [],
+            "a2-1.html": [],
+            "a2-2.html": [],
+            "a2-3.html": ["fig_077.png", "fig_078.png", "fig_079.png", "fig_080.png", "fig_081.png"],
+        }
+        for filename, figures in required_jku.items():
+            with self.subTest(page=filename):
+                source = (COURSE / filename).read_text(encoding="utf-8")
+                block = source.index('class="source-first-card"')
+                prediction = source.index('class="prediction-card"')
+                workbench = source.index('class="workbench"')
+                self.assertLess(block, prediction, "source-first teaching content must precede prediction")
+                self.assertLess(block, workbench, "original material must precede the experiment")
+                card_end = source.index('<form class="prediction-card"', block)
+                card = source[block:card_end]
+                self.assertIn("<math", card, "major formulas and inline symbols need MathML")
+                self.assertIn("source-reference", card)
+                for figure in figures:
+                    self.assertIn(figure, card)
+                    self.assertTrue((COURSE / "../assets/originals/jku" / figure).resolve().is_file())
+                for pseudo in ("fREF", "fVCO", "fPFD", "VCTRL", "KPD", "tREF", "tFB"):
+                    self.assertNotIn(pseudo, card)
+
+    def test_restricted_vendor_images_are_not_embedded_in_a_pages(self):
         for filename in PAGES:
-            referenced.update(self.inventory(filename).images)
-        for src in required:
-            with self.subTest(asset=src):
-                self.assertIn(src, referenced)
-                self.assertTrue((COURSE / src).is_file())
+            with self.subTest(page=filename):
+                page = (COURSE / filename).read_text(encoding="utf-8")
+                self.assertNotIn("../assets/originals/ti/", page)
+                self.assertNotIn("../assets/originals/adi/", page)
+        a11 = (COURSE / "a1-1.html").read_text(encoding="utf-8")
+        a13 = (COURSE / "a1-3.html").read_text(encoding="utf-8")
+        self.assertIn("ADF4351.pdf#page=1", a11)
+        self.assertIn("snau210b.pdf#page=6", a13)
+        self.assertIn("MT-008.pdf#page=1", a13)
+        self.assertIn("dBc/Hz", a13)
+        self.assertIn("dBc", a13)
 
     def test_no_a_page_depends_on_remote_scripts(self):
         for filename in PAGES:
             with self.subTest(page=filename):
                 parser = self.inventory(filename)
                 self.assertTrue(all(not src.startswith(("http:", "https:")) for src in parser.scripts))
+
+    def test_source_accuracy_and_course_model_labels(self):
+        a11 = (COURSE / "a1-1.html").read_text(encoding="utf-8")
+        a12 = (COURSE / "a1-2.html").read_text(encoding="utf-8")
+        a13 = (COURSE / "a1-3.html").read_text(encoding="utf-8")
+        a21 = (COURSE / "a2-1.html").read_text(encoding="utf-8")
+        a22 = (COURSE / "a2-2.html").read_text(encoding="utf-8")
+        a23 = (COURSE / "a2-3.html").read_text(encoding="utf-8")
+        self.assertIn("RFOUT", a11)
+        self.assertIn("fVCO", a11)
+        self.assertIn("÷N", a11)
+        self.assertIn("÷D", a11)
+        self.assertIn("Type-I", a12)
+        self.assertIn("Type-II", a12)
+        self.assertIn("Eq.62", a12)
+        self.assertIn("Eq.67", a12)
+        self.assertIn("53.169", a13)
+        self.assertIn("本课程推导", a22)
+        self.assertIn("Cycle Slip", a22)
+        self.assertIn("Fig.81", a23)
+        self.assertIn("Reset", a23)
+        self.assertIn("1.44", a21)
 
 
 if __name__ == "__main__":

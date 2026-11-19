@@ -181,3 +181,59 @@
     grid-template-areas: "controls" "visual" "observe";
   }
 }
+
+
+/* Source-First V2: original教材在前，交互作为验证 */
+.a-classroom .source-first-card {
+  margin: 1rem 0 1.15rem;
+  padding: clamp(1rem, 2.2vw, 1.55rem);
+  border: 1px solid #b9d3e0;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fff 0%, #f8fbfd 100%);
+  box-shadow: 0 5px 20px rgba(18, 62, 85, .055);
+}
+.a-classroom .source-first-heading { max-width: 78ch; margin: 0 auto .9rem; }
+.a-classroom .source-first-heading h2 { margin: .1rem 0 .45rem; font-size: clamp(1.25rem, 2vw, 1.7rem); line-height: 1.35; }
+.a-classroom .source-first-heading p { margin: .35rem 0; }
+.a-classroom .source-kicker, .a-classroom .source-equation-label {
+  color: #17638c; font-size: .78rem; font-weight: 750; letter-spacing: .035em;
+}
+.a-classroom .source-first-grid, .a-classroom .source-figure-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem;
+}
+.a-classroom .source-first-grid { margin-top: .9rem; }
+.a-classroom .source-first-card h3 { margin: .1rem 0 .45rem; font-size: 1.04rem; }
+.a-classroom .source-first-card p { line-height: 1.72; }
+.a-classroom .source-reading, .a-classroom .source-example, .a-classroom .source-figure-card {
+  min-width: 0; padding: .9rem; border: 1px solid #d7e4eb; border-radius: 12px; background: #fff;
+}
+.a-classroom .source-equation {
+  max-width: 100%; margin: .35rem 0 .55rem; padding: .55rem .8rem;
+  overflow-x: auto; border-left: 3px solid #17638c; border-radius: 4px; background: #f1f7fa;
+}
+.a-classroom .source-equation math { display: block; width: max-content; max-width: none; margin: 0 auto; font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIXGeneral", "Times New Roman", serif; font-size: 1.28rem; }
+.a-classroom .source-equation-compact { margin: .25rem 0 .6rem; padding: .4rem .65rem; }
+.a-classroom .source-equation-compact math { font-size: 1.12rem; }
+.a-classroom .source-first-card math.inline-equation {
+  display: inline; vertical-align: -.16em; font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIXGeneral", "Times New Roman", serif; font-size: 1.08em;
+}
+.a-classroom .source-reference { color: #4e6878; font-size: .87rem; }
+.a-classroom .source-reference a, .a-classroom .source-first-card a { text-underline-offset: .15em; }
+.a-classroom .source-note {
+  margin-top: .9rem; padding: .8rem .95rem; border-left: 4px solid #d38b2f; border-radius: 8px; background: #fff8ec;
+}
+.a-classroom .source-figure-grid { margin: .8rem 0; align-items: start; }
+.a-classroom .source-figure-card { margin: 0; }
+.a-classroom .source-figure-card img {
+  display: block; width: 100%; max-height: 27rem; object-fit: contain; background: #fff;
+}
+.a-classroom .source-figure-card figcaption { margin-top: .5rem; color: #526b7a; font-size: .84rem; line-height: 1.5; }
+.a-classroom .source-figure-card.source-figure-wide { grid-column: 1 / -1; }
+.a-classroom .source-figure-card.source-figure-wide img { max-height: 34rem; }
+.a-classroom .source-license-note { margin: .55rem 0 0; color: #50697a; font-size: .83rem; }
+@media (max-width: 760px) {
+  .a-classroom .source-first-grid, .a-classroom .source-figure-grid { grid-template-columns: minmax(0, 1fr); }
+  .a-classroom .source-figure-card.source-figure-wide { grid-column: auto; }
+  .a-classroom .source-equation math { margin-left: 0; margin-right: 0; }
+  .a-classroom .source-figure-card img, .a-classroom .source-figure-card.source-figure-wide img { max-height: 22rem; }
+}
