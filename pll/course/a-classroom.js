@@ -21,7 +21,10 @@
   function fmt(value, digits) {
     return Number(value).toLocaleString("en-US", {minimumFractionDigits: digits, maximumFractionDigits: digits});
   }
-  function signed(value, digits) { return (value > 0 ? "+" : "") + fmt(value, digits); }
+  function signed(value, digits) {
+    if (Math.abs(value) < 0.5 * Math.pow(10, -digits)) value = 0;
+    return (value > 0 ? "+" : "") + fmt(value, digits);
+  }
   function fmtHz(hz) {
     if (Math.abs(hz) >= 1e9) return fmt(hz / 1e9, 4) + " GHz";
     if (Math.abs(hz) >= 1e6) return fmt(hz / 1e6, 3) + " MHz";
@@ -273,6 +276,13 @@
       setBadge(root, mode === "fixed-phase" ? "固定相位角；频率改变时，所需 Δt 自动反比变化。" : "固定时间差；频率越高，同一 Δt 对应的相位角越大。");
     }
     linkControls(root, render);
+    query(root, "[data-action='reset']").addEventListener("click", function () {
+      modeSelect.value = "fixed-time";
+      setParam(root, "frequencyMHz", 100);
+      setParam(root, "deltaTimePs", 40);
+      setParam(root, "phaseTargetDeg", 1.44);
+      render();
+    });
     modeSelect.addEventListener("change", function () {
       if (modeSelect.value === "fixed-phase") setParam(root, "phaseTargetDeg", M.phaseFromTimeOffset({
         frequencyHz: number(root, "frequencyMHz") * 1e6, deltaTimeSec: number(root, "deltaTimePs") * 1e-12

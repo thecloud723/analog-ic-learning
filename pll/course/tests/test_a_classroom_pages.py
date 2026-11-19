@@ -32,6 +32,8 @@ class PageInventory(HTMLParser):
         self.images = []
         self.links = []
         self.pager_links = []
+        self.actions = []
+        self.shell_classes = []
         self.active_nav = []
         self.nav_links = []
         self._in_course_nav = False
@@ -55,6 +57,10 @@ class PageInventory(HTMLParser):
             self._in_nav_code = True
         if tag == "script" and attrs.get("src"):
             self.scripts.append(attrs["src"])
+        if tag == "div" and "shell" in attrs.get("class", "").split():
+            self.shell_classes = attrs.get("class", "").split()
+        if attrs.get("data-action"):
+            self.actions.append(attrs["data-action"])
         if tag == "link" and attrs.get("rel") == "stylesheet":
             self.stylesheets.append(attrs.get("href", ""))
         if tag == "img" and attrs.get("src"):
@@ -111,6 +117,9 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertEqual(page.labs, [lab_id])
                 self.assertEqual(set(page.scripts), expected_scripts)
                 self.assertEqual(set(page.stylesheets), {"course.css", "a-classroom.css"})
+                self.assertIn("a-classroom-shell", page.shell_classes)
+                reset_action = "restart" if filename in {"a1-2.html", "a2-2.html"} else "reset"
+                self.assertIn(reset_action, page.actions)
                 self.assertTrue(FLOW.issubset(page.flow_labels))
                 self.assertGreaterEqual(page.answer_forms, 2)
                 self.assertEqual(len(page.ids), len(set(page.ids)), "page IDs must be unique")
@@ -133,6 +142,13 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertEqual(by_code["A2.1"], "a2-1.html")
                 for code, target in (("A1.1", "a1-1.html"), ("A1.2", "a1-2.html"), ("A1.3", "a1-3.html"), ("A2.1", "a2-1.html"), ("A2.2", "a2-2.html"), ("A2.3", "a2-3.html")):
                     self.assertEqual(by_code[code], target)
+
+    def test_a21_runtime_wires_reset_to_the_default_edge_experiment(self):
+        runtime = (COURSE / "a-classroom.js").read_text(encoding="utf-8")
+        a21 = runtime.split("function initA21", 1)[1].split("function initA22", 1)[0]
+        self.assertIn("[data-action='reset']", a21)
+        self.assertIn('modeSelect.value = "fixed-time"', a21)
+        self.assertIn('setParam(root, "deltaTimePs", 40)', a21)
 
     def test_measured_and_original_figure_assets_are_present(self):
         required = [

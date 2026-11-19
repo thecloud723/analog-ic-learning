@@ -136,3 +136,8 @@
   .a-classroom *, .a-classroom *::before, .a-classroom *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
 
+
+/* The shared course shell is intentionally compact for B–F. Give A's three-panel labs enough desktop width. */
+@media (min-width: 681px) {
+  .shell.a-classroom-shell { max-width: 1500px; }
+}
