@@ -1,12 +1,11 @@
 ## A 部分 Classroom 完整开发（2026-11-19）
 
-- 当前执行状态与逐项断点见 [WORK_EXECUTION_STATE.md](docs/WORK_EXECUTION_STATE.md)。权威交互基线为 [PLL A Classroom SDD](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)。
-- Phase 0 审计：当前 main 为 `3edc1c809d874d44489d7c17acd92035146c38cd`（SDD 所载基线已过期）；六个目标页及本地 JKU/ADI/TI 图源存在。六页仍是旧式单控件交互，Classroom 公共层、预测/检查流程、同步游标和 PFD 状态机尚未实现。
-- 核验 TI LMX2594 Fig. 5-1 本地图：载波约 14.0000289 GHz，四个测量 marker 与 SDD 记录相符；显示精度按图上读数采用 0.1 dB，离散 marker 不连接成实测曲线。
-- 公式抽查：A2.1 正负号约定一致；A2.2 使用 ([-0.5,0.5)) cycles；A2.3 延迟复位模型与示例脉宽一致；A1.2 的 10 μs 固定向量计算为 −0.270618 kHz、−0.002706 mV、−0.185687 mrad。
-- 本次只记录审计与启动状态；六页实现、独立测试和回归尚未完成，不代表课程已验收。
-- 提交：状态基线提交将创建于本次运行，完整 SHA 随后回填；下一步进入 Phase 1 公共模型与 Classroom 组件实施。
-
+- 当前断点和逐项状态见 [WORK_EXECUTION_STATE.md](docs/WORK_EXECUTION_STATE.md)；权威交互基线为 [PLL A Classroom SDD](docs/PLL_A_CLASSROOM_SDD_2026-11-19.md)。
+- Phase 0 已审计当前 main、六个页面、共享脚本、公式与现有原图；没有修改 SerDes、B–F 或旧 `course.js`。
+- Phase 1/2 代码已提交：共享 Classroom CSS/模型/数据/交互层，以及 A1.1–A1.3、A2.1–A2.3 六页实验台。实现提交：`2296e26a00bcd7f0d6a223209754ab027a6564a2`。
+- A1.1 计算区分 fVCO 和 fOUT；A1.2 是标注边界的 L1 二阶近锁模型；A1.3 使用 TI 原始图及四个不连线的离散 marker；A2.1–A2.3 按 SDD 的符号、相位回卷和 PFD 事件定义实现。
+- 本地测试：Node 模型/公式 8/8，Python 页面结构/资源 4/4，三个共享 JS 语法检查通过，六页本地静态 HTTP 均返回 200；提交后 10 个改动文件已从 GitHub 读回核对。
+- 当前阶段：Phase 3 集成验收进行中。GitHub Pages 动态交互、浏览器 console、真实手机渲染、断网实测和 B–F 浏览器回归尚未验证；本地 Chromium 受执行环境限制未能启动，待部署页实测后如实记录。
 # PLL 课程制作与技术验收记录（01～18 章）
 
 ## 课程大纲更新（2026-11-19）
