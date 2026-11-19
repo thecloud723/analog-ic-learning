@@ -79,7 +79,7 @@
 .a-classroom .warning-note { border-left: 3px solid #d38b2f; padding: .45rem .6rem; background: #fff9eb; font-size: .82rem; }
 .a-classroom .diagram-tools { display: flex; flex-wrap: wrap; gap: .35rem; }
 .a-classroom .diagram-scroll { width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; border-radius: 12px; background: linear-gradient(180deg, #fbfdff 0%, #f5f9fc 100%); }
-.a-classroom .pll-diagram { width: 100%; min-width: 760px; height: auto; min-height: 0; display: block; touch-action: pan-x pan-y; }
+.a-classroom .pll-diagram { width: 100%; min-width: 740px; height: auto; min-height: 0; display: block; touch-action: pan-x pan-y; }
 .a-classroom .pll-diagram .diagram-bg { fill: #fbfdff; stroke: #e0e9ef; stroke-width: 1.5; }
 .a-classroom .pll-diagram .wire { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
 .a-classroom .pll-diagram .wire[data-path="reference"] { stroke: #17658b; }
@@ -171,7 +171,7 @@
 /* A1.1 needs enough uninterrupted width for the complete reference, feedback, and output branches. */
 @media (min-width: 1340px) {
   .a-classroom[data-classroom-lab="a11"] .workbench {
-    grid-template-columns: minmax(180px, 190px) minmax(0, 1fr);
+    grid-template-columns: minmax(170px, 180px) minmax(0, 1fr);
     grid-template-areas: "controls visual" "observe visual";
   }
 }
