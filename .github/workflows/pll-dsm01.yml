@@ -1,0 +1,36 @@
+name: DSM-01 bit-exact MASH
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/pll-dsm01.yml'
+      - 'pll/labs/DSM-01/**'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+      - name: Compare registered RTL outputs to the reference
+        run: |
+          set -o pipefail
+          lab=pll/labs/DSM-01
+          for width in 4 12 24; do
+            python "$lab/check_mash.py" "$width" "$RUNNER_TEMP/vectors-$width.txt"
+            iverilog -g2012 -s mash111_tb -P "mash111_tb.WIDTH=$width" \
+              -o "$RUNNER_TEMP/mash-$width.vvp" "$lab/mash111.sv" "$lab/mash111_tb.sv"
+            vvp "$RUNNER_TEMP/mash-$width.vvp" "+vectors=$RUNNER_TEMP/vectors-$width.txt"
+          done | tee "$RUNNER_TEMP/dsm-check.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dsm01-check
+          path: ${{ runner.temp }}/dsm-check.log
