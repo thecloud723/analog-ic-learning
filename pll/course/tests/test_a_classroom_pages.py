@@ -119,7 +119,7 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertEqual({src.split("?", 1)[0] for src in page.stylesheets}, {"course.css", "a-classroom.css"})
                 for src in page.scripts + page.stylesheets:
                     if src.split("?", 1)[0] != "course.css":
-                        self.assertIn("?v=20261119-3", src)
+                        self.assertIn("?v=20261119-4", src)
                 self.assertIn("a-classroom-shell", page.shell_classes)
                 reset_action = "restart" if filename in {"a1-2.html", "a2-2.html"} else "reset"
                 self.assertIn(reset_action, page.actions)
@@ -130,6 +130,34 @@ class ClassroomPageTests(unittest.TestCase):
                 self.assertEqual(len(page.active_nav), 1)
                 self.assertEqual(page.active_nav[0]["href"], filename)
                 self.assertEqual(page.active_nav[0]["code"], filename[:-5].upper().replace("-", "."))
+
+    def test_inline_math_typography_and_diagram_hierarchy(self):
+        runtime = (COURSE / "a-classroom.js").read_text(encoding="utf-8")
+        styles = (COURSE / "a-classroom.css").read_text(encoding="utf-8")
+        a11 = (COURSE / "a1-1.html").read_text(encoding="utf-8")
+        self.assertIn("formatInlineMath(root);", runtime)
+        self.assertIn("createElementNS(MATH_NS, name)", runtime)
+        self.assertIn("drawCanvasMathLabel", runtime)
+        self.assertIn("STIX Two Math", styles)
+        self.assertIn("math.inline-math", styles)
+        self.assertIn("min-width: 760px", styles)
+        self.assertIn('viewBox="0 0 1260 520"', a11)
+        self.assertIn('class="diagram-scroll"', a11)
+        self.assertIn('class="math-subscript" baseline-shift="sub"', a11)
+        self.assertIn('data-path="feedback"', a11)
+        self.assertIn('data-path="output"', a11)
+        self.assertIn("path-key", a11)
+        self.assertNotIn("opacity: .35", styles)
+
+    def test_shared_math_renderer_is_bundled_on_all_six_pages(self):
+        runtime = (COURSE / "a-classroom.js").read_text(encoding="utf-8")
+        self.assertIn("INLINE_MATH_REGEX", runtime)
+        self.assertIn("MATH_NS", runtime)
+        for filename in PAGES:
+            with self.subTest(page=filename):
+                page = (COURSE / filename).read_text(encoding="utf-8")
+                self.assertIn('a-classroom.js?v=20261119-4', page)
+                self.assertIn('a-classroom.css?v=20261119-4', page)
 
     def test_page_navigation_and_local_images_resolve(self):
         local_pages = set(PAGES)

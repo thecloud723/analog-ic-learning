@@ -5,11 +5,127 @@
   var D = window.PLLAData;
   if (!M || !D) return;
 
+  var MATH_NS = "http://www.w3.org/1998/Math/MathML";
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var INLINE_MATH_REGEX = /(^|[^A-Za-z0-9_])(ΔfVCO|ΔVCTRL|Δφe|Δf0|φe,cycle(?:\([^)]+\))?|φe(?:\([^)]+\))?|fPFD|fREF|fVCO|fFB|fOUT|tREF|tFB|fn|f0|VCTRL|Kvco|ωdt|ωn|ωd|dτ|dt|cos|sin|Δφ|Δt|Δf|φREF|φFB|φu|φ0|φ|τ|α|ζ|π|e|[NDRftT])(?=$|[^A-Za-z0-9_])/g;
+
   function query(root, selector) { return root.querySelector(selector); }
   function all(root, selector) { return Array.prototype.slice.call(root.querySelectorAll(selector)); }
+  function mathElement(name, value, variant) {
+    var el = document.createElementNS(MATH_NS, name);
+    if (value !== undefined) el.textContent = value;
+    if (variant) el.setAttribute("mathvariant", variant);
+    return el;
+  }
+  function mathSub(base, index) {
+    var el = mathElement("msub");
+    el.appendChild(typeof base === "string" ? mathElement("mi", base, "italic") : base);
+    el.appendChild(typeof index === "string" ? mathElement("mi", index, "normal") : index);
+    return el;
+  }
+  function mathRow(children) {
+    var el = mathElement("mrow");
+    children.forEach(function (child) { el.appendChild(child); });
+    return el;
+  }
+  function buildMathToken(token) {
+    var result;
+    var match;
+    if (token === "fREF" || token === "fPFD" || token === "fVCO" || token === "fFB" || token === "fOUT") {
+      result = mathSub("f", token.slice(1));
+    } else if (token === "VCTRL") {
+      result = mathSub("V", "CTRL");
+    } else if (token === "Kvco") {
+      result = mathSub("K", "VCO");
+    } else if (token === "ΔfVCO") {
+      result = mathRow([mathElement("mi", "Δ"), mathSub("f", "VCO")]);
+    } else if (token === "ΔVCTRL") {
+      result = mathRow([mathElement("mi", "Δ"), mathSub("V", "CTRL")]);
+    } else if (token === "Δf0") {
+      result = mathRow([mathElement("mi", "Δ"), mathSub("f", mathElement("mn", "0"))]);
+    } else if (token === "Δφe") {
+      result = mathRow([mathElement("mi", "Δ"), mathSub("φ", "e")]);
+    } else if ((match = token.match(/^φe,cycle(?:\(([^)]+)\))?$/))) {
+      var cycleIndex = mathRow([mathElement("mi", "e", "normal"), mathElement("mo", ","), mathElement("mi", "cycle", "normal")]);
+      var cycleExpr = [mathSub("φ", cycleIndex)];
+      if (match[1]) cycleExpr.push(mathElement("mo", "("), mathElement(/^\d/.test(match[1]) ? "mn" : "mi", match[1]), mathElement("mo", ")"));
+      result = mathRow(cycleExpr);
+    } else if ((match = token.match(/^φe(?:\(([^)]+)\))?$/))) {
+      var phaseExpr = [mathSub("φ", "e")];
+      if (match[1]) phaseExpr.push(mathElement("mo", "("), mathElement(/^\d/.test(match[1]) ? "mn" : "mi", match[1]), mathElement("mo", ")"));
+      result = mathRow(phaseExpr);
+    } else if (token === "φREF" || token === "φFB" || token === "φu") {
+      result = mathSub("φ", token.slice(1));
+    } else if (token === "φ0") {
+      result = mathSub("φ", mathElement("mn", "0"));
+    } else if (token === "ωn" || token === "ωd") {
+      result = mathSub("ω", token.slice(1));
+    } else if (token === "ωdt") {
+      result = mathRow([mathSub("ω", "d"), mathElement("mi", "t", "italic")]);
+    } else if (token === "fn" || token === "f0") {
+      result = mathSub("f", token === "fn" ? "n" : mathElement("mn", "0"));
+    } else if (token === "tREF" || token === "tFB") {
+      result = mathSub("t", token.slice(1));
+    } else if (token === "dt" || token === "dτ") {
+      result = mathRow([mathElement("mi", "d", "normal"), mathElement("mi", token === "dt" ? "t" : "τ", "italic")]);
+    } else if (token === "cos" || token === "sin") {
+      result = mathElement("mi", token, "normal");
+    } else if (token === "e") {
+      result = mathElement("mi", "e", "italic");
+    } else if (token === "Δφ" || token === "Δf" || token === "Δt") {
+      result = mathRow([mathElement("mi", "Δ"), mathElement("mi", token.slice(1), "italic")]);
+    } else if (token === "α" || token === "ζ" || token === "π" || token === "φ") {
+      result = mathElement("mi", token, "italic");
+    } else {
+      result = mathElement("mi", token, "italic");
+    }
+    var math = mathElement("math");
+    math.setAttribute("class", "inline-math");
+    math.setAttribute("display", "inline");
+    math.appendChild(result);
+    return math;
+  }
+  function formattedMathFragment(value) {
+    var source = String(value);
+    var fragment = document.createDocumentFragment();
+    var pattern = new RegExp(INLINE_MATH_REGEX.source, "g");
+    var cursor = 0;
+    var match;
+    while ((match = pattern.exec(source))) {
+      var token = match[2];
+      var start = match.index + match[1].length;
+      if (start > cursor) fragment.appendChild(document.createTextNode(source.slice(cursor, start)));
+      fragment.appendChild(buildMathToken(token));
+      cursor = start + token.length;
+    }
+    if (cursor < source.length) fragment.appendChild(document.createTextNode(source.slice(cursor)));
+    return fragment;
+  }
+  function setMathText(el, value) {
+    if (!el || el.namespaceURI === SVG_NS) {
+      if (el) el.textContent = String(value);
+      return;
+    }
+    while (el.firstChild) el.removeChild(el.firstChild);
+    el.appendChild(formattedMathFragment(value));
+  }
+  function formatInlineMath(root) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    var nodes = [];
+    var node;
+    var test = new RegExp(INLINE_MATH_REGEX.source);
+    while ((node = walker.nextNode())) {
+      var parent = node.parentElement;
+      if (!parent || parent.closest("svg,math,script,style,code,pre")) continue;
+      if (test.test(node.nodeValue)) nodes.push(node);
+    }
+    nodes.forEach(function (item) {
+      if (item.parentNode) item.parentNode.replaceChild(formattedMathFragment(item.nodeValue), item);
+    });
+  }
   function text(root, selector, value) {
     var el = query(root, selector);
-    if (el) el.textContent = value;
+    if (el) setMathText(el, value);
   }
   function number(root, name) {
     var el = query(root, '[data-param="' + name + '"]');
@@ -54,15 +170,72 @@
         var feedback = query(form, "[data-feedback]");
         if (!feedback) return;
         if (!chosen) {
-          feedback.textContent = "先选择一个答案，再查看解释。";
+          setMathText(feedback, "先选择一个答案，再查看解释。");
           feedback.dataset.state = "idle";
           return;
         }
         var correct = chosen.value === form.dataset.correct;
         feedback.dataset.state = correct ? "correct" : "incorrect";
-        feedback.textContent = correct ? form.dataset.correctText : form.dataset.wrongText;
+        setMathText(feedback, correct ? form.dataset.correctText : form.dataset.wrongText);
         form.dataset.checked = "true";
       });
+    });
+  }
+  function canvasMathParts(token) {
+    var match;
+    if (token === "fREF" || token === "fPFD" || token === "fVCO" || token === "fFB" || token === "fOUT") return [{text:"f",style:"var"},{text:token.slice(1),style:"sub"}];
+    if (token === "VCTRL") return [{text:"V",style:"var"},{text:"CTRL",style:"sub"}];
+    if (token === "Kvco") return [{text:"K",style:"var"},{text:"VCO",style:"sub"}];
+    if (token === "ΔfVCO") return [{text:"Δ",style:"greek"},{text:"f",style:"var"},{text:"VCO",style:"sub"}];
+    if (token === "ΔVCTRL") return [{text:"Δ",style:"greek"},{text:"V",style:"var"},{text:"CTRL",style:"sub"}];
+    if (token === "Δφe") return [{text:"Δ",style:"greek"},{text:"φ",style:"var"},{text:"e",style:"sub"}];
+    if (token === "φREF" || token === "φFB" || token === "φu") return [{text:"φ",style:"var"},{text:token.slice(1),style:"sub"}];
+    if (token === "φ0") return [{text:"φ",style:"var"},{text:"0",style:"sub"}];
+    if (token === "ωn" || token === "ωd") return [{text:"ω",style:"var"},{text:token.slice(1),style:"sub"}];
+    if (token === "ωdt") return [{text:"ω",style:"var"},{text:"d",style:"sub"},{text:"t",style:"var"}];
+    if (token === "fn") return [{text:"f",style:"var"},{text:"n",style:"sub"}];
+    if (token === "f0") return [{text:"f",style:"var"},{text:"0",style:"sub"}];
+    if (token === "tREF" || token === "tFB") return [{text:"t",style:"var"},{text:token.slice(1),style:"sub"}];
+    if (token === "Δf0") return [{text:"Δ",style:"greek"},{text:"f",style:"var"},{text:"0",style:"sub"}];
+    if (token === "dt" || token === "dτ") return [{text:"d",style:"normal"},{text:token === "dt" ? "t" : "τ",style:"var"}];
+    if (token === "cos" || token === "sin") return [{text:token,style:"normal"}];
+    if (token === "e" || token === "τ") return [{text:token,style:"var"}];
+    if (token === "Δφ" || token === "Δf" || token === "Δt") return [{text:"Δ",style:"greek"},{text:token.slice(1),style:"var"}];
+    if ((match = token.match(/^φe,cycle(?:\(([^)]+)\))?$/))) return [{text:"φ",style:"var"},{text:"e,cycle",style:"sub"}].concat(match[1] ? [{text:"("+match[1]+")",style:"normal"}] : []);
+    if ((match = token.match(/^φe(?:\(([^)]+)\))?$/))) return [{text:"φ",style:"var"},{text:"e",style:"sub"}].concat(match[1] ? [{text:"("+match[1]+")",style:"normal"}] : []);
+    if (/^[NDRftT]$/.test(token)) return [{text:token,style:"var"}];
+    if (/^[αζπφ]$/.test(token)) return [{text:token,style:"var"}];
+    return [{text:token,style:"normal"}];
+  }
+  function canvasMathRuns(value) {
+    var source = String(value), pattern = new RegExp(INLINE_MATH_REGEX.source, "g");
+    var cursor = 0, result = [], match;
+    while ((match = pattern.exec(source))) {
+      var token = match[2], start = match.index + match[1].length;
+      if (start > cursor) result.push({text:source.slice(cursor,start),style:"normal"});
+      canvasMathParts(token).forEach(function (part) { result.push(part); });
+      cursor = start + token.length;
+    }
+    if (cursor < source.length) result.push({text:source.slice(cursor),style:"normal"});
+    return result;
+  }
+  function canvasFont(style) {
+    if (style === "var") return "italic 14px 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', 'Times New Roman', serif";
+    if (style === "greek") return "normal 14px 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', 'Times New Roman', serif";
+    if (style === "sub") return "normal 9px 'STIX Two Math', 'Cambria Math', 'Times New Roman', serif";
+    if (style === "normal") return "12px system-ui, sans-serif";
+    return "12px system-ui, sans-serif";
+  }
+  function drawCanvasMathLabel(ctx, value, centerX, baselineY) {
+    var runs = canvasMathRuns(value);
+    var total = 0;
+    runs.forEach(function (run) { ctx.font = canvasFont(run.style); total += ctx.measureText(run.text).width; });
+    var x = centerX - total / 2;
+    ctx.textAlign = "left";
+    runs.forEach(function (run) {
+      ctx.font = canvasFont(run.style);
+      ctx.fillText(run.text, x, baselineY + (run.style === "sub" ? 3 : 0));
+      x += ctx.measureText(run.text).width;
     });
   }
   function drawChart(canvas, spec) {
@@ -104,10 +277,10 @@
     ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0, y1); ctx.lineTo(x1, y1); ctx.stroke();
     ctx.fillStyle = "#314d60";
     ctx.textAlign = "center";
-    if (spec.xLabel) ctx.fillText(spec.xLabel, (x0 + x1) / 2, height - 5);
+    if (spec.xLabel) drawCanvasMathLabel(ctx, spec.xLabel, (x0 + x1) / 2, height - 5);
     if (spec.yLabel) {
       ctx.save(); ctx.translate(15, (y0 + y1) / 2); ctx.rotate(-Math.PI / 2);
-      ctx.fillText(spec.yLabel, 0, 0); ctx.restore();
+      drawCanvasMathLabel(ctx, spec.yLabel, 0, 0); ctx.restore();
     }
     if (legendSeries.length) {
       ctx.save();
@@ -747,6 +920,7 @@
   }
 
   function init(root){
+    formatInlineMath(root);
     checkCards(root);
     var type=root.dataset.classroomLab;
     if(type==="a21")initA21(root);

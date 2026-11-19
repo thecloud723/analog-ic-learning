@@ -78,21 +78,44 @@
 .a-classroom .evidence-badge { display: inline-block; padding: .13rem .5rem; border-radius: 999px; color: #174d68; background: #e5f2f8; border: 1px solid #bfdae7; font-size: .72rem; font-weight: 750; }
 .a-classroom .warning-note { border-left: 3px solid #d38b2f; padding: .45rem .6rem; background: #fff9eb; font-size: .82rem; }
 .a-classroom .diagram-tools { display: flex; flex-wrap: wrap; gap: .35rem; }
-.a-classroom .pll-diagram { width: 100%; min-height: 250px; display: block; touch-action: pan-y; }
-.a-classroom .pll-diagram .wire { fill: none; stroke: #668395; stroke-width: 3; }
+.a-classroom .diagram-scroll { width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; border-radius: 12px; background: linear-gradient(180deg, #fbfdff 0%, #f5f9fc 100%); }
+.a-classroom .pll-diagram { width: 100%; min-width: 760px; height: auto; min-height: 0; display: block; touch-action: pan-x pan-y; }
+.a-classroom .pll-diagram .diagram-bg { fill: #fbfdff; stroke: #e0e9ef; stroke-width: 1.5; }
+.a-classroom .pll-diagram .wire { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
 .a-classroom .pll-diagram .wire[data-path="reference"] { stroke: #17658b; }
-.a-classroom .pll-diagram .wire[data-path="feedback"] { stroke: #a64e25; }
-.a-classroom .pll-diagram .wire[data-path="control"] { stroke: #2d6f59; }
-.a-classroom .pll-diagram .wire[data-path="output"] { stroke: #63578f; }
-.a-classroom .pll-diagram .wire:not(.is-highlighted) { opacity: .35; }
-.a-classroom .pll-diagram .wire.is-highlighted { stroke-width: 5; opacity: 1; }
-.a-classroom .pll-diagram .diagram-node rect { fill: #fff; stroke: #93afbe; stroke-width: 2; rx: 10; }
+.a-classroom .pll-diagram .wire[data-path="feedback"] { stroke: #b8582a; }
+.a-classroom .pll-diagram .wire[data-path="control"] { stroke: #28785d; }
+.a-classroom .pll-diagram .wire[data-path="output"] { stroke: #68599c; }
+.a-classroom .pll-diagram .wire:not(.is-highlighted) { opacity: .88; }
+.a-classroom .pll-diagram .wire.is-highlighted { stroke-width: 6; opacity: 1; filter: drop-shadow(0 2px 2px rgba(23,50,71,.18)); }
 .a-classroom .pll-diagram .diagram-node { cursor: pointer; outline: none; }
-.a-classroom .pll-diagram .diagram-node:hover rect, .a-classroom .pll-diagram .diagram-node.is-selected rect { fill: #eaf4f8; stroke: #17658b; stroke-width: 4; }
-.a-classroom .pll-diagram .diagram-node text { pointer-events: none; fill: #18394d; font-size: 15px; font-weight: 700; text-anchor: middle; }
-.a-classroom .pll-diagram .diagram-node.is-frequency-focus rect { fill: #fff4df; stroke: #a64e25; stroke-width: 4; }
-.a-classroom .pll-diagram .freq-label { fill: #38586c; font-size: 12px; text-anchor: middle; }
-.a-classroom .pll-diagram [data-frequency-kind].is-frequency-focus .freq-label { fill: #a64e25; font-size: 14px; font-weight: 800; }
+.a-classroom .pll-diagram .node-surface { fill: #fff; stroke: #b9cbd5; stroke-width: 2.2; rx: 15; }
+.a-classroom .pll-diagram .node-accent { stroke: none; rx: 3; }
+.a-classroom .pll-diagram [data-node="reference"] .node-surface { fill: #f0f8fc; stroke: #4d94b0; }
+.a-classroom .pll-diagram [data-node="refDivider"] .node-surface,
+.a-classroom .pll-diagram [data-node="pfd"] .node-surface { fill: #f3f8fb; stroke: #6d9db2; }
+.a-classroom .pll-diagram [data-node="chargePump"] .node-surface,
+.a-classroom .pll-diagram [data-node="loopFilter"] .node-surface,
+.a-classroom .pll-diagram [data-node="vco"] .node-surface { fill: #f2f8f4; stroke: #70a28d; }
+.a-classroom .pll-diagram [data-node="feedbackDivider"] .node-surface { fill: #fff7ef; stroke: #cf8a61; }
+.a-classroom .pll-diagram [data-node="outputDivider"] .node-surface,
+.a-classroom .pll-diagram [data-node="output"] .node-surface { fill: #f6f4fb; stroke: #9286b6; }
+.a-classroom .pll-diagram .diagram-node:hover .node-surface,
+.a-classroom .pll-diagram .diagram-node.is-selected .node-surface { stroke-width: 4; filter: drop-shadow(0 3px 5px rgba(23,50,71,.12)); }
+.a-classroom .pll-diagram .diagram-node text { pointer-events: none; text-anchor: middle; font-family: system-ui, sans-serif; }
+.a-classroom .pll-diagram .node-eyebrow { fill: #567184; font-size: 12px; font-weight: 800; letter-spacing: 1.4px; }
+.a-classroom .pll-diagram .node-title { fill: #18394d; font-size: 20px; font-weight: 750; }
+.a-classroom .pll-diagram .diagram-node.is-frequency-focus .node-surface { fill: #fff4df; stroke: #b8582a; stroke-width: 4; }
+.a-classroom .pll-diagram .freq-label { fill: #38586c; font-size: 17px; font-weight: 650; text-anchor: middle; }
+.a-classroom .pll-diagram .freq-value { fill: #526d80; font-size: 15px; font-variant-numeric: tabular-nums; text-anchor: middle; }
+.a-classroom .pll-diagram .math-variable { font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "Times New Roman", serif; font-style: italic; }
+.a-classroom .pll-diagram .math-subscript { font-family: "STIX Two Math", "Cambria Math", "Times New Roman", serif; font-size: .68em; font-style: normal; baseline-shift: sub; }
+.a-classroom .pll-diagram [data-frequency-kind].is-frequency-focus .freq-label,
+.a-classroom .pll-diagram [data-frequency-kind].is-frequency-focus .freq-value { fill: #a64e25; font-weight: 800; }
+.a-classroom .pll-diagram .path-key text { fill: #496476; font-size: 13px; font-weight: 650; }
+.a-classroom .pll-diagram .path-key line { stroke-width: 4; stroke-linecap: round; }
+.a-classroom math.inline-math { display: inline; font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "STIXGeneral", "Times New Roman", serif; font-size: 1.1em; line-height: 1; color: inherit; vertical-align: -0.08em; white-space: nowrap; }
+.a-classroom math.inline-math mi[mathvariant="normal"] { font-style: normal; }
 .a-classroom .tour-panel { background: #f8fbfd; }
 .a-classroom .timeline-svg { width: 100%; min-height: 280px; touch-action: none; }
 .a-classroom .timeline-svg text { fill: var(--classroom-muted); font-size: 13px; }
@@ -124,7 +147,7 @@
   .a-classroom .workbench { grid-template-columns: minmax(0, 1fr); grid-template-areas: "visual" "controls" "observe"; }
   .a-classroom .panel { padding: .7rem; }
   .a-classroom .workbench-visual .scroll-x { overflow-x: auto; }
-  .a-classroom .pll-diagram { min-width: 660px; }
+  .a-classroom .pll-diagram { min-width: 760px; }
   .a-classroom .timeline-svg { min-width: 680px; }
   .a-classroom .metric-value { font-size: .98rem; }
   .a-classroom .button-row button { flex: 1 1 auto; }
