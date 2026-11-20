@@ -18,6 +18,12 @@
 
 以下编号是**我们课程里的图1/图2、公式1/公式2**，并不是来源教材的图号/公式号。来源编号单独标明。不能为了达到数量而添加重复图或无必要公式。
 
+### GitHub 公式格式
+
+- 行内公式使用美元符号定界，例如 $f_{\\mathrm{REF}}$。
+- 独立公式使用双美元符号，并单独占行。
+- 不使用反斜杠圆括号或方括号作为公式定界符。
+
 ---
 
 # A1 认识 PLL 整机
@@ -34,8 +40,8 @@
 
 ### 公式
 
-1. **JKU 基本锁定关系：** \(\displaystyle f_{\mathrm{VCO}}=N f_{\mathrm{ref}}\)。假设 f_ref 是 PFD 输入参考且无前置 R 分频。
-2. **带独立输出分频器的课程补充：** \(\displaystyle f_{\mathrm{OUT}}=\frac{f_{\mathrm{VCO}}}{D}\)。说明来源产品中的具体输出节点和 Divider D，不能与 JKU 基本框图输出符号混用。
+1. **JKU 基本锁定关系：** $f_{\mathrm{VCO}}=N f_{\mathrm{ref}}$。假设 $f_{\\mathrm{ref}}$ 是 PFD 输入参考且无前置 R 分频。
+2. **带独立输出分频器的课程补充：** $f_{\mathrm{OUT}}=\frac{f_{\mathrm{VCO}}}{D}$。说明来源产品中的具体输出节点和 Divider D，不能与 JKU 基本框图输出符号混用。
 
 ### 概念
 
@@ -45,7 +51,7 @@
 ### 题目
 
 1. 为什么需要反馈？只给 VCO 一个固定控制电压，能否长期保证准确频率？
-2. 假设 \(\displaystyle f_{\mathrm{ref}}=40\,\mathrm{MHz}\)、\(N=125\)、\(D=2\)，VCO 和最终输出分别是多少？
+2. 假设 $f_{\mathrm{ref}}=40\,\mathrm{MHz}$、$N=125$、$D=2$，VCO 和最终输出分别是多少？
 3. 在其他条件相同且 PLL 正常锁定的前提下，只修改 D，会不会改变内部 VCO 频率？
 
 **交互：** 保留现有 A-INT-01 的框图点击、路径高亮、频率链计算；让它验证图1与公式1、2。
@@ -60,12 +66,12 @@
 
 - **图1（原图）：** JKU **Fig.76**，简单 PLL 的拉普拉斯域框图，属于 **Type-I** 分析。
 - **图2（原图/对照）：** JKU **Fig.83**，Charge-Pump PLL 结构；用作后续 Type-II 环路的架构引入，不与 Fig.76 的传递函数混同。
-- **图3（现有交互）：** 三联动态波形：频率误差、\(\Delta V_{\mathrm{CTRL}}\)、相位误差，时间游标同步。
+- **图3（现有交互）：** 三联动态波形：频率误差、$\Delta V_{\mathrm{CTRL}}$、相位误差，时间游标同步。
 
 ### 公式
 
-1. **相位与角频率关系：** \(\displaystyle \omega(t)=\frac{d\varphi(t)}{dt}\)。
-2. **反馈端相位误差定义：** \(\displaystyle \varphi_e=\varphi_{\mathrm{ref}}-\frac{\varphi_{\mathrm{VCO}}}{N}\)。注意这是相位定义；实际动态由具体环路决定。
+1. **相位与角频率关系：** $\omega(t)=\frac{d\varphi(t)}{dt}$。
+2. **反馈端相位误差定义：** $\varphi_e=\varphi_{\mathrm{ref}}-\frac{\varphi_{\mathrm{VCO}}}{N}$。注意这是相位定义；实际动态由具体环路决定。
 
 > **重要：** JKU Fig.76 与 **Eq.62–64** 是简单 **Type-I** PLL 模型；现有 A1.2 互动是教学化的 **Type-II 近锁行为模型**。正文不得说 Eq.62–64 直接推出当前三曲线。Type-I/II 的详细传递函数推导留给 C3。
 
@@ -96,7 +102,7 @@
 
 ### 公式 / 符号
 
-1. **SSB 相噪读数：** \(\displaystyle \mathcal L(f_{\mathrm{offset}})\;[\mathrm{dBc/Hz}]\)，表示距载波某偏移处的相对功率谱密度。
+1. **SSB 相噪读数：** $\mathcal L(f_{\mathrm{offset}})\;[\mathrm{dBc/Hz}]$，表示距载波某偏移处的相对功率谱密度。
 2. **离散 Spur 的单位：** 单根杂散相对载波的总功率通常以 **dBc** 表示，不能直接与 dBc/Hz 相等。
 
 > 本页不引入相噪积分到 RMS Jitter 的完整公式，留到 D1。
@@ -129,21 +135,21 @@
 
 ### 公式
 
-1. **JKU §7.1 原始关系：** \(\displaystyle \Delta\varphi=2\pi\frac{\Delta t}{T_{\mathrm{ref}}}\)。
-2. **周期与频率：** \(\displaystyle T_{\mathrm{ref}}=\frac{1}{f_{\mathrm{ref}}}\)。
+1. **JKU §7.1 原始关系：** $\Delta\varphi=2\pi\frac{\Delta t}{T_{\mathrm{ref}}}$。
+2. **周期与频率：** $T_{\mathrm{ref}}=\frac{1}{f_{\mathrm{ref}}}$。
 
-符号约定（本课程）：\(\Delta t=t_{\mathrm{FB}}-t_{\mathrm{REF}}\)，\(\Delta\varphi=\varphi_{\mathrm{REF}}-\varphi_{\mathrm{FB}}\)；若 FB 晚到，前者为正，参考领先。公式与图要使用同一约定。
+符号约定（本课程）：$\Delta t=t_{\mathrm{FB}}-t_{\mathrm{REF}}$，$\Delta\varphi=\varphi_{\mathrm{REF}}-\varphi_{\mathrm{FB}}$；若 FB 晚到，前者为正，参考领先。公式与图要使用同一约定。
 
 ### 概念
 
-1. 一个周期对应 \(2\pi\) rad 或 360°；边沿时间偏移占周期的比例就是相位角占整圈的比例。
+1. 一个周期对应 $2\pi$ rad 或 360°；边沿时间偏移占周期的比例就是相位角占整圈的比例。
 2. 相同的绝对时间差，在不同频率下对应不同的相位角。
 
 ### 题目
 
 1. 100 MHz 的时钟，REF 与 FB 上升沿相差 +40 ps，参考领先多少度？
 2. 200 MHz 下保持相同的 +40 ps，结果是多少？
-3. FB 比 REF 提前 40 ps，按本课程的 \(\Delta t\) 和 \(\Delta\varphi\) 约定，符号是什么？
+3. FB 比 REF 提前 40 ps，按本课程的 $\Delta t$ 和 $\Delta\varphi$ 约定，符号是什么？
 
 **交互：** 保留 A-INT-04 边沿拖动、两种固定模式、相位圆盘及 Reset；**原公式和中文解释先于交互出现**。
 
@@ -157,14 +163,14 @@
 
 - **图1（原图）：** JKU **Fig.73**，VCO 相位积分器模型；说明振荡频率变化如何积成相位变化。该图在 JKU §6.7。
 - **图2（现有交互）：** 未包裹相位（Unwrapped Phase）随时间变化曲线。
-- **图3（现有交互）：** 模 1 周期（Wrapped Phase）曲线，与图2共享时间轴。
+- **图3（现有交互）：** 模 $2\\pi$ 相位（Wrapped Phase）曲线，与图2共享时间轴。
 
 ### 公式
 
-1. **JKU §6.7 的相位积分关系：** \(\displaystyle \varphi(t)=\varphi(0)+\int_0^t\omega(\tau)\,d\tau\)。原文若选定零初始相位，\(\varphi(0)=0\)。
-2. **由上式推导的本课程关系式：** \(\displaystyle \Delta\varphi(t)=\Delta\varphi(0)+2\pi\int_0^t\Delta f(\tau)\,d\tau\)。恒定频差时变为 \(\Delta\varphi(0)+2\pi\Delta f\,t\)。
+1. **JKU §6.7 的相位积分关系：** $\varphi(t)=\varphi(0)+\int_0^t\omega(\tau)\,d\tau$。原文若选定零初始相位，$\varphi(0)=0$。
+2. **由上式推导的本课程关系式：** $\Delta\varphi(t)=\Delta\varphi(0)+2\pi\int_0^t\Delta f(\tau)\,d\tau$。恒定频差时变为 $\Delta\varphi(0)+2\pi\Delta f\,t$。
 
-定义 \(\Delta f=f_{\mathrm{REF}}-f_{\mathrm{FB}}\)，相位差定义与 A2.1 一致。
+定义 $\Delta f=f_{\mathrm{REF}}-f_{\mathrm{FB}}$，相位差定义与 A2.1 一致。
 
 ### 概念
 
@@ -195,13 +201,13 @@
 
 ### 公式
 
-1. **本课程理想事件模型（限 REF 先到的情况）：** \(\displaystyle t_{\mathrm{UP}}\approx\Delta t+t_{\mathrm{reset}}\)，\(\displaystyle t_{\mathrm{DN}}\approx t_{\mathrm{reset}}\)。
+1. **本课程理想事件模型（限 REF 先到的情况）：** $t_{\mathrm{UP}}\approx\Delta t+t_{\mathrm{reset}}$，$t_{\mathrm{DN}}\approx t_{\mathrm{reset}}$。
 
 > 该关系是简化的事件时间计算，不是 JKU Fig.77 原图中给出的完整非理想 PFD 解析式；真实 Reset 和门延迟须另行建模。
 
 ### 概念
 
-1. REF 领先 → UP 脉冲更长 → CP 充电 → 正 \(K_{\mathrm{VCO}}\) 假设下 VCO 加速；FB 领先时反向。
+1. REF 领先 → UP 脉冲更长 → CP 充电 → 正 $K_{\mathrm{VCO}}$ 假设下 VCO 加速；FB 领先时反向。
 2. 单次 PFD 边沿比较说明当次相位先后；多周期的平均行为才体现频差纠偏方向。
 
 ### 题目
