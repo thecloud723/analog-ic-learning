@@ -1,6 +1,6 @@
 # PLL A1–A2 极简教学内容清单：原图、原公式、概念与题目
 
-> 日期：2026-11-19  
+> 日期：2026-11-20（GitHub 数学格式与原图链接刷新）  
 > 状态：**清单已落实到六页；逐页验收证据见 [Source-First V2 验收报告](PLL_A_SOURCE_FIRST_ACCEPTANCE_V2.md)。本文件仍是页面内容与来源位置的编辑检查表。
 > 范围：A1.1～A1.3、A2.1～A2.3 六页。  
 > 设计原则：**每页回答一个问题；只保留必要的原图、原公式、1～2 个概念和 2～3 道题；现有交互只负责验证。**  
@@ -20,8 +20,13 @@
 
 ### GitHub 公式格式
 
-- 行内公式使用美元符号定界，例如 $f_{\\mathrm{REF}}$。
-- 独立公式使用双美元符号，并单独占行。
+- 行内公式使用美元符号定界，例如 $f_{\mathrm{REF}}$。
+- 独立公式使用双美元符号，并单独占行，例如：
+
+  $
+  f_{\mathrm{VCO}}=Nf_{\mathrm{PFD}}
+  $
+
 - 不使用反斜杠圆括号或方括号作为公式定界符。
 
 ---
@@ -46,7 +51,7 @@
 
 ### 公式
 
-1. **JKU 基本锁定关系：** $f_{\mathrm{VCO}}=N f_{\mathrm{ref}}$。假设 $f_{\\mathrm{ref}}$ 是 PFD 输入参考且无前置 R 分频。
+1. **JKU 基本锁定关系：** $f_{\mathrm{VCO}}=N f_{\mathrm{ref}}$。假设 $f_{\mathrm{ref}}$ 是 PFD 输入参考且无前置 R 分频。
 2. **带独立输出分频器的课程补充：** $f_{\mathrm{OUT}}=\frac{f_{\mathrm{VCO}}}{D}$。说明来源产品中的具体输出节点和 Divider D，不能与 JKU 基本框图输出符号混用。
 
 ### 概念
@@ -191,7 +196,7 @@
 
 [JKU §6.7 原始讲义](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator.html) · [打开 Fig.73 原始 SVG](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator_files/figure-revealjs/fig-oscillator-model-output-1.svg)
 - **图2（现有交互）：** 未包裹相位（Unwrapped Phase）随时间变化曲线。
-- **图3（现有交互）：** 模 $2\\pi$ 相位（Wrapped Phase）曲线，与图2共享时间轴。
+- **图3（现有交互）：** 模 $2\pi$ 相位（Wrapped Phase）曲线，与图2共享时间轴。
 
 ### 公式
 
