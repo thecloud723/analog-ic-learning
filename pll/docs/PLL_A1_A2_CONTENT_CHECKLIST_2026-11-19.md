@@ -34,8 +34,14 @@
 
 ### 图
 
-- **图1（主图，原图）：** JKU RFIC **Fig.74**，基本 PLL 框图。中文读图：Reference → PD → LPF → VCO → Feedback Divider → PD。
-- **图2（产品对照，来源链接）：** ADI **ADF4351 Fig.1**，实际频率合成器/PLL 内部模块；受限产品图只链接官方 PDF p.1，不镜像公开图片。
+- **图1（主图，JKU 原图 Fig.74）：** 基本 PLL 框图。中文读图：Reference → PD → LPF → VCO → Feedback Divider → PD。
+
+[![JKU Fig.74 — Block diagram of a PLL](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-output-1.svg)
+
+[JKU §7.1 原始讲义](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) · [打开 Fig.74 原始 SVG](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-output-1.svg)
+- **图2（产品对照，ADI 原图 Fig.1）：** ADF4351 Functional Block Diagram。使用官方 PDF 对应页，不镜像公开图片。
+
+[ADI ADF4351 Fig.1 原图（官方 PDF 第 1 页）](https://www.analog.com/media/en/technical-documentation/data-sheets/ADF4351.pdf#page=1)
 - **图3（交互验证，现有）：** 可点击 PLL 框图与频率链；用于沿参考、控制、反馈、输出四条路径追踪，不再增加静态重绘。
 
 ### 公式
@@ -64,8 +70,16 @@
 
 ### 图
 
-- **图1（原图）：** JKU **Fig.76**，简单 PLL 的拉普拉斯域框图，属于 **Type-I** 分析。
-- **图2（原图/对照）：** JKU **Fig.83**，Charge-Pump PLL 结构；用作后续 Type-II 环路的架构引入，不与 Fig.76 的传递函数混同。
+- **图1（JKU 原图 Fig.76）：** 简单 PLL 的拉普拉斯域框图，属于 **Type-I** 分析。
+
+[![JKU Fig.76 — Laplace domain model of a PLL](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-s-domain-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-s-domain-output-1.svg)
+
+[JKU §7.1 原始讲义](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) · [打开 Fig.76 原始 SVG](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-block-diagram-s-domain-output-1.svg)
+- **图2（JKU 原图 Fig.83）：** PFD/Charge-Pump PLL 结构；用作 Type-II 环路架构引入，不与 Fig.76 的传递函数混同。
+
+[![JKU Fig.83 — Diagram of a PFD-CP PLL](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-pfd-cp-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-pfd-cp-output-1.svg)
+
+[JKU §7.2 原始讲义](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) · [打开 Fig.83 原始 SVG](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pll-pfd-cp-output-1.svg)
 - **图3（现有交互）：** 三联动态波形：频率误差、$\Delta V_{\mathrm{CTRL}}$、相位误差，时间游标同步。
 
 ### 公式
@@ -96,8 +110,14 @@
 
 ### 图
 
-- **图1（概念图，原图）：** ADI **MT-008 Fig.1**，载波与相噪裙边的基本示意。具体图形意义以原文件为准。
-- **图2（主来源，链接）：** TI **LMX2594EVM SNAU210B Fig.5-1**，约 14 GHz 输出相噪测量；提供官方 PDF p.6 链接和测试条件，不将受限原图复制到 Pages。
+- **图1（ADI 原图 MT-008 Fig.1）：** 载波与相噪裙边的基本示意。
+
+[ADI MT-008 Fig.1 原图（官方 PDF 第 1 页）](https://www.analog.com/media/en/training-seminars/tutorials/mt-008.pdf#page=1)
+
+[ADI MT-008 Fig.3 原图（官方 PDF 第 3 页，相噪对频偏曲线）](https://www.analog.com/media/en/training-seminars/tutorials/mt-008.pdf#page=3)
+- **图2（TI 原图 SNAU210B Fig.5-1）：** 14 GHz 输出频率的实测相噪图。TI 原文说明该测量假设输入参考非常干净，例如 100 MHz Wenzel oscillator。
+
+[TI Fig.5-1 原图（官方 PDF 第 6 页）](https://www.ti.com/lit/ug/snau210b/snau210b.pdf#page=6)
 - **图3（交互读图，现有）：** 对图2已有数值 Marker 的放大/选择和读数，不另画一条冒充原始实测的曲线。
 
 ### 公式 / 符号
@@ -130,7 +150,11 @@
 
 ### 图
 
-- **图1（原图，应用例）：** JKU **Fig.75**，XOR PD 输入/输出时序；解释“相位差在电路中怎样被比较”。如不需要该电路背景，可放在拓展阅读，不强制占正文。
+- **图1（JKU 原图 Fig.75）：** XOR PD 输入/输出时序；用于说明相位差在电路中怎样被比较。
+
+[![JKU Fig.75 — Input and output waveforms of an XOR-based phase detector](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pd-xor-diagram-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pd-xor-diagram-output-1.svg)
+
+[JKU §7.1 原始讲义](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll.html) · [打开 Fig.75 原始 SVG](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pd-xor-diagram-output-1.svg)
 - **图2（现有交互）：** 可拖动的 REF/FB 双时钟边沿与相位圆盘。这是验证图，不是替代原图的新静态教材图。
 
 ### 公式
@@ -161,7 +185,11 @@
 
 ### 图
 
-- **图1（原图）：** JKU **Fig.73**，VCO 相位积分器模型；说明振荡频率变化如何积成相位变化。该图在 JKU §6.7。
+- **图1（JKU 原图 Fig.73）：** VCO 超前相位积分器模型；说明瞬时频率如何积分为相位。该图在 JKU §6.7。
+
+[![JKU Fig.73 — VCO model as a perfect integrator for excess phase](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator_files/figure-revealjs/fig-oscillator-model-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator_files/figure-revealjs/fig-oscillator-model-output-1.svg)
+
+[JKU §6.7 原始讲义](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator.html) · [打开 Fig.73 原始 SVG](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/oscillator_files/figure-revealjs/fig-oscillator-model-output-1.svg)
 - **图2（现有交互）：** 未包裹相位（Unwrapped Phase）随时间变化曲线。
 - **图3（现有交互）：** 模 $2\\pi$ 相位（Wrapped Phase）曲线，与图2共享时间轴。
 
@@ -193,9 +221,29 @@
 
 ### 图
 
-- **图1（原图）：** JKU **Fig.77**，双 DFF PFD 电路和复位逻辑。
-- **图2（原图组）：** JKU **Fig.78～80**，REF 领先、FB 领先、两路同相三种时序。可按三种情况切换显示原图，避免过宽。
-- **图3（原图）：** JKU **Fig.81**，较大频差时的 PFD 行为；特别解释短期某周期输出方向可能与长期纠偏方向不同。
+- **图1（JKU 原图 Fig.77）：** 双 DFF PFD 电路和复位逻辑。
+
+[![JKU Fig.77 — Implementation of a phase-frequency detector](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-implementation-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-implementation-output-1.svg)
+
+[打开 Fig.77 原始 SVG](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-implementation-output-1.svg)
+- **图2（JKU 原图组 Fig.78～80）：** 三种基本时序工况，分别为 REF 领先、FB 领先、两路同相。按需逐张显示，避免过宽。
+
+**Fig.78：REF 领先 FB**
+
+[![JKU Fig.78 — Reference leading feedback](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram1-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram1-output-1.svg)
+
+**Fig.79：FB 领先 REF**
+
+[![JKU Fig.79 — Feedback leading reference](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram2-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram2-output-1.svg)
+
+**Fig.80：REF 与 FB 同相、同频**
+
+[![JKU Fig.80 — Reference and feedback aligned](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram3-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram3-output-1.svg)
+- **图3（JKU 原图 Fig.81）：** 较大频差时的 PFD 行为；特别解释短期某周期输出方向可能与长期纠偏方向不同。
+
+[![JKU Fig.81 — PFD behavior with different reference and feedback frequencies](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram4-output-1.svg)](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram4-output-1.svg)
+
+[打开 Fig.81 原始 SVG](https://iic-jku.github.io/radio-frequency-integrated-circuits/slides/pll_files/figure-revealjs/fig-pfd-diagram4-output-1.svg)
 
 现有 PFD 事件时间轴作为上述原图的**交互验证区**，无需再额外算一张静态教材图。
 
